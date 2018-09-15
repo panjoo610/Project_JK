@@ -96,7 +96,6 @@ public class InventorySlot : MonoBehaviour {
 
                     itemStats.ExitButton.onClick.AddListener(() => OnExitStatPanel(Ui));
 
-                    
                     break;
                 }
             }
