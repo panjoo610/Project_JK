@@ -10,4 +10,5 @@ public class ItemStats : MonoBehaviour
     public Image ItemImage;
     public Button EquimentButtom, ExitButton;
 
+
 }

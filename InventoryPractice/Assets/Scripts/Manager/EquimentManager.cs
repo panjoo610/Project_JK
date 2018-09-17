@@ -11,6 +11,10 @@ public class EquimentManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
+
+        int numSlots = System.Enum.GetNames(typeof(EquipmentSlot)).Length;
+        currentEquiment = new Equipment[numSlots];
+        currentMeshes = new SkinnedMeshRenderer[numSlots];
     }
     #endregion
     public Equipment[] defalutItems;
@@ -25,15 +29,17 @@ public class EquimentManager : MonoBehaviour
 
     InventoryManager inventory;
 
+
+    public SaveInventory saveInventory;
+
     private void Start()
     {
-        int numSlots = System.Enum.GetNames(typeof(EquipmentSlot)).Length;
-        currentEquiment = new Equipment[numSlots];
-        currentMeshes = new SkinnedMeshRenderer[numSlots];
+
         inventory = InventoryManager.instance;
 
         EquipDefalutItems();
     }
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.U))
@@ -41,6 +47,27 @@ public class EquimentManager : MonoBehaviour
             UnequipAll();
         }
     }
+
+    public void FirstEquip(Equipment newItem)
+    {
+        int slotIndex = (int)newItem.equipSlot;
+
+        currentEquiment[slotIndex] = newItem;
+
+        SkinnedMeshRenderer newMesh = Instantiate(newItem.mesh);
+        newMesh.transform.parent = targetMesh.transform;
+
+        newMesh.bones = targetMesh.bones;
+        newMesh.rootBone = targetMesh.rootBone;
+
+        currentMeshes[slotIndex] = newMesh;
+
+        saveInventory.items.Remove(newItem);
+
+        if (!newItem.isDefalutItem) { saveInventory.equipmentItems.Add(newItem); }
+
+    }
+
     public void Equip(Equipment newItem)
     {
         int slotIndex = (int)newItem.equipSlot;
@@ -62,6 +89,11 @@ public class EquimentManager : MonoBehaviour
         newMesh.rootBone = targetMesh.rootBone;
 
         currentMeshes[slotIndex] = newMesh;
+
+        saveInventory.items.Remove(newItem);
+
+        if (!newItem.isDefalutItem) { saveInventory.equipmentItems.Add(newItem); }
+
     }
 
     public Equipment Unequip (int slotIndex)
@@ -72,8 +104,10 @@ public class EquimentManager : MonoBehaviour
             {
                 Destroy(currentMeshes[slotIndex].gameObject);
             }
+
             Equipment oldItem = currentEquiment[slotIndex];
             inventory.Add(oldItem);
+            saveInventory.equipmentItems.Add(oldItem);
 
             currentEquiment[slotIndex] = null;
 
@@ -83,6 +117,7 @@ public class EquimentManager : MonoBehaviour
             }
             return oldItem;
         }
+
         return null;
     }
 

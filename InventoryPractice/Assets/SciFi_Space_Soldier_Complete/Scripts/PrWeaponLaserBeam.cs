@@ -34,7 +34,7 @@ public class PrWeaponLaserBeam : MonoBehaviour {
                 actualTimeToLive -= Time.deltaTime;
                 curveTime += Time.deltaTime / timeToLive;
                 actualintensity = actualIntensityCurve.Evaluate(curveTime);
-                actualLine.SetColors(startColor * actualintensity, endColor * actualintensity);
+                //actualLine.SetColors(startColor * actualintensity, endColor * actualintensity);
             }
             else
             {
@@ -65,7 +65,7 @@ public class PrWeaponLaserBeam : MonoBehaviour {
         actualLine.enabled = false;
         actualTimeToLive = timeToLive;
         isActive = false;
-        actualLine.SetColors(startColor, endColor);
+        //actualLine.SetColors(startColor, endColor);
         curveTime = 0.0f;
     }
 
@@ -81,7 +81,7 @@ public class PrWeaponLaserBeam : MonoBehaviour {
         if (GetComponent<LineRenderer>())
         {
             actualLine = GetComponent<LineRenderer>();
-            actualLine.SetWidth(startWidth * widthFactor, endWidth * widthFactor);
+            //actualLine.SetWidth(startWidth * widthFactor, endWidth * widthFactor);
             
         }
         startPointParent = initialPos;
