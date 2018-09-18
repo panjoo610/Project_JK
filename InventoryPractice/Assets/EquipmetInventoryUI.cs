@@ -14,8 +14,6 @@ public class EquipmetInventoryUI : MonoBehaviour
     [SerializeField]
     EquimentSlot[] slots;
 
-
-    // Use this for initialization
     void Start()
     {
         slots = itemParent.GetComponentsInChildren<EquimentSlot>();
@@ -23,17 +21,8 @@ public class EquipmetInventoryUI : MonoBehaviour
         equimentManager = EquimentManager.instance;
         equimentManager.onEquipmentChanged += OnEquipmentChanged;
 
-        //Setting();
-    }
-    void Setting()
-    {     
-        for (int i = 0; i < equimentManager.saveInventory.equipmentItems.Count; i++)
-        {           
-            equimentManager.FirstEquip((Equipment)equimentManager.saveInventory.equipmentItems[i]);
-        }
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.K))
