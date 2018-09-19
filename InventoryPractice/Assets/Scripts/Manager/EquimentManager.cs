@@ -33,15 +33,19 @@ public class EquimentManager : MonoBehaviour
     
     private void Start()
     {
-
         inventory = InventoryManager.instance;
 
         int numSlots = System.Enum.GetNames(typeof(EquipmentSlot)).Length;
         currentEquiment = new Equipment[numSlots];
         currentMeshes = new SkinnedMeshRenderer[numSlots];
 
+
+        saveInventory.LoadItemListFromJson();
+
         EquipDefalutItems();
         EquipSaveInven();
+
+   
     }
 
     private void Update()
@@ -79,7 +83,7 @@ public class EquimentManager : MonoBehaviour
 
         if (!newItem.isDefalutItem) { saveInventory.equipmentItems.Add(newItem); }
 
-        saveInventory.SaveItemList();
+        saveInventory.SaveItemListByJson();
     }
 
     public Equipment Unequip (int slotIndex)
@@ -103,13 +107,11 @@ public class EquimentManager : MonoBehaviour
             {
                 onEquipmentChanged.Invoke(null, oldItem);
             }
+            saveInventory.SaveItemListByJson();
             return oldItem;
         }
-
+        saveInventory.SaveItemListByJson();
         return null;
-
-
-        saveInventory.SaveItemList();
     }
 
     public void UnequipAll()
