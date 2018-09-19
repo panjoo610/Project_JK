@@ -5,20 +5,16 @@ using UnityEngine.UI;
 
 public class InventorySlot : MonoBehaviour {
 
-    Item item, preItem;
+    Item item;
     Equipment EquipmentItem;
 
     public Image icon;
-    public Button removeButton;
+    //public Button removeButton;
 
     public GameObject PanelPrefab;
 
     ItemStats itemStats;
 
-    private void Start()
-    {
-       
-    }
 
     public void AddItem(Item newItem)
     {
@@ -28,7 +24,7 @@ public class InventorySlot : MonoBehaviour {
         icon.sprite = item.icon;
         icon.enabled = true;
 
-        removeButton.interactable = true;
+       // removeButton.interactable = true;
     }
 
     public void ClearSlot()
@@ -38,12 +34,12 @@ public class InventorySlot : MonoBehaviour {
         icon.sprite = null;
         icon.enabled = false;
 
-        removeButton.interactable = false;
+        //removeButton.interactable = false;
     }
 
     public void OnRemoveButton()
     {
-        InventoryManager.instance.Remove(item);
+       // InventoryManager.instance.Remove(item);
     }
 
     public void OnSwapButton()

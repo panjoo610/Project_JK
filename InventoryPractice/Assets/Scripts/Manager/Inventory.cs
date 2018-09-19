@@ -24,6 +24,30 @@ public class InventoryManager : MonoBehaviour {
 
     public List<Item> items = new List<Item>();
 
+
+    public SaveInventory saveInventory;
+
+    public void Start()
+    {
+        Setting();
+    }
+
+    void Setting()
+    {
+        if (space < (items.Count + saveInventory.items.Count))
+        {
+            return;
+        }
+
+        for (int i = 0; i < saveInventory.items.Count; i++)
+        {
+            items.Add(saveInventory.items[i]);
+        }
+
+        if (onItemChangedCallBack != null)
+            onItemChangedCallBack.Invoke();
+    }
+
     public bool Add(Item item)
     {
         if (!item.isDefalutItem)
@@ -35,9 +59,9 @@ public class InventoryManager : MonoBehaviour {
             }
 
             items.Add(item);
+            saveInventory.items.Add(item);
 
-
-            if(onItemChangedCallBack != null)
+            if (onItemChangedCallBack != null)
                  onItemChangedCallBack.Invoke();
         }
         return true;

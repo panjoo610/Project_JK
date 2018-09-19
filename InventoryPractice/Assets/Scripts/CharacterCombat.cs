@@ -19,6 +19,7 @@ public class CharacterCombat : MonoBehaviour {
     public event System.Action OnAttack;
 
     public bool InCombat { get; private set; }
+
     CharacterStats oppoenentStats;
 
     void Start()

@@ -3,11 +3,13 @@
 public class InventoyUI : MonoBehaviour {
 
     public Transform itemParent;
+
     public GameObject inventotyUI;
 
     InventoryManager inventory;
 
     InventorySlot[] slots;
+
     ItemStats[] StatsPanel;
 
     // Use this for initialization
@@ -16,8 +18,8 @@ public class InventoyUI : MonoBehaviour {
          inventory = InventoryManager.instance;
          inventory.onItemChangedCallBack += UpdateUI;
 
-        slots = itemParent.GetComponentsInChildren<InventorySlot>(); 
-	}
+         slots = itemParent.GetComponentsInChildren<InventorySlot>();
+    }
 	
 	// Update is called once per frame
 	void Update ()
@@ -33,7 +35,6 @@ public class InventoyUI : MonoBehaviour {
             }
         }      
 	}
-
 
     void UpdateUI() //강제적으로 위치를 옮겨줌
     {
