@@ -56,7 +56,7 @@ public class HealthUI : MonoBehaviour {
         if(ui != null)
         {
             ui.position = target.position;
-            ui.forward = new Vector3(-cam.position.x, 0, -cam.position.z);
+            ui.forward = new Vector3(-cam.position.x, 0, 0);//-cam.position.z
 
             if (Time.time - lastMadeVisibleTime > visibleTime)
             {
