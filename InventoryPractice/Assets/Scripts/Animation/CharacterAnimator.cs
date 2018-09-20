@@ -9,7 +9,7 @@ public class CharacterAnimator : MonoBehaviour {
     public AnimationClip replaceableAttackAnim;
     public AnimationClip[] defaultAttackAnimSet;
     protected AnimationClip[] currentAttackAnimSet;
-
+    
 
     const float locomationAnimationSmoothTime = 0.1f;
     NavMeshAgent agent;

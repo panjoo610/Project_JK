@@ -42,7 +42,7 @@ public class CharacterCombat : MonoBehaviour {
         if(attackCoolDown <= 0f)
         {
             oppoenentStats = targetStats;
-            AttackHit_AnimationEvent(); // 삭제 예정
+
             if (OnAttack != null)
             {
                 OnAttack();

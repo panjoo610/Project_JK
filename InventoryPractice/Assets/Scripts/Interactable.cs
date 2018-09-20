@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Interactable : MonoBehaviour {
 
-    public float radius = 2.0f;
+    public float radius = 4.0f;
     public Transform interactionTransform;
     bool isFocus = false;
     Transform player;
@@ -18,14 +18,10 @@ public class Interactable : MonoBehaviour {
 
     public void Update()
     {
-        if (isFocus && !hasInteracted) 
+        if (isFocus && !hasInteracted)
         {
-            float distance = Vector3.Distance(player.position, transform.position);
-            if(distance <= radius)
-            {
-                Interact();
-                hasInteracted = true;
-            }
+            hasInteracted = true;
+            Interact();
         }
     }
     public void OnFocused(Transform playerTransform)
@@ -34,12 +30,14 @@ public class Interactable : MonoBehaviour {
         player = playerTransform; 
         hasInteracted = false;
     }
+
     public void OnDeFocused()
     {
         isFocus = false;
         player = null;
         hasInteracted = false;
     }
+
     public void OnDrawGizomosSelected()
     {
         if(interactionTransform == null)

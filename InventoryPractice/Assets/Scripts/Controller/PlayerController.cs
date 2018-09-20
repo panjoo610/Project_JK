@@ -13,7 +13,8 @@ public class PlayerController : MonoBehaviour {
 
     PlayerMotor motor;
 	// Use this for initialization
-	void Start () {
+	void Start ()
+    {
         playerCamera = Camera.main;
         motor = GetComponent<PlayerMotor>();
 	}
@@ -43,7 +44,7 @@ public class PlayerController : MonoBehaviour {
 
             if (Physics.Raycast(ray, out hit, 100))
             {
-               Interactable interactable =  hit.collider.GetComponent<Interactable>();
+                Interactable interactable =  hit.collider.GetComponent<Interactable>();
                 if (interactable != null)
                 {
                     SetFocus(interactable);

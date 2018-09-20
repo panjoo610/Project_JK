@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Inventory : MonoBehaviour {
+public class InventoryManager : MonoBehaviour {
 
     #region Sigleton
-    public static Inventory instance;
+    public static InventoryManager instance;
 
     private void Awake()
     {
@@ -24,6 +24,21 @@ public class Inventory : MonoBehaviour {
 
     public List<Item> items = new List<Item>();
 
+
+    public SaveInventory saveInventory;
+
+    public void Setting()
+    {
+        int count = saveInventory.items.Count;
+        for (int i = 0; i < count; i++)
+        {
+            items.Add(saveInventory.items[i]);
+        }
+
+        if (onItemChangedCallBack != null)
+            onItemChangedCallBack.Invoke();
+    }
+
     public bool Add(Item item)
     {
         if (!item.isDefalutItem)
@@ -35,9 +50,10 @@ public class Inventory : MonoBehaviour {
             }
 
             items.Add(item);
+            saveInventory.items.Add(item);
+            saveInventory.SaveItemListByJson();
 
-
-            if(onItemChangedCallBack != null)
+            if (onItemChangedCallBack != null)
                  onItemChangedCallBack.Invoke();
         }
         return true;
