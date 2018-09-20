@@ -9,7 +9,8 @@ public class PlayerMotor : MonoBehaviour {
     NavMeshAgent agent;
     Transform target;
 	// Use this for initialization
-	void Start () {
+	void Start ()
+    {
         agent = GetComponent<NavMeshAgent>();
 	}
     private void Update()
@@ -28,7 +29,7 @@ public class PlayerMotor : MonoBehaviour {
 
     public void FollowTarget(Interactable newTarget)
     {
-        agent.stoppingDistance = newTarget.radius * 0.9f;
+        agent.stoppingDistance = newTarget.radius;
         agent.updateRotation = false;
         
         target = newTarget.transform;

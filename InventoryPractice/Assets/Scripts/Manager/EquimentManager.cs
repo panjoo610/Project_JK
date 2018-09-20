@@ -18,6 +18,7 @@ public class EquimentManager : MonoBehaviour
 
     public SkinnedMeshRenderer targetMesh;
 
+    [SerializeField]
     Equipment[] currentEquiment;
     SkinnedMeshRenderer[] currentMeshes;
 
@@ -26,11 +27,10 @@ public class EquimentManager : MonoBehaviour
 
     InventoryManager inventory;
 
-
     public SaveInventory saveInventory;
 
-    public Text testText;
-    
+    public Text testText; //테스트
+
     private void Start()
     {
         inventory = InventoryManager.instance;
@@ -39,13 +39,9 @@ public class EquimentManager : MonoBehaviour
         currentEquiment = new Equipment[numSlots];
         currentMeshes = new SkinnedMeshRenderer[numSlots];
 
+        EquipDefalutItems();
 
         saveInventory.LoadItemListFromJson();
-
-        EquipDefalutItems();
-        EquipSaveInven();
-
-   
     }
 
     private void Update()
@@ -54,7 +50,13 @@ public class EquimentManager : MonoBehaviour
         {
             UnequipAll();
         }
-        testText.text = saveInventory.items.Count.ToString();
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            saveInventory.ResetData();
+        }
+
+        if (saveInventory.items != null)
+        testText.text = "인벤토리 : "+ saveInventory.items.Count.ToString() +"  장착창 : " + saveInventory.equipmentItems.Count.ToString();//테스트
     }
 
     public void Equip(Equipment newItem)
@@ -98,7 +100,6 @@ public class EquimentManager : MonoBehaviour
             Equipment oldItem = currentEquiment[slotIndex];
             inventory.Add(oldItem);
 
-            //saveInventory.items.Add(oldItem);
             saveInventory.equipmentItems.Remove(oldItem);
 
             currentEquiment[slotIndex] = null;
@@ -127,16 +128,22 @@ public class EquimentManager : MonoBehaviour
     {
         foreach(Equipment item in defalutItems)
         {
-            Equip(item);
+            FirstEquip(item);
         }
     }
 
-    void EquipSaveInven()
+    public void EquipToSaveInven()
     {
+        if(saveInventory.equipmentItems == null)
+        {
+            return;
+        }
+
         for (int i = 0; i < saveInventory.equipmentItems.Count; i++)
         {
             FirstEquip((Equipment)saveInventory.equipmentItems[i]);
         }
+        inventory.Setting();
     }
 
     void FirstEquip(Equipment newItem)
@@ -155,8 +162,6 @@ public class EquimentManager : MonoBehaviour
         newMesh.bones = targetMesh.bones;
         newMesh.rootBone = targetMesh.rootBone;
 
-        currentMeshes[slotIndex] = newMesh;
-
-        //saveInventory.items.Remove(newItem);       
+        currentMeshes[slotIndex] = newMesh;  
     }
 }

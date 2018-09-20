@@ -20,7 +20,6 @@ public class EquipmetInventoryUI : MonoBehaviour
 
         equimentManager = EquimentManager.instance;
         equimentManager.onEquipmentChanged += OnEquipmentChanged;
-
     }
 
     void Update()

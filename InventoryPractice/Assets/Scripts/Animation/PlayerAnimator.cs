@@ -19,8 +19,6 @@ public class PlayerAnimator : CharacterAnimator {
         }
     }
 
-    
-
     void OnEquipmentChanged(Equipment newItem, Equipment oldItem)
     {
         if (newItem != null && newItem.equipSlot == EquipmentSlot.Weapon)

@@ -6,7 +6,7 @@ using LitJson;
 using System;
 
 [Serializable]
-public struct Test
+public struct SavedItems
 {
     public List<Item> items;
     public List<Item> equipmentItems;
@@ -15,52 +15,60 @@ public struct Test
 [CreateAssetMenu(fileName = "SaveInventory", menuName = "Inventory/SaveInventory")]
 public class SaveInventory : ScriptableObject
 {
-    Test test;
-
-    public List<Item> items = new List<Item>();
-
-    public List<Item> equipmentItems = new List<Item>();
+    SavedItems savedItems;
 
     public string JasonData;
 
+    public List<Item> items;
+
+    public List<Item> equipmentItems;
+
+    public delegate void OnLoadComplete();
+    public OnLoadComplete onLoadComplete;
+    
+
     public void SaveItemListByJson() // json문서로 내보내기
     {
-        test.items = items;
-        test.equipmentItems = equipmentItems;
+        savedItems.items = items;
+        savedItems.equipmentItems = equipmentItems;
 
-        JasonData = JsonUtility.ToJson(test);
-
-
+        JasonData = JsonUtility.ToJson(savedItems);
+        
         File.WriteAllText(Application.dataPath + "/ItemList.json", JasonData);
     }
 
     public void LoadItemListFromJson()
     {
-        string load = File.ReadAllText(Application.dataPath + "/ItemList.json");
-        var LoadData = JsonUtility.FromJson<Test>(load);
+        if(!File.Exists(Application.dataPath + "/ItemList.json"))
+        {
+            File.CreateText(Application.dataPath + "/ItemList.json");
+        }
 
-        LoadData.items = items;
-        LoadData.equipmentItems = equipmentItems;
+        string load = File.ReadAllText(Application.dataPath + "/ItemList.json");
+        var LoadData = JsonUtility.FromJson<SavedItems>(load);
+
+        items = LoadData.items;
+        equipmentItems = LoadData.equipmentItems;
+
+        savedItems.items = items;
+        savedItems.equipmentItems = equipmentItems;
+
+        EquimentManager.instance.EquipToSaveInven();
     }
 
-    public void LoadItemList() // json문서를 가져오기
+    public void ResetData()
     {
-        if(File.Exists(Application.dataPath + "/Resource/Data/ItemList.json"))
-        {
-            string jsonStr = File.ReadAllText(Application.dataPath + "/Resources/Data/ItemList.json");
+        JasonData = null;
 
-            Debug.Log(jsonStr);
+        items = null;
+        equipmentItems = null;
 
-            JsonData ItemData = JsonMapper.ToObject(jsonStr);
+        savedItems.items = null;
+        savedItems.equipmentItems = null;
 
-            for(int i = 0; i < ItemData.Count; i++)
-            {
-                Debug.Log(ItemData[i]["id"]);
-            }
-        }
-        else
-        {
-            Debug.Log("파일이 존재하지 않습니다.");
-        }
+        string load = File.ReadAllText(Application.dataPath + "/ItemList.json");
+        var LoadData = JsonUtility.FromJson<SavedItems>(load);
+
+        File.WriteAllText(Application.dataPath + "/ItemList.json", JasonData);
     }
 }

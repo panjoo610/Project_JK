@@ -11,14 +11,16 @@ public class InventoyUI : MonoBehaviour {
     InventorySlot[] slots;
 
     ItemStats[] StatsPanel;
-
+    private void Awake()
+    {
+        slots = itemParent.GetComponentsInChildren<InventorySlot>();
+    }
     // Use this for initialization
     void Start ()
     {
          inventory = InventoryManager.instance;
          inventory.onItemChangedCallBack += UpdateUI;
-
-         slots = itemParent.GetComponentsInChildren<InventorySlot>();
+         UpdateUI();
     }
 	
 	// Update is called once per frame
