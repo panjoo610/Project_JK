@@ -39,9 +39,9 @@ public class EquimentManager : MonoBehaviour
         currentEquiment = new Equipment[numSlots];
         currentMeshes = new SkinnedMeshRenderer[numSlots];
 
-        EquipDefalutItems();
-
         saveInventory.LoadItemListFromJson();
+
+        EquipDefalutItems();
     }
 
     private void Update()
@@ -62,12 +62,11 @@ public class EquimentManager : MonoBehaviour
     public void Equip(Equipment newItem)
     {
         int slotIndex = (int)newItem.equipSlot;
-
+   
         Unequip(slotIndex);
-
         Equipment oldItem = Unequip(slotIndex);
-      
-        if(onEquipmentChanged != null)
+
+        if (onEquipmentChanged != null)
         {
             onEquipmentChanged.Invoke(newItem, oldItem);
         }
@@ -85,31 +84,41 @@ public class EquimentManager : MonoBehaviour
 
         if (!newItem.isDefalutItem) { saveInventory.equipmentItems.Add(newItem); }
 
+
         saveInventory.SaveItemListByJson();
     }
 
     public Equipment Unequip (int slotIndex)
     {
-        if(currentEquiment[slotIndex] != null)
+        if (currentEquiment[slotIndex] != null)
         {
-            if (currentMeshes[slotIndex] != null)
+            if (currentEquiment[slotIndex].isDefalutItem)
             {
                 Destroy(currentMeshes[slotIndex].gameObject);
+                return null;
             }
-
-            Equipment oldItem = currentEquiment[slotIndex];
-            inventory.Add(oldItem);
-
-            saveInventory.equipmentItems.Remove(oldItem);
-
-            currentEquiment[slotIndex] = null;
-
-            if (onEquipmentChanged != null)
+            else
             {
-                onEquipmentChanged.Invoke(null, oldItem);
+
+                Destroy(currentMeshes[slotIndex].gameObject);
+                Equipment oldItem = currentEquiment[slotIndex];
+                inventory.Add(oldItem);
+
+                saveInventory.equipmentItems.Remove(oldItem);
+
+                currentEquiment[slotIndex] = null;
+
+                if (onEquipmentChanged != null)
+                {
+                    onEquipmentChanged.Invoke(null, oldItem);
+                }
+
+                FirstEquip(defalutItems[slotIndex]);
+                saveInventory.SaveItemListByJson();
+                return oldItem;
             }
-            saveInventory.SaveItemListByJson();
-            return oldItem;
+
+
         }
         saveInventory.SaveItemListByJson();
         return null;
@@ -125,7 +134,7 @@ public class EquimentManager : MonoBehaviour
     }
 
     void EquipDefalutItems()
-    {
+    {     
         foreach(Equipment item in defalutItems)
         {
             FirstEquip(item);
@@ -150,18 +159,26 @@ public class EquimentManager : MonoBehaviour
     {
         int slotIndex = (int)newItem.equipSlot;
 
-        if (onEquipmentChanged != null)
+        if(currentEquiment[slotIndex] != null)
         {
-            onEquipmentChanged.Invoke(newItem, null);
+            return;
         }
-        currentEquiment[slotIndex] = newItem;
+        else
+        {
+            if (onEquipmentChanged != null)
+            {
+                onEquipmentChanged.Invoke(newItem, null);
+            }
+            currentEquiment[slotIndex] = newItem;
 
-        SkinnedMeshRenderer newMesh = Instantiate(newItem.mesh);
-        newMesh.transform.parent = targetMesh.transform;
+            SkinnedMeshRenderer newMesh = Instantiate(newItem.mesh);
+            newMesh.transform.parent = targetMesh.transform;
 
-        newMesh.bones = targetMesh.bones;
-        newMesh.rootBone = targetMesh.rootBone;
+            newMesh.bones = targetMesh.bones;
+            newMesh.rootBone = targetMesh.rootBone;
 
-        currentMeshes[slotIndex] = newMesh;  
+            currentMeshes[slotIndex] = newMesh;
+        }
+
     }
 }

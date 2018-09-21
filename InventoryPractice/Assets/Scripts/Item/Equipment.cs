@@ -25,4 +25,4 @@ public class Equipment : Item
     }
 }
 
-public enum EquipmentSlot { Head, Chest, Legs, Weapon, Arms, Feet}
+public enum EquipmentSlot { Head, Chest, Legs, Weapon, Arms}

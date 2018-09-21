@@ -49,9 +49,6 @@ public class EquipmetInventoryUI : MonoBehaviour
             case EquipmentSlot.Arms:
                 slots[(int)EquipmentSlot.Arms].ClearSlot();
                 break;
-            case EquipmentSlot.Feet:
-                slots[(int)EquipmentSlot.Feet].ClearSlot();
-                break;
             default:
                 break;
         }
@@ -74,9 +71,6 @@ public class EquipmetInventoryUI : MonoBehaviour
                 break;
             case EquipmentSlot.Arms:
                 slots[(int)EquipmentSlot.Arms].AddItem(equipment);
-                break;
-            case EquipmentSlot.Feet:
-                slots[(int)EquipmentSlot.Feet].AddItem(equipment);
                 break;
             default:
                 break;
