@@ -39,7 +39,7 @@ public class InventorySlot : MonoBehaviour {
 
     public void OnRemoveButton()
     {
-       // InventoryManager.instance.Remove(item);
+       // 
     }
 
     public void OnSwapButton()
@@ -68,6 +68,16 @@ public class InventorySlot : MonoBehaviour {
         Destroy(ui.gameObject);
     }
 
+    public void Sell(Transform ui)
+    {
+        int temp = PlayerManager.instance.saveInventory.PlayerGold + item.itemPrice;
+        InventoryManager.instance.Remove(item);
+
+        PlayerManager.instance.ShowPlayerGold(temp);
+
+        OnExitStatPanel(ui);
+    }
+
     public void OnItemStatPanel()
     {
         if (item != null && itemStats == null) 
@@ -89,7 +99,7 @@ public class InventorySlot : MonoBehaviour {
                     itemStats.ItemDamage.text = EquipmentItem.damageModifier.ToString();
 
                     itemStats.EquimentButtom.onClick.AddListener(() => OnUseItem(Ui));
-
+                    itemStats.SellButoon.onClick.AddListener(() => Sell(Ui));
                     itemStats.ExitButton.onClick.AddListener(() => OnExitStatPanel(Ui));
 
                    

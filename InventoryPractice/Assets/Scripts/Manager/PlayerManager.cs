@@ -16,26 +16,36 @@ public class PlayerManager : MonoBehaviour {
     }
     #endregion
 
+    public SaveInventory saveInventory;
+
     public GameObject Player;
 
     PlayerStats playerStats;
 
-    public Text TestStatsText;
+    public Text TestGoldText;
+
 
     public void Start()
     {
         playerStats = Player.GetComponent<PlayerStats>();
 
         //플레이어가 가진 점수나 골드를 이 함수로 표현할 수 있도로 함
-        iTween.ValueTo(gameObject, iTween.Hash("from", 0, "to", 100, "onUpdate", "Counter", "delay", 2, "time", 2));
+        Counter(saveInventory.PlayerGold);
     }
     public void KillPlayer()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
-    
+    public void ShowPlayerGold(int gold)
+    {
+        iTween.ValueTo(gameObject, iTween.Hash("from", saveInventory.PlayerGold, "to", gold, "onUpdate", "Counter", "delay", 0, "time", 2));
+
+        saveInventory.PlayerGold = gold;
+        saveInventory.SaveItemListByJson();
+    }
+
     void Counter(int statsNum)
     {
-        TestStatsText.text = statsNum.ToString();
+        TestGoldText.text = statsNum.ToString();
     }
 }

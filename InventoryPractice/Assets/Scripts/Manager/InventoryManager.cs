@@ -50,6 +50,7 @@ public class InventoryManager : MonoBehaviour {
             }
 
             items.Add(item);
+
             saveInventory.items.Add(item);
             saveInventory.SaveItemListByJson();
 
@@ -62,6 +63,9 @@ public class InventoryManager : MonoBehaviour {
     public void Remove(Item item)
     {
         items.Remove(item);
+
+        saveInventory.items.Remove(item);
+        saveInventory.SaveItemListByJson();
 
         if (onItemChangedCallBack != null)
             onItemChangedCallBack.Invoke();

@@ -8,7 +8,7 @@ public class ItemStats : MonoBehaviour
 
     public Text ItemName, ItemArmor, ItemDamage ;
     public Image ItemImage;
-    public Button EquimentButtom, ExitButton;
+    public Button EquimentButtom, ExitButton, SellButoon;
 
 
 }

@@ -8,8 +8,8 @@ public class Item : ScriptableObject
 {
     public string itemName = "New Item";
     public Sprite icon = null;
-    public bool isDefalutItem = false;  
-
+    public bool isDefalutItem = false;
+    public int itemPrice = 0;
 
     public virtual void Use()
     {
