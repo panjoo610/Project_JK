@@ -5,15 +5,14 @@ using UnityEngine;
 [System.Serializable]
 public class Stats
 {
-    [SerializeField]
-    private int baseValue;
+    public int baseValue;
 
-    private List<int> modifiers = new List<int>();
+    public List<int> modifiers = new List<int>();
 
     public int GetValue()
     {
         int finalValue = baseValue;
-        modifiers.ForEach(x => finalValue += x); //?????????
+        modifiers.ForEach(x => finalValue += x); //리스트에 있는 수치들을 합해 반환
         return finalValue;
     }
 

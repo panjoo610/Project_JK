@@ -20,7 +20,7 @@ public class PlayerManager : MonoBehaviour {
 
     public GameObject Player;
 
-    PlayerStats playerStats;
+    public PlayerStats playerStats;
 
     public Text TestGoldText;
 
@@ -28,6 +28,9 @@ public class PlayerManager : MonoBehaviour {
     public void Start()
     {
         playerStats = Player.GetComponent<PlayerStats>();
+
+        //playerStats.damage.AddModifier(30);
+        
 
         //플레이어가 가진 점수나 골드를 이 함수로 표현할 수 있도로 함
         Counter(saveInventory.PlayerGold);

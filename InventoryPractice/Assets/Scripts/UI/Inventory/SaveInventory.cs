@@ -11,6 +11,9 @@ public struct SavedItems
     public List<Item> equipmentItems;
 
     public int PlayerGold;
+
+    public List<int> DamageModifiers;
+    public List<int> AromorModifiers;
 }
 
 [CreateAssetMenu(fileName = "SaveInventory", menuName = "Inventory/SaveInventory")]

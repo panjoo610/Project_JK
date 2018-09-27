@@ -62,62 +62,72 @@ public class EquimentManager : MonoBehaviour
     public void Equip(Equipment newItem)
     {
         int slotIndex = (int)newItem.equipSlot;
-   
-        Unequip(slotIndex);
-        Equipment oldItem = Unequip(slotIndex);
 
-        if (onEquipmentChanged != null)
+        if (currentEquiment[slotIndex].isDefalutItem)
         {
-            onEquipmentChanged.Invoke(newItem, oldItem);
-        }
-        currentEquiment[slotIndex] = newItem;
+            Unequip(slotIndex);
+            Equipment oldItem = Unequip(slotIndex);
 
-        SkinnedMeshRenderer newMesh = Instantiate(newItem.mesh);
-        newMesh.transform.parent = targetMesh.transform;
+            if (onEquipmentChanged != null)
+            {
+                onEquipmentChanged.Invoke(newItem, oldItem);
+            }
+            currentEquiment[slotIndex] = newItem;
 
-        newMesh.bones = targetMesh.bones;
-        newMesh.rootBone = targetMesh.rootBone;
+            SkinnedMeshRenderer newMesh = Instantiate(newItem.mesh);
+            newMesh.transform.parent = targetMesh.transform;
 
-        currentMeshes[slotIndex] = newMesh;
+            newMesh.bones = targetMesh.bones;
+            newMesh.rootBone = targetMesh.rootBone;
 
-        saveInventory.items.Remove(newItem);
+            currentMeshes[slotIndex] = newMesh;
 
-        if (!newItem.isDefalutItem) { saveInventory.equipmentItems.Add(newItem); }
+            saveInventory.items.Remove(newItem);
 
+            if (!newItem.isDefalutItem) { saveInventory.equipmentItems.Add(newItem); }
 
-        saveInventory.SaveItemListByJson();
+            saveInventory.SaveItemListByJson();
+            
+        }     
     }
 
     public Equipment Unequip (int slotIndex)
     {
+        if (currentEquiment[slotIndex].isDefalutItem)
+        {
+            Equipment oldItem = currentEquiment[slotIndex];
+            Destroy(currentMeshes[slotIndex].gameObject);
+
+            if (onEquipmentChanged != null)
+            {
+                onEquipmentChanged.Invoke(null, oldItem);
+            }
+            return null;
+        }
         if (currentEquiment[slotIndex] != null)
         {
-            if (currentEquiment[slotIndex].isDefalutItem)
+            Equipment oldItem = currentEquiment[slotIndex];
+
+            inventory.Add(oldItem);
+
+            Destroy(currentMeshes[slotIndex].gameObject);
+
+            saveInventory.equipmentItems.Remove(oldItem);
+
+            currentEquiment[slotIndex] = null;
+
+            if (onEquipmentChanged != null)
             {
-                Destroy(currentMeshes[slotIndex].gameObject);
-                return null;
+                onEquipmentChanged.Invoke(null, oldItem);
             }
-            else
+
+            if (!oldItem.isDefalutItem)
             {
-
-                Destroy(currentMeshes[slotIndex].gameObject);
-                Equipment oldItem = currentEquiment[slotIndex];
-                inventory.Add(oldItem);
-
-                saveInventory.equipmentItems.Remove(oldItem);
-
-                currentEquiment[slotIndex] = null;
-
-                if (onEquipmentChanged != null)
-                {
-                    onEquipmentChanged.Invoke(null, oldItem);
-                }
-
                 FirstEquip(defalutItems[slotIndex]);
-                saveInventory.SaveItemListByJson();
-                return oldItem;
             }
 
+            saveInventory.SaveItemListByJson();
+            return oldItem;
 
         }
         saveInventory.SaveItemListByJson();
