@@ -36,13 +36,26 @@ public class SquadTest : MonoBehaviour {
             return squadMember[0].transform.position;
         }
         var bounds = new Bounds(squadMember[0].transform.position, Vector3.zero);
-
-
-
+        
         return Vector3.zero;
     }
 
     //hp따라서 유닛 하나씩 없엔다
 
+
+    void Attack()
+    {
+        
+    }
+
+    void Move()
+    {
+
+    }
+
+    void SetPosition()
+    {
+
+    }
 
 }

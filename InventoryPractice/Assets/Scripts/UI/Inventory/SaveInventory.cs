@@ -27,6 +27,10 @@ public class SaveInventory : ScriptableObject
 
     public List<Item> equipmentItems;
 
+    public List<int> DamageModifiers;
+
+    public List<int> AromorModifiers;
+
     public int PlayerGold;
 
     public delegate void OnLoadComplete();
@@ -38,7 +42,8 @@ public class SaveInventory : ScriptableObject
         savedItems.items = items;
         savedItems.equipmentItems = equipmentItems;
         savedItems.PlayerGold = PlayerGold;
-
+        savedItems.AromorModifiers = AromorModifiers;
+        savedItems.DamageModifiers = DamageModifiers;
         JasonData = JsonUtility.ToJson(savedItems);
         
         File.WriteAllText(Application.dataPath + "/ItemList.json", JasonData);
@@ -61,10 +66,15 @@ public class SaveInventory : ScriptableObject
         items = LoadData.items;
         equipmentItems = LoadData.equipmentItems;
         PlayerGold = LoadData.PlayerGold;
+        AromorModifiers = LoadData.AromorModifiers;
+        DamageModifiers = LoadData.DamageModifiers;
+
 
         savedItems.items = items;
         savedItems.equipmentItems = equipmentItems;
         savedItems.PlayerGold = PlayerGold;
+        savedItems.AromorModifiers = AromorModifiers;
+        savedItems.DamageModifiers = DamageModifiers;
 
         EquimentManager.instance.EquipToSaveInven();
     }
@@ -76,10 +86,15 @@ public class SaveInventory : ScriptableObject
         items = null;
         equipmentItems = null;
         PlayerGold = 0;
+        AromorModifiers = null;
+        DamageModifiers = null;
+
 
         savedItems.items = null;
         savedItems.equipmentItems = null;
         savedItems.PlayerGold = 0;
+        savedItems.AromorModifiers = null;
+        savedItems.DamageModifiers = null;
 
         string load = File.ReadAllText(Application.dataPath + "/ItemList.json");
         var LoadData = JsonUtility.FromJson<SavedItems>(load);

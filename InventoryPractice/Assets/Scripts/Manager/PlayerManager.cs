@@ -29,8 +29,17 @@ public class PlayerManager : MonoBehaviour {
     {
         playerStats = Player.GetComponent<PlayerStats>();
 
+        for (int i = 0; i < saveInventory.DamageModifiers.Count; i++)
+        {
+            playerStats.damage.modifiers.Add(saveInventory.DamageModifiers[i]);
+        }
+        for (int i = 0; i < saveInventory.AromorModifiers.Count; i++)
+        {
+            playerStats.armor.modifiers.Add(saveInventory.AromorModifiers[i]);
+        }
+
         //playerStats.damage.AddModifier(30);
-        
+
 
         //플레이어가 가진 점수나 골드를 이 함수로 표현할 수 있도로 함
         Counter(saveInventory.PlayerGold);

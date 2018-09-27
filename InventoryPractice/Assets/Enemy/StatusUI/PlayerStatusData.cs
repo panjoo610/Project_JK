@@ -10,11 +10,13 @@ public class PlayerStatusData : ScriptableObject
     public Sprite icon = null;
     public float Damege = 0f;
     public float Armor = 0f;
+    public int Price = 0;
 
 
     public void Increase()
     {
         Debug.Log("increase " + name +" "+Armor);
+        Price += Price;
     }
 
     
