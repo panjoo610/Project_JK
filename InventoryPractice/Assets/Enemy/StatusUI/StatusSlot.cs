@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class StatusSlot : MonoBehaviour {
 
-    public Text NameText,ExplainText;
+    public Text NameText,ExplainText, PriceText;
     public Image Icon;
     public int Price;
     //public Button BuyButton;
@@ -14,17 +14,21 @@ public class StatusSlot : MonoBehaviour {
 
     private void Start()
     {
+        Price = playerStatusData.GetPrice(playerStatusData.kindOfStatus);
         UpdateUI();
     }
 
     public void UpdateUI()
     {
+        Price = playerStatusData.GetPrice(playerStatusData.kindOfStatus);
 
         NameText.text = playerStatusData.StatusName;
+
         ExplainText.text = playerStatusData.StatusExplain;
 
-        Icon.sprite = playerStatusData.icon;
-        Price = playerStatusData.Price;
+        PriceText.text = "Price : " + Price.ToString();
+
+        Icon.sprite = playerStatusData.icon;    
     }
 
     public void OnClickStatusUp()
@@ -35,24 +39,14 @@ public class StatusSlot : MonoBehaviour {
         }
         else
         {
-            PlayerManager.instance.playerStats.damage.AddModifier((int)playerStatusData.Damege);
-            PlayerManager.instance.playerStats.armor.AddModifier((int)playerStatusData.Armor);
+            playerStatusData.AddStatus(playerStatusData.kindOfStatus);
 
-
-            if((int)playerStatusData.Damege > 0)
-            {
-                PlayerManager.instance.saveInventory.DamageModifiers.Add((int)playerStatusData.Damege);
-            }
-            if ((int)playerStatusData.Armor > 0)
-            {
-                PlayerManager.instance.saveInventory.AromorModifiers.Add((int)playerStatusData.Armor);
-            }
 
             int temp = PlayerManager.instance.saveInventory.PlayerGold - Price;
 
             PlayerManager.instance.saveInventory.SaveItemListByJson();
-            PlayerManager.instance.ShowPlayerGold(temp);
-            UpdateUI();
+            PlayerManager.instance.ShowPlayerGold(temp);           
         }
+        UpdateUI();
     }
 }

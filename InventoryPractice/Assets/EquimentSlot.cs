@@ -21,16 +21,17 @@ public class EquimentSlot : MonoBehaviour
         item = null;
 
         icon.sprite = null;
+
         icon.enabled = false;
     }
 
     public void UnEquipemtItem(int slotindex)
     {
-        if (slotindex == 2 || slotindex == 4)
+        if (item.isDefalutItem)
         {
             return;
         }
-        EquimentManager.instance.Unequip(slotindex);
+        EquimentManager.instance.Unequip(slotindex, null);
     }
 }
 

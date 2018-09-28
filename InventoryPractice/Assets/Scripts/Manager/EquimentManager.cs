@@ -18,7 +18,6 @@ public class EquimentManager : MonoBehaviour
 
     public SkinnedMeshRenderer targetMesh;
 
-    [SerializeField]
     Equipment[] currentEquiment;
     SkinnedMeshRenderer[] currentMeshes;
 
@@ -27,29 +26,29 @@ public class EquimentManager : MonoBehaviour
 
     InventoryManager inventory;
 
+
     public SaveInventory saveInventory;
 
-    public Text testText; //테스트
-
+    public Text testText;
+    
     private void Start()
     {
         inventory = InventoryManager.instance;
 
         int numSlots = System.Enum.GetNames(typeof(EquipmentSlot)).Length;
+
         currentEquiment = new Equipment[numSlots];
+
         currentMeshes = new SkinnedMeshRenderer[numSlots];
 
-        saveInventory.LoadItemListFromJson();
 
         EquipDefalutItems();
+
+        saveInventory.LoadItemListFromJson();     
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.U))
-        {
-            UnequipAll();
-        }
         if (Input.GetKeyDown(KeyCode.Q))
         {
             saveInventory.ResetData();
@@ -61,93 +60,94 @@ public class EquimentManager : MonoBehaviour
 
     public void Equip(Equipment newItem)
     {
+        inventory.Remove(newItem);
+
+        saveInventory.equipmentItems.Add(newItem);
+
         int slotIndex = (int)newItem.equipSlot;
 
-        if (currentEquiment[slotIndex].isDefalutItem)
+        Equipment oldItem = Unequip(slotIndex, newItem);
+
+        Unequip(slotIndex, newItem);
+        
+        currentEquiment[slotIndex] = newItem;
+
+        SkinnedMeshRenderer newMesh = Instantiate(newItem.mesh);
+        newMesh.transform.parent = targetMesh.transform;
+
+        newMesh.bones = targetMesh.bones;
+        newMesh.rootBone = targetMesh.rootBone;
+
+        currentMeshes[slotIndex] = newMesh;
+
+        if (onEquipmentChanged != null)
         {
-            Unequip(slotIndex);
-            Equipment oldItem = Unequip(slotIndex);
+            onEquipmentChanged.Invoke(newItem, oldItem);
+        }
 
-            if (onEquipmentChanged != null)
-            {
-                onEquipmentChanged.Invoke(newItem, oldItem);
-            }
-            currentEquiment[slotIndex] = newItem;
-
-            SkinnedMeshRenderer newMesh = Instantiate(newItem.mesh);
-            newMesh.transform.parent = targetMesh.transform;
-
-            newMesh.bones = targetMesh.bones;
-            newMesh.rootBone = targetMesh.rootBone;
-
-            currentMeshes[slotIndex] = newMesh;
-
-            saveInventory.items.Remove(newItem);
-
-            if (!newItem.isDefalutItem) { saveInventory.equipmentItems.Add(newItem); }
-
-            saveInventory.SaveItemListByJson();
-            
-        }     
     }
 
-    public Equipment Unequip (int slotIndex)
-    {
-        if (currentEquiment[slotIndex].isDefalutItem)
-        {
-            Equipment oldItem = currentEquiment[slotIndex];
-            Destroy(currentMeshes[slotIndex].gameObject);
 
-            if (onEquipmentChanged != null)
-            {
-                onEquipmentChanged.Invoke(null, oldItem);
-            }
-            return null;
+    public void NormalEquip(Equipment newItem)
+    {
+        int slotIndex = (int)newItem.equipSlot;
+
+        if(currentEquiment[slotIndex] != null)
+        Destroy(currentMeshes[slotIndex].gameObject);
+
+        Equipment oldItem = Unequip(slotIndex, newItem);
+
+        Unequip(slotIndex, newItem);
+
+        currentEquiment[slotIndex] = newItem;
+
+        SkinnedMeshRenderer newMesh = Instantiate(newItem.mesh);
+        newMesh.transform.parent = targetMesh.transform;
+
+        newMesh.bones = targetMesh.bones;
+        newMesh.rootBone = targetMesh.rootBone;
+
+        currentMeshes[slotIndex] = newMesh;
+
+        if (onEquipmentChanged != null)
+        {
+            onEquipmentChanged.Invoke(newItem, oldItem);
         }
+    }
+
+
+
+    public Equipment Unequip (int slotIndex, Equipment newItem)
+    {
+        Equipment oldItem = currentEquiment[slotIndex];
+
         if (currentEquiment[slotIndex] != null)
         {
-            Equipment oldItem = currentEquiment[slotIndex];
-
             inventory.Add(oldItem);
-
-            Destroy(currentMeshes[slotIndex].gameObject);
 
             saveInventory.equipmentItems.Remove(oldItem);
 
+            Destroy(currentMeshes[slotIndex].gameObject);          
+
             currentEquiment[slotIndex] = null;
+
+            NormalEquip(defalutItems[slotIndex]);
 
             if (onEquipmentChanged != null)
             {
                 onEquipmentChanged.Invoke(null, oldItem);
             }
-
-            if (!oldItem.isDefalutItem)
-            {
-                FirstEquip(defalutItems[slotIndex]);
-            }
-
-            saveInventory.SaveItemListByJson();
-            return oldItem;
-
         }
         saveInventory.SaveItemListByJson();
-        return null;
+        return oldItem;
     }
 
-    public void UnequipAll()
-    {
-        for (int i = 0; i < currentEquiment.Length; i++)
-        {
-            Unequip(i);
-        }
-        EquipDefalutItems();
-    }
 
     void EquipDefalutItems()
     {     
         foreach(Equipment item in defalutItems)
         {
-            FirstEquip(item);
+            NormalEquip(item);
         }
     }
 
@@ -160,30 +160,8 @@ public class EquimentManager : MonoBehaviour
 
         for (int i = 0; i < saveInventory.equipmentItems.Count; i++)
         {
-            FirstEquip((Equipment)saveInventory.equipmentItems[i]);
+            NormalEquip((Equipment)saveInventory.equipmentItems[i]);
         }
         inventory.Setting();
-    }
-
-    void FirstEquip(Equipment newItem)
-    {
-        int slotIndex = (int)newItem.equipSlot;
-
-        if (onEquipmentChanged != null)
-        {
-            onEquipmentChanged.Invoke(newItem, null);
-        }
-
-        currentEquiment[slotIndex] = newItem;
-
-        SkinnedMeshRenderer newMesh = Instantiate(newItem.mesh);
-        newMesh.transform.parent = targetMesh.transform;
-
-        newMesh.bones = targetMesh.bones;
-        newMesh.rootBone = targetMesh.rootBone;
-
-        currentMeshes[slotIndex] = newMesh;
-
-
     }
 }
