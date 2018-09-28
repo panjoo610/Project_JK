@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -24,6 +25,7 @@ public class PlayerManager : MonoBehaviour {
 
     public Text TestGoldText;
 
+    public TextMeshProUGUI PlayerText;
 
     public void Start()
     {
@@ -37,8 +39,6 @@ public class PlayerManager : MonoBehaviour {
         {
             playerStats.armor.modifiers.Add(saveInventory.AromorModifiers[i]);
         }
-
-        //playerStats.damage.AddModifier(30);
 
 
         //플레이어가 가진 점수나 골드를 이 함수로 표현할 수 있도로 함
@@ -59,5 +59,6 @@ public class PlayerManager : MonoBehaviour {
     void Counter(int statsNum)
     {
         TestGoldText.text = statsNum.ToString();
+        PlayerText.text = statsNum.ToString();
     }
 }

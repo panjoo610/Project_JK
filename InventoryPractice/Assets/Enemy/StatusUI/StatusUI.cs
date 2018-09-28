@@ -10,6 +10,8 @@ public class StatusUI : MonoBehaviour {
     StatusSlot[] slots;
     Scrollbar Scrollbar;
 
+    public Button ExitButton;
+
 
     private void Awake()
     {
@@ -23,8 +25,19 @@ public class StatusUI : MonoBehaviour {
         //inventory = InventoryManager.instance;
         //inventory.onItemChangedCallBack += UpdateUI;
         AllUpdateUI();
+        ExitButton.onClick.AddListener(() => OnExitButton());
     }
-
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.U))
+        {
+            OnExitButton();
+        }
+    }
+    public void OnExitButton()
+    {
+        gameObject.SetActive(!gameObject.activeSelf);
+    }
     // Update is called once per frame
     //void Update()
     //{

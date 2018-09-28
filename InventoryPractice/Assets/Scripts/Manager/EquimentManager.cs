@@ -169,26 +169,21 @@ public class EquimentManager : MonoBehaviour
     {
         int slotIndex = (int)newItem.equipSlot;
 
-        if(currentEquiment[slotIndex] != null)
+        if (onEquipmentChanged != null)
         {
-            return;
+            onEquipmentChanged.Invoke(newItem, null);
         }
-        else
-        {
-            if (onEquipmentChanged != null)
-            {
-                onEquipmentChanged.Invoke(newItem, null);
-            }
-            currentEquiment[slotIndex] = newItem;
 
-            SkinnedMeshRenderer newMesh = Instantiate(newItem.mesh);
-            newMesh.transform.parent = targetMesh.transform;
+        currentEquiment[slotIndex] = newItem;
 
-            newMesh.bones = targetMesh.bones;
-            newMesh.rootBone = targetMesh.rootBone;
+        SkinnedMeshRenderer newMesh = Instantiate(newItem.mesh);
+        newMesh.transform.parent = targetMesh.transform;
 
-            currentMeshes[slotIndex] = newMesh;
-        }
+        newMesh.bones = targetMesh.bones;
+        newMesh.rootBone = targetMesh.rootBone;
+
+        currentMeshes[slotIndex] = newMesh;
+
 
     }
 }
