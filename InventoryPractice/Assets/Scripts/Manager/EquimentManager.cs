@@ -26,7 +26,6 @@ public class EquimentManager : MonoBehaviour
 
     InventoryManager inventory;
 
-
     public SaveInventory saveInventory;
 
     public Text testText;
@@ -42,6 +41,7 @@ public class EquimentManager : MonoBehaviour
         EquipDefalutItems();
 
         saveInventory.LoadItemListFromJson();   
+
     }
 
     private void Update()
@@ -52,7 +52,7 @@ public class EquimentManager : MonoBehaviour
         }
 
         if (saveInventory.items != null)
-            testText.text = "인벤토리 : " + saveInventory.items.Count.ToString() + "  장착창 : " + saveInventory.equipmentItems.Count.ToString();//테스트
+            testText.text = "장착창 : " + saveInventory.equipmentItems.Count.ToString() + "  인벤토리 : " + saveInventory.items.Count.ToString();//테스트
     }
 
     public void Equip(Equipment newItem)

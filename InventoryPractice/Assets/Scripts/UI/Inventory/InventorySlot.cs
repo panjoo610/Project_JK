@@ -93,8 +93,9 @@ public class InventorySlot : MonoBehaviour {
 
                     StartCoroutine(ExitCoroutine(Ui));
 
-                    itemStats.ItemName.text = item.name;
                     itemStats.ItemImage.sprite = item.icon;
+
+                    itemStats.ItemName.text = item.name;                   
                     itemStats.ItemArmor.text = EquipmentItem.armorModifier.ToString();
                     itemStats.ItemDamage.text = EquipmentItem.damageModifier.ToString();
 
@@ -110,7 +111,7 @@ public class InventorySlot : MonoBehaviour {
     }
     IEnumerator ExitCoroutine(Transform ui)
     {
-        yield return new WaitForSeconds(2.0f);
+        yield return new WaitForSeconds(2.5f);
         if(ui != null)
         OnExitStatPanel(ui);
     }

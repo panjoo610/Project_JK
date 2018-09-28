@@ -55,10 +55,6 @@ public class SaveInventory : ScriptableObject
         {
             File.CreateText(Application.dataPath + "/ItemList.json");
         }
-        else
-        {
-            SaveItemListByJson();
-        }
 
         string load = File.ReadAllText(Application.dataPath + "/ItemList.json");
         var LoadData = JsonUtility.FromJson<SavedItems>(load);
@@ -77,6 +73,8 @@ public class SaveInventory : ScriptableObject
         savedItems.DamageModifiers = DamageModifiers;
 
         EquimentManager.instance.EquipToSaveInven();
+
+        SaveItemListByJson();
     }
 
     public void ResetData()

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class StatusSlot : MonoBehaviour {
 
-    public Text NameText,ExplainText, PriceText;
+    public Text NameText,ExplainText, PriceText, levelText;
     public Image Icon;
     public int Price;
     //public Button BuyButton;
@@ -21,6 +21,8 @@ public class StatusSlot : MonoBehaviour {
     public void UpdateUI()
     {
         Price = playerStatusData.GetPrice(playerStatusData.kindOfStatus);
+
+        levelText.text = "Level : " + playerStatusData.GetPlayerStatusCount(playerStatusData.kindOfStatus).ToString();
 
         NameText.text = playerStatusData.StatusName;
 

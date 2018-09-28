@@ -23,20 +23,16 @@ public class InventoyUI : MonoBehaviour {
          UpdateUI();
     }
 	
-	// Update is called once per frame
-	void Update ()
+    public void OnOff()
     {
-        if (Input.GetButtonDown("Inventory"))
-        {
-            inventotyUI.SetActive(!inventotyUI.activeSelf);
+        inventotyUI.SetActive(!inventotyUI.activeSelf);
 
-            StatsPanel = inventotyUI.GetComponentsInChildren<ItemStats>();
-            for (int i = 0; i < StatsPanel.Length; i++)
-            {
-                Destroy(StatsPanel[i].gameObject);
-            }
-        }      
-	}
+        StatsPanel = inventotyUI.GetComponentsInChildren<ItemStats>();
+        for (int i = 0; i < StatsPanel.Length; i++)
+        {
+            Destroy(StatsPanel[i].gameObject);
+        }
+    }
 
     void UpdateUI() //강제적으로 위치를 옮겨줌
     {

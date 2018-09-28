@@ -22,12 +22,9 @@ public class EquipmetInventoryUI : MonoBehaviour
         equimentManager.onEquipmentChanged += OnEquipmentChanged;
     }
 
-    void Update()
+    public void OnOff()
     {
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            inventotyUI.SetActive(!inventotyUI.activeSelf);
-        }
+        inventotyUI.SetActive(!inventotyUI.activeSelf);
     }
 
     void UnEquipment(Equipment equipment)
