@@ -44,6 +44,7 @@ public class PlayerController : MonoBehaviour {
 
             if (Physics.Raycast(ray, out hit, 100))
             {
+                Debug.Log(hit.collider.GetComponent<Interactable>());
                 Interactable interactable =  hit.collider.GetComponent<Interactable>();
                 if (interactable != null)
                 {
