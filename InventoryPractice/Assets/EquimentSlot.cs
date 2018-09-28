@@ -31,7 +31,7 @@ public class EquimentSlot : MonoBehaviour
         {
             return;
         }
-        EquimentManager.instance.Unequip(slotindex, null);
+        EquimentManager.instance.Unequip(slotindex);
     }
 }
 

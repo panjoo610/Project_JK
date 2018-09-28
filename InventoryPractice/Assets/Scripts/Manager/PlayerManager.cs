@@ -23,8 +23,6 @@ public class PlayerManager : MonoBehaviour {
 
     public PlayerStats playerStats;
 
-    public Text TestGoldText;
-
     public TextMeshProUGUI PlayerText;
 
     public void Start()
@@ -58,7 +56,6 @@ public class PlayerManager : MonoBehaviour {
 
     void Counter(int statsNum)
     {
-        TestGoldText.text = statsNum.ToString();
         PlayerText.text = statsNum.ToString();
     }
 }
