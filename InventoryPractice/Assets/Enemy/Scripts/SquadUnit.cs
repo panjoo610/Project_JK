@@ -40,6 +40,7 @@ public class SquadUnit : MonoBehaviour {
 
         if (target != null)
         {
+            animator.SetTrigger("walk");
             distance = Vector3.Distance(target.position, transform.position);
             agent.SetDestination(target.position);
             FaceTarget();
