@@ -6,13 +6,12 @@ public class SquadHealthUI : MonoBehaviour
 {
     Transform cam;
     Transform ui;
-    GameObject sq;
+    public GameObject sq;
 
     float uiXPosition;
     float uiYPosition;
     void Start()
     {
-        sq = transform.parent.gameObject;
         Debug.Log(sq);
         cam = Camera.main.transform;
 

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -7,7 +8,7 @@ using UnityEngine.AI;
 
 public class SquadUnit : MonoBehaviour {
 
-    //public float lookRadius = 5f;
+    public float lookRadius = 10f;
     SquadTest squadTest;
 
     [SerializeField]
@@ -37,7 +38,6 @@ public class SquadUnit : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-
         if (target != null)
         {
             animator.SetTrigger("walk");
@@ -108,4 +108,5 @@ public class SquadUnit : MonoBehaviour {
         animator.SetTrigger("idle2");
     }
 
+    
 }
