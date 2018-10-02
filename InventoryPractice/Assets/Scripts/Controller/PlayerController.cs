@@ -1,4 +1,6 @@
 ﻿using UnityEngine.EventSystems;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerMotor))]
@@ -10,6 +12,8 @@ public class PlayerController : MonoBehaviour {
     Camera playerCamera;
 
     public LayerMask movementMask;
+
+    public GameObject Muzzle;
 
     PlayerMotor motor;
 	// Use this for initialization
@@ -75,4 +79,15 @@ public class PlayerController : MonoBehaviour {
         Focus = null;
         motor.StopFollowTarget();
     }
+
+    public void AttackHit_AnimationEvent()
+    {
+        StartCoroutine(ActiveMuzzle());
+    }
+    IEnumerator ActiveMuzzle()
+    {
+        Muzzle.SetActive(!Muzzle.activeSelf);
+        yield return new WaitForSeconds(0.2f);
+        Muzzle.SetActive(!Muzzle.activeSelf);
+    }    
 }

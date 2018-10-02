@@ -4,9 +4,13 @@ using UnityEngine;
 
 public class PlayerStats : CharacterStats {
 
+    [SerializeField]
+    Camera mainCamera;
+    CameraContorller cameraContorller;
 	// Use this for initialization
 	void Start ()
     {
+        cameraContorller = mainCamera.GetComponent<CameraContorller>();
         EquimentManager.instance.onEquipmentChanged += OnEquipmentChanged;
 	}
 
@@ -17,6 +21,7 @@ public class PlayerStats : CharacterStats {
             TakeDamage(10);
         }
     }
+
     void OnEquipmentChanged(Equipment newItem, Equipment oldItem)
     {
         if(newItem != null)
@@ -30,6 +35,11 @@ public class PlayerStats : CharacterStats {
             armor.RemoveModifier(oldItem.armorModifier);
             damage.RemoveModifier(oldItem.damageModifier);
         }
+    }
+    public override void TakeDamage(int damage)
+    {
+        base.TakeDamage(damage);
+        cameraContorller.ShakeCamera(); //플레이어매니저로 이동할 것
     }
 
     public override void Die()
