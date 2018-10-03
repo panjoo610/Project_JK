@@ -23,7 +23,7 @@ public class PlayerManager : MonoBehaviour {
 
     public PlayerStats playerStats;
 
-    public TextMeshProUGUI PlayerText;
+    public TextMeshProUGUI PlayerGoldText, PlayerDamageText, PlayerArmorText;
 
     [SerializeField]
     public CameraContorller cameraContorller;
@@ -43,7 +43,8 @@ public class PlayerManager : MonoBehaviour {
         cameraContorller = Camera.main.GetComponent<CameraContorller>();
 
         //플레이어가 가진 점수나 골드를 이 함수로 표현할 수 있도로 함
-        Counter(saveInventory.PlayerGold);
+        GoldCounter(saveInventory.PlayerGold);
+
     }
     public void KillPlayer()
     {
@@ -57,8 +58,19 @@ public class PlayerManager : MonoBehaviour {
         saveInventory.SaveItemListByJson();
     }
 
-    void Counter(int statsNum)
+    public void ShowPlayerStats(int Damage, int Armor)
     {
-        PlayerText.text = statsNum.ToString();
+        iTween.ValueTo(gameObject, iTween.Hash("from", playerStats.armor.GetValue(), "to", Damage, "onUpdate", "Counter", "delay", 0, "time", 2));
+        iTween.ValueTo(gameObject, iTween.Hash("from", playerStats.armor.GetValue(), "to", Armor, "onUpdate", "Counter", "delay", 0, "time", 2));
+        //카운터를 대미지카운터, 아머카운터로 바꾸고 호출을 up할때 할 것! 
+        //saveInventory.PlayerGold = gold;
+
+        saveInventory.SaveItemListByJson();
+    }
+
+
+    void GoldCounter(int statsNum)
+    {
+        PlayerGoldText.text = statsNum.ToString();
     }
 }
