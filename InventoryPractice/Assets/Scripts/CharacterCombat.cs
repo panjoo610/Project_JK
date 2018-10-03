@@ -6,21 +6,21 @@ using UnityEngine;
 [RequireComponent(typeof(CharacterStats))]
 public class CharacterCombat : MonoBehaviour {
 
-    CharacterStats myStats;
+    protected CharacterStats myStats;
 
     public float attackSpeed = 2f;
-    float attackCoolDown = 0f;
-    float lastAttackTime;
+    public float attackCoolDown = 0f;
+    public float lastAttackTime;
 
-    const float combatCoolDown = 2.0f;
+    public const float combatCoolDown = 2.0f;
 
     public float attackDelay = 0.2f;
 
     public event System.Action OnAttack;
 
-    public bool InCombat { get; private set; }
+    public bool InCombat;
 
-    CharacterStats oppoenentStats;
+    public CharacterStats oppoenentStats;
 
     void Start()
     {
@@ -37,7 +37,7 @@ public class CharacterCombat : MonoBehaviour {
         }
     }
 
-    public void Attack(CharacterStats targetStats)
+    public virtual void Attack(CharacterStats targetStats)
     {
         if(attackCoolDown <= 0f)
         {

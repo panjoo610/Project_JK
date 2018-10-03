@@ -18,7 +18,7 @@ public class EnemyController : MonoBehaviour {
         target = PlayerManager.instance.Player.transform;
         
         agent = gameObject.GetComponent<NavMeshAgent>();
-        combat = GetComponent<CharacterCombat>();
+        combat = GetComponent<EnemyCombat>();
 	}
 
     // Update is called once per frame

@@ -11,7 +11,7 @@ public class EnemyAnimator : CharacterAnimator {
     protected override void Start()
     {
         agent = GetComponent<NavMeshAgent>();
-        combat = GetComponent<CharacterCombat>();
+        combat = GetComponent<EnemyCombat>();
         animators = new Animator[EnemyCount];
         animators = GetComponentsInChildren<Animator>();
 

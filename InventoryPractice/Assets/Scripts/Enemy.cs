@@ -18,7 +18,7 @@ public class Enemy : Interactable {
     {
         base.Interact();
 
-        CharacterCombat playerCombat = GameObject.Find("player").GetComponent<CharacterCombat>();//playerManager.Player.GetComponent<CharacterCombat>();
+        CharacterCombat playerCombat = playerManager.Player.GetComponent<CharacterCombat>();
         if(playerCombat != null)
         {
             playerCombat.Attack(myStats);

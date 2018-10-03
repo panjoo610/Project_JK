@@ -25,6 +25,9 @@ public class PlayerManager : MonoBehaviour {
 
     public TextMeshProUGUI PlayerText;
 
+    [SerializeField]
+    public CameraContorller cameraContorller;
+
     public void Start()
     {
         playerStats = Player.GetComponent<PlayerStats>();
@@ -37,7 +40,7 @@ public class PlayerManager : MonoBehaviour {
         {
             playerStats.armor.modifiers.Add(saveInventory.AromorModifiers[i]);
         }
-
+        cameraContorller = Camera.main.GetComponent<CameraContorller>();
 
         //플레이어가 가진 점수나 골드를 이 함수로 표현할 수 있도로 함
         Counter(saveInventory.PlayerGold);

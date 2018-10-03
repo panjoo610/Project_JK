@@ -22,7 +22,8 @@ public class CameraContorller : MonoBehaviour {
     public float zoomSpeed = 4f;
     public float minZoom = 5f;
     public float maxZoom = 15f;
-    
+
+    bool isShake;
     
     private void Start()
     {
@@ -50,7 +51,12 @@ public class CameraContorller : MonoBehaviour {
 
     public void ShakeCamera()
     {
-        StartCoroutine(Shake(.25f,.7f));
+        if (!isShake)
+        {
+            isShake = true;
+            StartCoroutine(Shake(.25f, .7f)); 
+        }
+        
     }
     IEnumerator Shake(float duation, float magnitude)
     {
@@ -80,5 +86,6 @@ public class CameraContorller : MonoBehaviour {
             HitImage.color = HitImageColor;
             yield return null;
         }
+        isShake = false;
     }
 }
