@@ -12,7 +12,7 @@ public class CharacterAnimator : MonoBehaviour {
     
 
     const float locomationAnimationSmoothTime = 0.1f;
-    NavMeshAgent agent;
+    protected NavMeshAgent agent;
 
     protected Animator animator;
 

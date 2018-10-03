@@ -9,7 +9,7 @@ public class EnemyController : MonoBehaviour {
     public float lookRadius;
 
     public Transform target;
-    NavMeshAgent agent;
+    public NavMeshAgent agent;
     CharacterCombat combat;
 
 	// Use this for initialization
@@ -17,7 +17,7 @@ public class EnemyController : MonoBehaviour {
     {
         target = PlayerManager.instance.Player.transform;
         
-        agent = GetComponent<NavMeshAgent>();
+        agent = gameObject.GetComponent<NavMeshAgent>();
         combat = GetComponent<CharacterCombat>();
 	}
 

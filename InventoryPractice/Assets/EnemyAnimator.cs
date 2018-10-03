@@ -1,53 +1,33 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class EnemyAnimator : CharacterAnimator {
 
-    public WeaponAnimations[] weaponAnimations;
-    Dictionary<Equipment, AnimationClip[]> weaponAnimationsDic;
+    public int EnemyCount;
+    public Animator[] animators;
 
     protected override void Start()
     {
-        base.Start();
-        EquimentManager.instance.onEquipmentChanged += OnEquipmentChanged;
+        agent = GetComponent<NavMeshAgent>();
+        combat = GetComponent<CharacterCombat>();
+        animators = new Animator[EnemyCount];
+        animators = GetComponentsInChildren<Animator>();
 
-        weaponAnimationsDic = new Dictionary<Equipment, AnimationClip[]>();
-        foreach (WeaponAnimations a in weaponAnimations)
-        {
-            weaponAnimationsDic.Add(a.weapon, a.clips);
-        }
+        currentAttackAnimSet = defaultAttackAnimSet;
+        combat.OnAttack += OnAttack;
     }
-
-    void OnEquipmentChanged(Equipment newItem, Equipment oldItem)
+    protected override void Update()
     {
-        if (newItem != null && newItem.equipSlot == EquipmentSlot.Weapon)
+        //base.Update();
+    }
+    protected override void OnAttack()
+    {
+        for (int i = 0; i < animators.Length; i++)
         {
-            // animator.SetLayerWeight(1, 1);
-            if (weaponAnimationsDic.ContainsKey(newItem))
-            {
-                currentAttackAnimSet = weaponAnimationsDic[newItem];
-            }
-        }
-        else if (newItem == null && oldItem != null && oldItem.equipSlot == EquipmentSlot.Weapon)
-        {
-            animator.SetLayerWeight(1, 0);
-            currentAttackAnimSet = defaultAttackAnimSet;
-        }
-        if (newItem != null && newItem.equipSlot == EquipmentSlot.Head)
-        {
-            animator.SetLayerWeight(2, 1);
-        }
-        else if (newItem == null && oldItem != null && oldItem.equipSlot == EquipmentSlot.Head)
-        {
-            animator.SetLayerWeight(2, 0);
+            animators[i].SetTrigger("attack1"); 
         }
     }
 
-    [System.Serializable]
-    public struct WeaponAnimations
-    {
-        public Equipment weapon;
-        public AnimationClip[] clips;
-    }
 }

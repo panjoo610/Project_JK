@@ -5,12 +5,12 @@ using UnityEngine;
 public class PlayerStats : CharacterStats {
 
     [SerializeField]
-    Camera mainCamera;
+    //Camera mainCamera;
     CameraContorller cameraContorller;
 	// Use this for initialization
 	void Start ()
     {
-        cameraContorller = mainCamera.GetComponent<CameraContorller>();
+        cameraContorller = Camera.main.GetComponent<CameraContorller>();
         EquimentManager.instance.onEquipmentChanged += OnEquipmentChanged;
 	}
 
