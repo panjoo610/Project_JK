@@ -103,7 +103,8 @@ public class EquimentManager : MonoBehaviour
             {
                 FirstEquip(defalutItems[slotIndex]);
             }
-
+            PlayerManager.instance.DamageCounter(PlayerManager.instance.playerStats.damage.GetValue());
+            PlayerManager.instance.ArmorCounter(PlayerManager.instance.playerStats.armor.GetValue());
             saveInventory.SaveItemListByJson();
             return oldItem;
 

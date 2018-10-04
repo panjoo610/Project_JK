@@ -16,12 +16,11 @@ public class Equipment : Item
     public override void Use()
     {
         base.Use();
-        // 아이템 장착
-        // 인벤토리에서 삭제함.
 
         EquimentManager.instance.Equip(this);
 
-        //RemoveFromInventory();
+        PlayerManager.instance.DamageCounter(PlayerManager.instance.playerStats.damage.GetValue());
+        PlayerManager.instance.ArmorCounter(PlayerManager.instance.playerStats.armor.GetValue());
     }
 }
 

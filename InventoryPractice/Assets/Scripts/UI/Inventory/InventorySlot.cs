@@ -23,8 +23,6 @@ public class InventorySlot : MonoBehaviour {
 
         icon.sprite = item.icon;
         icon.enabled = true;
-
-       // removeButton.interactable = true;
     }
 
     public void ClearSlot()
@@ -33,26 +31,24 @@ public class InventorySlot : MonoBehaviour {
 
         icon.sprite = null;
         icon.enabled = false;
-
-        //removeButton.interactable = false;
     }
 
-    public void OnRemoveButton()
-    {
-       // 
-    }
+    //public void OnRemoveButton()
+    //{
+    //   // 
+    //}
 
-    public void OnSwapButton()
-    {
+    //public void OnSwapButton()
+    //{
       
-    }
+    //}
 
-    private void OnMouseDrag()
-    {
-        Debug.Log("드래그 중 입니다");
-        Vector3 mosuePosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0);
-        this.transform.position = Camera.main.ScreenToWorldPoint(mosuePosition);
-    }
+    //private void OnMouseDrag()
+    //{
+    //    Debug.Log("드래그 중 입니다");
+    //    Vector3 mosuePosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0);
+    //    this.transform.position = Camera.main.ScreenToWorldPoint(mosuePosition);
+    //}
 
     public void OnUseItem(Transform ui)
     {

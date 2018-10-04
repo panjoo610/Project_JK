@@ -10,9 +10,6 @@ public class StatusUI : MonoBehaviour {
     StatusSlot[] slots;
     Scrollbar Scrollbar;
 
-    public Button ExitButton;
-
-
     private void Awake()
     {
         slots = StatusParent.GetComponentsInChildren<StatusSlot>();
@@ -23,7 +20,6 @@ public class StatusUI : MonoBehaviour {
     void Start()
     {
         AllUpdateUI();
-        ExitButton.onClick.AddListener(() => OnExitButton());
     }
 
     public void OnExitButton()

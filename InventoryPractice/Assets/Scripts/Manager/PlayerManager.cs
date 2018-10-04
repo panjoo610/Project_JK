@@ -44,6 +44,8 @@ public class PlayerManager : MonoBehaviour {
 
         //플레이어가 가진 점수나 골드를 이 함수로 표현할 수 있도로 함
         GoldCounter(saveInventory.PlayerGold);
+        DamageCounter(playerStats.damage.GetValue());
+        ArmorCounter(playerStats.armor.GetValue());
 
     }
     public void KillPlayer()
@@ -52,25 +54,33 @@ public class PlayerManager : MonoBehaviour {
     }
     public void ShowPlayerGold(int gold)
     {
-        iTween.ValueTo(gameObject, iTween.Hash("from", saveInventory.PlayerGold, "to", gold, "onUpdate", "Counter", "delay", 0, "time", 2));
+        iTween.ValueTo(gameObject, iTween.Hash("from", saveInventory.PlayerGold, "to", gold, "onUpdate", "GoldCounter", "delay", 0, "time", 2));
 
         saveInventory.PlayerGold = gold;
         saveInventory.SaveItemListByJson();
     }
 
-    public void ShowPlayerStats(int Damage, int Armor)
+    public void ShowPlayerStatsDamage(int Damage)
     {
-        iTween.ValueTo(gameObject, iTween.Hash("from", playerStats.armor.GetValue(), "to", Damage, "onUpdate", "Counter", "delay", 0, "time", 2));
-        iTween.ValueTo(gameObject, iTween.Hash("from", playerStats.armor.GetValue(), "to", Armor, "onUpdate", "Counter", "delay", 0, "time", 2));
-        //카운터를 대미지카운터, 아머카운터로 바꾸고 호출을 up할때 할 것! 
-        //saveInventory.PlayerGold = gold;
-
-        saveInventory.SaveItemListByJson();
+        iTween.ValueTo(gameObject, iTween.Hash("from", playerStats.damage.GetValue(), "to", Damage, "onUpdate", "DamageCounter", "delay", 0, "time", 1));
+    }
+    public void ShowPlayerStatsArmor(int Armor)
+    {
+        iTween.ValueTo(gameObject, iTween.Hash("from", playerStats.armor.GetValue(), "to", Armor, "onUpdate", "ArmorCounter", "delay", 0, "time", 1));
     }
 
 
-    void GoldCounter(int statsNum)
+    public void GoldCounter(int statsNum)
     {
         PlayerGoldText.text = statsNum.ToString();
     }
+    public void DamageCounter(int DamageValue)
+    {
+        PlayerDamageText.text = DamageValue.ToString();
+    }
+    public void ArmorCounter(int ArmorValue)
+    {
+        PlayerArmorText.text = ArmorValue.ToString();
+    }
+
 }

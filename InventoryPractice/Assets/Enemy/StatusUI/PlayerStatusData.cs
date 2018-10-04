@@ -16,17 +16,30 @@ public class PlayerStatusData : ScriptableObject
 
     public void AddStatus(KindOfStatus kindOfStatus)
     {
+        int DamageValue = 0;
+        int ArmorValue = 0;
+
         switch (kindOfStatus)
         {
             case KindOfStatus.Damage:
-                if(Damege > 0)
-                    PlayerManager.instance.playerStats.damage.AddModifier(Damege * GetPlayerStatusCount(KindOfStatus.Damage));
-                    PlayerManager.instance.saveInventory.DamageModifiers.Add(Damege * GetPlayerStatusCount(KindOfStatus.Damage));
+                if (Damege > 0)
+                    DamageValue = Damege * GetPlayerStatusCount(KindOfStatus.Damage);
+
+                    PlayerManager.instance.ShowPlayerStatsDamage(PlayerManager.instance.playerStats.damage.GetValue() + DamageValue);
+
+                    PlayerManager.instance.playerStats.damage.AddModifier(DamageValue);
+
+                    PlayerManager.instance.saveInventory.DamageModifiers.Add(DamageValue);
                 break;
             case KindOfStatus.Armor:
                 if (Armor > 0)
-                    PlayerManager.instance.playerStats.armor.AddModifier(Armor * GetPlayerStatusCount(KindOfStatus.Armor));
-                    PlayerManager.instance.saveInventory.AromorModifiers.Add(Armor * GetPlayerStatusCount(KindOfStatus.Armor));
+                    ArmorValue = Armor * GetPlayerStatusCount(KindOfStatus.Armor);
+
+                    PlayerManager.instance.ShowPlayerStatsArmor(PlayerManager.instance.playerStats.armor.GetValue() + ArmorValue);
+
+                    PlayerManager.instance.playerStats.armor.AddModifier(ArmorValue);
+
+                    PlayerManager.instance.saveInventory.AromorModifiers.Add(ArmorValue);
                 break;
             default:
                 break;

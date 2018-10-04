@@ -11,10 +11,12 @@ public class InventoyUI : MonoBehaviour {
     InventorySlot[] slots;
 
     ItemStats[] StatsPanel;
+
     private void Awake()
     {
         slots = itemParent.GetComponentsInChildren<InventorySlot>();
     }
+
     // Use this for initialization
     void Start ()
     {
