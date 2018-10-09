@@ -18,6 +18,7 @@ public class EquimentManager : MonoBehaviour
 
     public SkinnedMeshRenderer targetMesh;
 
+    [SerializeField]
     Equipment[] currentEquiment;
     SkinnedMeshRenderer[] currentMeshes;
 
