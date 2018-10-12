@@ -16,13 +16,8 @@ public class PlayerController : MonoBehaviour {
     public GameObject Muzzle;
 
     PlayerMotor motor;
-    // Use this for initialization
-    private void Awake()
-    {
-        DontDestroyOnLoad(gameObject);
-    }
-
-    void Start ()
+	// Use this for initialization
+	void Start ()
     {
         playerCamera = Camera.main;
         motor = GetComponent<PlayerMotor>();
