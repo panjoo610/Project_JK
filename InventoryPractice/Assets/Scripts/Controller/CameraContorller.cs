@@ -12,9 +12,7 @@ public class CameraContorller : MonoBehaviour {
     public Image HitImage;
     public Color HitImageColor;
 
-    [SerializeField]
     private float currentZoom = 10.0f;
-    [SerializeField]
     private float currentYaw = 0f;
 
     public float yawSpeed = 100f;
@@ -26,15 +24,9 @@ public class CameraContorller : MonoBehaviour {
     public float maxZoom = 15f;
 
     bool isShake;
-
-    private void Awake()
-    {
-        DontDestroyOnLoad(gameObject);
-    }
-
+    
     private void Start()
     {
-        target = PlayerManager.instance.Player.transform;
         HitImageColor = HitImage.color;
     }
 
@@ -42,7 +34,9 @@ public class CameraContorller : MonoBehaviour {
     {
         currentZoom -= Input.GetAxis("Mouse ScrollWheel") * zoomSpeed;
         currentZoom = Mathf.Clamp(currentZoom, minZoom, maxZoom);
-        currentYaw -= Input.GetAxis("Horizontal") * yawSpeed * Time.deltaTime;     
+
+        currentYaw -= Input.GetAxis("Horizontal") * yawSpeed * Time.deltaTime;
+        
     }
 
     private void LateUpdate()
