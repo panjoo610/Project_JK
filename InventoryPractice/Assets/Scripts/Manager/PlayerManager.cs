@@ -47,7 +47,6 @@ public class PlayerManager : MonoBehaviour {
         GoldCounter(saveInventory.PlayerGold);
         DamageCounter(playerStats.damage.GetValue());
         ArmorCounter(playerStats.armor.GetValue());
-
     }
     public void KillPlayer()
     {

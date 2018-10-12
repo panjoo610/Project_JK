@@ -38,6 +38,7 @@ public class UIController : MonoBehaviour {
 	public void OnChangeCombatScene()
     {
         SceneManager.LoadScene("InGame");
+        PlayerManager.instance.cameraContorller.offset = new Vector3(-0.59f, -0.56f, 0.68f);
     }
 
     public void OnStatus()

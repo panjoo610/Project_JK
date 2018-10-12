@@ -28,16 +28,17 @@ public class EnemyController : MonoBehaviour {
     float idleTime;
     private bool isCoroutine;
 
+
     // Use this for initialization
     void Start()
     {
+        target = PlayerManager.instance.Player.transform;
         originalPos = transform.position;
         agent = gameObject.GetComponent<NavMeshAgent>();
         combat = GetComponent<EnemyCombat>();
         count = GetComponentsInChildren<Animator>().Length;
         enemyAnimator = GetComponent<EnemyAnimator>();
-        targetStats = target.GetComponent<CharacterStats>();
-        target = PlayerManager.instance.Player.transform;
+        targetStats = target.GetComponent<CharacterStats>();    
     }
 
     // Update is called once per frame

@@ -12,7 +12,7 @@ public class Enemy : Interactable {
     private void Start()
     {
         playerManager = PlayerManager.instance;
-        myStats = GetComponent<CharacterStats>();
+        myStats = GetComponent<EnemyStats>();
     }
     public override void Interact()
     {
