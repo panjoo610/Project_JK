@@ -11,15 +11,16 @@ public class Enemy : Interactable {
 
     private void Start()
     {
-        playerManager = PlayerManager.instance;
+        //playerManager = PlayerManager.instance;
         myStats = GetComponent<EnemyStats>();
     }
     public override void Interact()
     {
         base.Interact();
 
-        CharacterCombat playerCombat = playerManager.Player.GetComponent<CharacterCombat>();
-        if(playerCombat != null)
+        CharacterCombat playerCombat = PlayerManager.instance.Player.GetComponent<CharacterCombat>();
+
+        if (playerCombat != null)
         {
             playerCombat.Attack(myStats);
         }

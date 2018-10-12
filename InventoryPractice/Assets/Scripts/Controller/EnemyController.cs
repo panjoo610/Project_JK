@@ -34,11 +34,11 @@ public class EnemyController : MonoBehaviour {
     {
         target = PlayerManager.instance.Player.transform;
         originalPos = transform.position;
-        agent = gameObject.GetComponent<NavMeshAgent>();
         combat = GetComponent<EnemyCombat>();
         count = GetComponentsInChildren<Animator>().Length;
         enemyAnimator = GetComponent<EnemyAnimator>();
-        targetStats = target.GetComponent<CharacterStats>();    
+        targetStats = target.GetComponent<CharacterStats>();
+        agent = GetComponent<NavMeshAgent>();
     }
 
     // Update is called once per frame
