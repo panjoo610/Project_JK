@@ -18,8 +18,8 @@ public class EquimentManager : MonoBehaviour
 
     public SkinnedMeshRenderer targetMesh;
 
-    [SerializeField]
-    Equipment[] currentEquiment;
+    
+    public  Equipment[] currentEquiment;
     SkinnedMeshRenderer[] currentMeshes;
 
     public delegate void OnEquipmentChanged(Equipment newItem, Equipment oldItem);

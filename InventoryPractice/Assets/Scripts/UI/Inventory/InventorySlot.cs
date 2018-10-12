@@ -82,7 +82,7 @@ public class InventorySlot : MonoBehaviour {
             {
                 if (c.renderMode == RenderMode.ScreenSpaceOverlay)
                 {
-                    Transform childTransForm = c.transform.GetChild(0).transform;
+                    Transform childTransForm = c.transform.GetChild(1).transform;
                     Transform Ui = Instantiate(PanelPrefab, childTransForm).transform;
                     
                     itemStats = Ui.GetComponent<ItemStats>();

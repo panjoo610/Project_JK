@@ -7,8 +7,8 @@ using UnityEngine.SceneManagement;
 
 public class UIController : MonoBehaviour {
 
-    public Button StatusBtn, InvenBtn, EquipBtn, StartButton;
-
+    public Button StatusBtn, InvenBtn, EquipBtn, GameStartButton;
+    public GameObject InformationPanel, CombatPanel, HidePanel;
     public InventoyUI inventoyUI;
     public EquipmetInventoryUI equipmetInventoryUI;
     public StatusUI statusUI;
@@ -28,7 +28,7 @@ public class UIController : MonoBehaviour {
         StatusBtn.onClick.AddListener(() => OnStatus());
         InvenBtn.onClick.AddListener(() => OnInven());
         EquipBtn.onClick.AddListener(() => OnEquip());
-        StartButton.onClick.AddListener(() => OnChangeCombatScene());
+        GameStartButton.onClick.AddListener(() => OnChangeCombatScene());
 
         OnStatus();
         OnInven();
@@ -37,8 +37,26 @@ public class UIController : MonoBehaviour {
 
 	public void OnChangeCombatScene()
     {
+        ChangeCombatOrLobbyUI();
+
+        statusUI.statusUI.gameObject.SetActive(false);
+        inventoyUI.inventotyUI.gameObject.SetActive(false);
+        equipmetInventoryUI.inventotyUI.gameObject.SetActive(false);
+
         SceneManager.LoadScene("InGame");
-        PlayerManager.instance.cameraContorller.offset = new Vector3(-0.59f, -0.56f, 0.68f);
+        PlayerManager.instance.cameraContorller.offset = new Vector3(-0.59f, -0.56f, 0.68f);         
+    }
+
+    public void ChangeCombatOrLobbyUI()
+    {
+        StatusBtn.gameObject.SetActive(!StatusBtn.gameObject.activeSelf);
+        InvenBtn.gameObject.SetActive(!InvenBtn.gameObject.activeSelf);
+        EquipBtn.gameObject.SetActive(!EquipBtn.gameObject.activeSelf);
+        GameStartButton.gameObject.SetActive(!GameStartButton.gameObject.activeSelf);
+        InformationPanel.SetActive(!InformationPanel.activeSelf);
+
+        HidePanel.SetActive(!HidePanel.activeSelf);
+        CombatPanel.SetActive(!CombatPanel.activeSelf);
     }
 
     public void OnStatus()
