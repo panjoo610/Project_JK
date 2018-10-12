@@ -2,18 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 
 public class UIController : MonoBehaviour {
 
-    public Button StatusBtn, InvenBtn, EquipBtn;
+    public Button StatusBtn, InvenBtn, EquipBtn, StartButton;
 
     public InventoyUI inventoyUI;
     public EquipmetInventoryUI equipmetInventoryUI;
     public StatusUI statusUI;
 
-	// Use this for initialization
-	void Start ()
+    private void Awake()
+    {
+        DontDestroyOnLoad(gameObject);
+    }
+
+    // Use this for initialization
+    void Start ()
     {
         inventoyUI = GetComponent<InventoyUI>();
         equipmetInventoryUI = GetComponent<EquipmetInventoryUI>();
@@ -22,12 +28,18 @@ public class UIController : MonoBehaviour {
         StatusBtn.onClick.AddListener(() => OnStatus());
         InvenBtn.onClick.AddListener(() => OnInven());
         EquipBtn.onClick.AddListener(() => OnEquip());
+        StartButton.onClick.AddListener(() => OnChangeCombatScene());
 
         OnStatus();
         OnInven();
         OnEquip();
     }
-	
+
+	public void OnChangeCombatScene()
+    {
+        SceneManager.LoadScene("InGame");
+    }
+
     public void OnStatus()
     {
         statusUI.AllUpdateUI();

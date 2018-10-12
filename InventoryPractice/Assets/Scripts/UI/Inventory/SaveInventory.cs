@@ -79,23 +79,24 @@ public class SaveInventory : ScriptableObject
 
     public void ResetData()
     {
-        JasonData = null;
-
-        items = null;
-        equipmentItems = null;
         PlayerGold = 0;
-        AromorModifiers = null;
-        DamageModifiers = null;
 
+        items.Clear();
+        equipmentItems.Clear();
 
-        savedItems.items = null;
-        savedItems.equipmentItems = null;
+        AromorModifiers.Clear();
+        DamageModifiers.Clear();
+        // ---------------------------
         savedItems.PlayerGold = 0;
-        savedItems.AromorModifiers = null;
-        savedItems.DamageModifiers = null;
 
-        string load = File.ReadAllText(Application.dataPath + "/ItemList.json");
-        var LoadData = JsonUtility.FromJson<SavedItems>(load);
+        savedItems.items.Clear();
+        savedItems.equipmentItems.Clear();
+
+        savedItems.AromorModifiers.Clear();
+        savedItems.DamageModifiers.Clear();
+
+
+        JasonData = JsonUtility.ToJson(savedItems);
 
         File.WriteAllText(Application.dataPath + "/ItemList.json", JasonData);
     }
