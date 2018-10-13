@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.AI;
 
 public class EnemyAnimator : CharacterAnimator {
@@ -9,6 +7,7 @@ public class EnemyAnimator : CharacterAnimator {
     public Animator[] animators;
     float idleTime;
     bool isIdle1;
+    bool isDie;
 
     public IEnemyState IEnemyState;
 
@@ -27,6 +26,10 @@ public class EnemyAnimator : CharacterAnimator {
     protected override void Update()
     {
         idleTime += Time.deltaTime;
+        if (combat.myStats.currentHealth <= 0)
+        {
+            PlayDeath();
+        }
         if (idleTime >= 5f)
         {
             int j = Random.Range(0, animators.Length);
@@ -41,11 +44,24 @@ public class EnemyAnimator : CharacterAnimator {
             PlayWalk(true);
             isIdle1 = false;
         }
-        else if (speedPercent <= 0 || isIdle1 == true)
+        else if (speedPercent <= 0 && isIdle1 == true)
         {
             PlayWalk(false);
         }
     }
+
+    private void PlayDeath()
+    {
+        if (isDie==false)
+        {
+            isDie = true;
+            for (int i = 0; i < animators.Length; i++)
+            {
+                animators[i].SetTrigger("death1");
+            }
+        }
+    }
+
     public void PlayIdle2(int j)
     {
         IEnemyState.AnimatorBehavior(j);
@@ -57,16 +73,15 @@ public class EnemyAnimator : CharacterAnimator {
 
     public void PlayWalk(bool isWalk)
     {
-        if (isWalk)
+        if (isWalk== true)
         {
-            IEnemyState = new MoveState(animators);
             isIdle1 = false;
+            IEnemyState = new MoveState(animators);
         }
         else
         {
-            IEnemyState = new IdleState(animators);
             isIdle1 = true;
-
+            IEnemyState = new IdleState(animators);
         }
     }
 

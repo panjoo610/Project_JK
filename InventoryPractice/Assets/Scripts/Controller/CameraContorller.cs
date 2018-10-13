@@ -34,7 +34,7 @@ public class CameraContorller : MonoBehaviour {
 
     private void Start()
     {
-        //target = PlayerManager.instance.Player.transform;
+        target = PlayerManager.instance.Player.transform;
         HitImageColor = HitImage.color;
     }
 

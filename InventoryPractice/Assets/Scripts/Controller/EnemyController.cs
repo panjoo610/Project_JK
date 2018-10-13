@@ -27,7 +27,7 @@ public class EnemyController : MonoBehaviour {
 
     float idleTime;
     private bool isCoroutine;
-
+    float originalStoppingDistance;
 
     // Use this for initialization
     void Start()
@@ -39,58 +39,79 @@ public class EnemyController : MonoBehaviour {
         enemyAnimator = GetComponent<EnemyAnimator>();
         targetStats = target.GetComponent<CharacterStats>();
         agent = GetComponent<NavMeshAgent>();
+        originalStoppingDistance = agent.stoppingDistance;
     }
 
     // Update is called once per frame
     void Update()
     {
-        float distance = Vector3.Distance(target.position, transform.position);
-
-        if (distance <= lookRadius)
+        if (combat.myStats.currentHealth>=1)
         {
-            isMove = false;
-            agent.SetDestination(target.position);
-            for (int i = 0; i < enemyObjects.Length; i++)
-            {
-                FaceTarget(target.position, enemyObjects[i].transform);
-            }
-            if (distance <= agent.stoppingDistance)
-            {
+            float distance = Vector3.Distance(target.position, transform.position);
 
-                if (targetStats != null && combat != null)
+            if (distance <= lookRadius)
+            {
+                agent.stoppingDistance = originalStoppingDistance;
+                isIdle = false;
+                isMove = false;
+                agent.SetDestination(target.position);
+                for (int i = 0; i < enemyObjects.Length; i++)
                 {
-                    combat.Attack(targetStats);
+                    FaceTarget(target.position, enemyObjects[i].transform);
+                }
+                if (distance <= agent.stoppingDistance)
+                {
+
+                    if (targetStats != null && combat != null)
+                    {
+                        combat.Attack(targetStats);
+                    }
                 }
             }
-        }
-        else if (distance > lookRadius)
-        {
-            agent.SetDestination(originalPos);
-            for (int i = 0; i < enemyObjects.Length; i++)
+            else if (distance > lookRadius && isIdle == false)
             {
-                FaceTarget(originalPos, enemyObjects[i].transform);
+                StopCoroutine(EnemyObjectMove());
+                agent.stoppingDistance = 0f;
+                Debug.Log("오리지널포지션으로");
+                agent.SetDestination(originalPos);
+                for (int i = 0; i < enemyObjects.Length; i++)
+                {
+                    FaceTarget(originalPos, enemyObjects[i].transform);
+                }
+                if (Vector3.Distance(transform.position, originalPos) <= 0.05f)
+                {
+                    isIdle = true;
+                    agent.stoppingDistance = originalStoppingDistance;
+                    isCoroutine = false;
+                    enemyAnimator.PlayWalk(false);
+                }
+
+
             }
-            isIdle = true;
+            else if (isIdle == true && isCoroutine == false)
+            {
+                Debug.Log("StartCoroutine(EnemyObjectMove())");
+                StartCoroutine(EnemyObjectMove());
+            }
         }
-        else if (!isCoroutine)
+        else
         {
-            Debug.Log("StartCoroutine(EnemyObjectMove())");
-            StartCoroutine(EnemyObjectMove());
+            agent.SetDestination(transform.position);
         }
     }
 
 
 
-    public void RandomMove()
-    {
-        SetRandomPosition();
-        enemyAnimator.PlayWalk(true);
-        StartCoroutine(EnemyObjectMove());
-    }
+    //public void RandomMove()//안쓰는중
+    //{
+    //    SetRandomPosition();
+    //    enemyAnimator.PlayWalk(true);
+    //    StartCoroutine(EnemyObjectMove());
+    //}
     IEnumerator EnemyObjectMove()
     {
         isCoroutine = true;
-        yield return new WaitForSeconds(10f);
+        yield return new WaitForSeconds(7f);
         SetRandomPosition();
         enemyAnimator.PlayWalk(true);
 
@@ -101,7 +122,7 @@ public class EnemyController : MonoBehaviour {
         {
             for (int i = 0; i < enemyObjects.Length; i++)
             {
-                enemyObjects[i].transform.localPosition = Vector3.Lerp(enemyObjects[i].transform.localPosition, currentPosition[i].localPosition, agent.speed * Time.deltaTime);
+                enemyObjects[i].transform.localPosition = Vector3.Lerp(enemyObjects[i].transform.localPosition, currentPosition[i].localPosition, Time.deltaTime/agent.speed);
 
                 FaceTarget(currentPosition[i].position, enemyObjects[i].transform);
                 if (Vector3.Distance(enemyObjects[i].transform.position, currentPosition[i].position) <= minDistance)
