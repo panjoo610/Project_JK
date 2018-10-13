@@ -45,6 +45,6 @@ public class PlayerStats : CharacterStats {
         //KILL THE PLAYER
         //게임오버스크린 , 패널티 , 리스폰
         //리스타트 씬
-        PlayerManager.instance.KillPlayer();
+        //PlayerManager.instance.KillPlayer();
     }
 }

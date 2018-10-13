@@ -73,7 +73,7 @@ public class SaveInventory : ScriptableObject
         savedItems.DamageModifiers = DamageModifiers;
 
         EquimentManager.instance.EquipToSaveInven();
-
+        PlayerManager.instance.UpdateStatusUI();
         SaveItemListByJson();
     }
 
