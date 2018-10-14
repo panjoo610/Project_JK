@@ -44,7 +44,10 @@ public class SoundManager : MonoBehaviour
     AudioSource BGMsource;
     AudioSource[] SFXsource;
 
-
+    private void Start()
+    {
+        ChangeBGM("Lobby", false);
+    }
     void Initialization()
     {
         ////클립수 초기화
@@ -82,8 +85,6 @@ public class SoundManager : MonoBehaviour
             SFXsource[i].playOnAwake = false;
             SFXsource[i].volume = SFXvolume;
         }
-
-        //ChangeBGM("bgm_game_field", true);
     }
 
     private void Update()

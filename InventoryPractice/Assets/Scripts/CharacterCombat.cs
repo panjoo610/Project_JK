@@ -54,6 +54,7 @@ public class CharacterCombat : MonoBehaviour {
                 if (targetStats.tag=="Player")
                 {
                     Invoke("AttackHit_AnimationEvent",.5f);
+                    SoundManager.instance.PlaySFX("MonsterAttack", false);
                 }
             }
             attackCoolDown = 0.5f / attackSpeed;
