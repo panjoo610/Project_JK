@@ -53,4 +53,36 @@ public class CharacterAnimator : MonoBehaviour {
         int attackIndex = Random.Range(0, currentAttackAnimSet.Length);
         overrideController[replaceableAttackAnim.name] = currentAttackAnimSet[attackIndex];
      }
+    protected virtual IEnumerator FadeOut(GameObject gObject)
+    {
+        Color color = new Vector4(1, 1, 1, 0);
+        //transform.renderer.material.color = color;
+        int gRendererCount = gObject.GetComponentsInChildren<Renderer>().Length;
+        int chackCount = 0;
+        Renderer[] renderers = new Renderer[gRendererCount];
+        renderers = gObject.GetComponentsInChildren<Renderer>();
+
+        bool isDone = false;
+        while (isDone == false)
+        {
+            Debug.Log("FadeOut in");
+            for (int i = 0; i < renderers.Length; i++)
+            {
+                //renderers[i].material.
+                renderers[i].material.color = Color.Lerp(renderers[i].material.color, color, Time.deltaTime); 
+                if(renderers[i].material.color == color)
+                {
+                    chackCount += 1;
+                    if(chackCount >= gRendererCount)
+                    {
+                        Debug.Log("FadeOut Done");
+                        isDone = true;
+                    }
+                }
+            }
+            yield return null;
+        }
+        yield return null;
+        
+    }
 }

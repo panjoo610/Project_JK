@@ -54,14 +54,16 @@ public class EnemyAnimator : CharacterAnimator {
     {
         if (isDie==false)
         {
+            StartCoroutine(FadeOut(this.gameObject));
             isDie = true;
             for (int i = 0; i < animators.Length; i++)
             {
+                Debug.Log("죽는 에니메이션");
                 animators[i].SetTrigger("death1");
             }
         }
     }
-
+    
     public void PlayIdle2(int j)
     {
         IEnemyState.AnimatorBehavior(j);
