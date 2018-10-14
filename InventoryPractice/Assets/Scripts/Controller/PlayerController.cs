@@ -92,6 +92,7 @@ public class PlayerController : MonoBehaviour {
     IEnumerator ActiveMuzzle()
     {
         Muzzle.SetActive(!Muzzle.activeSelf);
+        SoundManager.instance.PlaySFX("Fire", false);
         yield return new WaitForSeconds(0.2f);
         Muzzle.SetActive(!Muzzle.activeSelf);
     }    
