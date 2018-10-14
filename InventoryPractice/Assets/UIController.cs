@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
+
 
 
 public class UIController : MonoBehaviour {
@@ -43,7 +43,7 @@ public class UIController : MonoBehaviour {
         inventoyUI.inventotyUI.gameObject.SetActive(false);
         equipmetInventoryUI.inventotyUI.gameObject.SetActive(false);
 
-        SceneManager.LoadScene("InGame");
+        StageManager.instance.ChangeCombatStage(StageName.InGame.ToString());
         PlayerManager.instance.cameraContorller.offset = new Vector3(-0.59f, -0.56f, 0.68f);         
     }
 

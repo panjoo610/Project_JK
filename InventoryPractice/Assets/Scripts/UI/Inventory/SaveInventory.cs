@@ -11,6 +11,7 @@ public struct SavedItems
     public List<Item> equipmentItems;
 
     public int PlayerGold;
+    public int CurrentStage;
 
     public List<int> DamageModifiers;
     public List<int> AromorModifiers;
@@ -32,16 +33,16 @@ public class SaveInventory : ScriptableObject
     public List<int> AromorModifiers;
 
     public int PlayerGold;
-
-    public delegate void OnLoadComplete();
-    public OnLoadComplete onLoadComplete;
-    
+    public int CurrentStage;
 
     public void SaveItemListByJson() // json문서로 내보내기
     {
         savedItems.items = items;
         savedItems.equipmentItems = equipmentItems;
+
         savedItems.PlayerGold = PlayerGold;
+        savedItems.CurrentStage = CurrentStage;
+
         savedItems.AromorModifiers = AromorModifiers;
         savedItems.DamageModifiers = DamageModifiers;
         JasonData = JsonUtility.ToJson(savedItems);
@@ -62,6 +63,7 @@ public class SaveInventory : ScriptableObject
         items = LoadData.items;
         equipmentItems = LoadData.equipmentItems;
         PlayerGold = LoadData.PlayerGold;
+        CurrentStage = LoadData.CurrentStage;
         AromorModifiers = LoadData.AromorModifiers;
         DamageModifiers = LoadData.DamageModifiers;
 
@@ -69,6 +71,7 @@ public class SaveInventory : ScriptableObject
         savedItems.items = items;
         savedItems.equipmentItems = equipmentItems;
         savedItems.PlayerGold = PlayerGold;
+        savedItems.CurrentStage = CurrentStage;
         savedItems.AromorModifiers = AromorModifiers;
         savedItems.DamageModifiers = DamageModifiers;
 
@@ -80,6 +83,7 @@ public class SaveInventory : ScriptableObject
     public void ResetData()
     {
         PlayerGold = 0;
+        CurrentStage = 0;
 
         items.Clear();
         equipmentItems.Clear();
