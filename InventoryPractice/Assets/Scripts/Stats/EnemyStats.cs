@@ -11,6 +11,6 @@ public class EnemyStats : CharacterStats {
         base.Die();
 
         //add ragdooll effect death animation
-        Destroy(gameObject,4f);
+        Destroy(gameObject,2f);
     }
 }

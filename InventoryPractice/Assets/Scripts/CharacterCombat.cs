@@ -22,7 +22,7 @@ public class CharacterCombat : MonoBehaviour {
 
     public CharacterStats oppoenentStats;
 
-    void Start()
+    public virtual void Start()
     {
         myStats = GetComponent<CharacterStats>();
         if(myStats == null)
@@ -31,7 +31,7 @@ public class CharacterCombat : MonoBehaviour {
         }
     }
 
-    void Update()
+    public virtual void Update()
     {
         attackCoolDown -= Time.deltaTime;
         
@@ -49,7 +49,12 @@ public class CharacterCombat : MonoBehaviour {
 
             if (OnAttack != null)
             {
+                Debug.Log("onattack");
                 OnAttack();
+                if (targetStats.tag=="Player")
+                {
+                    Invoke("AttackHit_AnimationEvent",.5f);
+                }
             }
             attackCoolDown = 0.5f / attackSpeed;
             InCombat = true;
@@ -58,7 +63,7 @@ public class CharacterCombat : MonoBehaviour {
     }
 
 
-    public void AttackHit_AnimationEvent() 
+    public virtual void AttackHit_AnimationEvent() 
     {
         oppoenentStats.TakeDamage(myStats.damage.GetValue());
 

@@ -29,6 +29,8 @@ public class EnemyController : MonoBehaviour {
     private bool isCoroutine;
     float originalStoppingDistance;
 
+
+    bool isDie;
     // Use this for initialization
     void Start()
     {

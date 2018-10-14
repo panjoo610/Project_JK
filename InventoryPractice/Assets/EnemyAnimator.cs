@@ -54,7 +54,7 @@ public class EnemyAnimator : CharacterAnimator {
     {
         if (isDie==false)
         {
-            StartCoroutine(FadeOut(this.gameObject));
+            //StartCoroutine(FadeOut(this.gameObject));
             isDie = true;
             for (int i = 0; i < animators.Length; i++)
             {
