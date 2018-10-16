@@ -13,9 +13,10 @@ public class PlayerController : MonoBehaviour {
 
     public LayerMask movementMask;
 
-    public GameObject Muzzle;
+    public GameObject Muzzle, Bullet, BulletPoint;
 
     PlayerMotor motor;
+
     // Use this for initialization
     private void Awake()
     {
@@ -88,7 +89,24 @@ public class PlayerController : MonoBehaviour {
     public void AttackHit_AnimationEvent()
     {
         StartCoroutine(ActiveMuzzle());
+        
+        if(Focus != null)
+        {
+            Bullet.SetActive(true);
+
+            Vector3 focusPositon = new Vector3(Focus.transform.position.x, Focus.transform.position.y + 1.0f, Focus.transform.position.z);
+            iTween.MoveTo(Bullet, iTween.Hash("position", focusPositon, "easeType", iTween.EaseType.easeInOutSine, "time", 0.2f));
+
+            Invoke("HideBullet", 0.3f);
+        }
     }
+
+    public void HideBullet()
+    {
+        Bullet.SetActive(false);
+        Bullet.transform.position = BulletPoint.transform.position;       
+    }
+
     IEnumerator ActiveMuzzle()
     {
         Muzzle.SetActive(!Muzzle.activeSelf);
