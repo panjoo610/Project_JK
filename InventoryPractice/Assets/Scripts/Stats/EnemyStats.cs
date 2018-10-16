@@ -11,6 +11,12 @@ public class EnemyStats : CharacterStats {
         base.Die();
 
         //add ragdooll effect death animation
-        Destroy(gameObject,2f);
+        Invoke("PushToPool", 2f);
+        
+    }
+
+    void PushToPool()
+    {
+        EnemyManager.instance.enemyPool.Push(gameObject);
     }
 }

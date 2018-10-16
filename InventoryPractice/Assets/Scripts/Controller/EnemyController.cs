@@ -80,18 +80,18 @@ public class EnemyController : MonoBehaviour {
                 {
                     FaceTarget(originalPos, enemyObjects[i].transform);
                 }
-                if (Vector3.Distance(transform.position, originalPos) <= 0.05f)
+                if (Vector3.Distance(new Vector3(transform.position.x,0,transform.position.z), new Vector3(originalPos.x,0,originalPos.z)) <= 0.2f)
                 {
                     isIdle = true;
                     agent.stoppingDistance = originalStoppingDistance;
                     isCoroutine = false;
-                    enemyAnimator.PlayWalk(false);
                 }
 
 
             }
             else if (isIdle == true && isCoroutine == false)
             {
+                enemyAnimator.PlayWalk(false);
                 Debug.Log("StartCoroutine(EnemyObjectMove())");
                 StartCoroutine(EnemyObjectMove());
             }
@@ -99,6 +99,7 @@ public class EnemyController : MonoBehaviour {
         else
         {
             agent.SetDestination(transform.position);
+            gameObject.GetComponent<Collider>().enabled = false;
         }
     }
 
