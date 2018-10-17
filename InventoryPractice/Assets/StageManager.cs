@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class StageManager : MonoBehaviour
@@ -18,16 +19,17 @@ public class StageManager : MonoBehaviour
 
     public SaveInventory saveInventory;
 
-    public TextMeshProUGUI NoticeText;
+    public TextMeshProUGUI NoticeText, ClearText;
+    public Button LobbyButton;
 
     public int CurrentStage = 1;
 
     // Use this for initialization
-    void Start ()
+    void Start()
     {
         NoticeText.text = GetCurrentSceneName();
-
-        if(saveInventory.CurrentStage == 0)
+        LobbyButton.onClick.AddListener(() => MoveLobbyScene());
+        if (saveInventory.CurrentStage == 0)
         {
             saveInventory.CurrentStage = CurrentStage;
             saveInventory.SaveItemListByJson();
@@ -36,23 +38,39 @@ public class StageManager : MonoBehaviour
     public void MoveLobbyScene()
     {
         NoticeText.text = StageName.Lobby.ToString();
+        LobbyButton.gameObject.SetActive(false);
         SceneManager.LoadScene(StageName.Lobby.ToString());
     }
 
-    public void ChangeCombatStage(string name)
+    public void ChangeCombatStage()
     {
-        NoticeText.text = name +" Stage - " + saveInventory.CurrentStage.ToString();
+        NoticeText.text = name + " Stage - " + CurrentStage.ToString();
         EnemyManager.instance.GenerateEnemy(CurrentStage);
-        SceneManager.LoadScene(name);
+        SceneManager.LoadScene(StageName.InGame + CurrentStage.ToString());
     }
 
     public void ClearStage()
     {
-        //EnemyManager 쪽에서 클리어 할 시에 명시적으로 부름.
-        Debug.Log("Stage Clear" + CurrentStage);
+        StartCoroutine(ShowClearText());
+
         CurrentStage += 1;
         saveInventory.CurrentStage = CurrentStage;
         saveInventory.SaveItemListByJson();
+
+        ShowLobbyBtn();
+    }
+
+    IEnumerator ShowClearText()
+    {
+        ClearText.gameObject.SetActive(true);
+        ClearText.text = "Stage" + CurrentStage.ToString() + " Clear !";
+        yield return new WaitForSeconds(1.0f);
+        ClearText.gameObject.SetActive(false);
+    }
+
+    void ShowLobbyBtn()
+    {
+        LobbyButton.gameObject.SetActive(true);
     }
 
     public string GetCurrentSceneName()
@@ -62,4 +80,4 @@ public class StageManager : MonoBehaviour
         return temp;
     }
 }
-public enum StageName { Lobby, InGame, Stage1, Stage2, Stage3,}
+public enum StageName { Lobby, InGame, Stage}
