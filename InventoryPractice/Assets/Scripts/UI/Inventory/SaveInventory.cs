@@ -92,6 +92,7 @@ public class SaveInventory : ScriptableObject
         DamageModifiers.Clear();
         // ---------------------------
         savedItems.PlayerGold = 0;
+        savedItems.CurrentStage = 0;
 
         savedItems.items.Clear();
         savedItems.equipmentItems.Clear();
