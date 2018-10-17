@@ -13,23 +13,30 @@ public class StageManager : MonoBehaviour
 
     private void Awake()
     {
+        if(instance != null)
+        {
+            Destroy(this.gameObject);
+            return;
+        }
         instance = this;
+        DontDestroyOnLoad(gameObject);
     }
     #endregion
 
     public SaveInventory saveInventory;
 
     public TextMeshProUGUI NoticeText, ClearText;
-    public Button LobbyButton;
 
     public int CurrentStage = 1;
 
-    // Use this for initialization
-    void Start()
-    {
+    public delegate void OnGameClear();
+    public OnGameClear OnGameClearCallBack;
 
+    // Use this for initialization
+    void Start() //초기화 함수 Initialization
+    {
         NoticeText.text = GetCurrentSceneName();
-        LobbyButton.onClick.AddListener(() => MoveLobbyScene());
+
         if (saveInventory.CurrentStage == 0)
         {
             saveInventory.CurrentStage = CurrentStage;
@@ -43,8 +50,12 @@ public class StageManager : MonoBehaviour
     public void MoveLobbyScene()
     {
         NoticeText.text = StageName.Lobby.ToString();
-        LobbyButton.gameObject.SetActive(false);
+
+        EquimentManager.instance.saveInventory.SaveItemListByJson();
+
         SceneManager.LoadScene(StageName.Lobby.ToString());
+        
+        PlayerManager.instance.ResetPlayerPosition();
     }
 
     public void ChangeCombatStage()
@@ -58,24 +69,20 @@ public class StageManager : MonoBehaviour
     {
         StartCoroutine(ShowClearText());
 
+        if (OnGameClearCallBack != null)
+            OnGameClearCallBack.Invoke();
+   
         CurrentStage += 1;
         saveInventory.CurrentStage = CurrentStage;
         saveInventory.SaveItemListByJson();
-
-        ShowLobbyBtn();
     }
 
     IEnumerator ShowClearText()
     {
         ClearText.gameObject.SetActive(true);
         ClearText.text = "Stage" + CurrentStage.ToString() + " Clear !";
-        yield return new WaitForSeconds(1.0f);
+        yield return new WaitForSeconds(3.0f);
         ClearText.gameObject.SetActive(false);
-    }
-
-    void ShowLobbyBtn()
-    {
-        LobbyButton.gameObject.SetActive(true);
     }
 
     public string GetCurrentSceneName()

@@ -7,12 +7,15 @@ using UnityEngine.AI;
 public class PlayerMotor : MonoBehaviour {
 
     NavMeshAgent agent;
+
+    [SerializeField]
     Transform target;
 	// Use this for initialization
 	void Start ()
     {
         agent = GetComponent<NavMeshAgent>();
 	}
+
     private void Update()
     {
         if(target != null)

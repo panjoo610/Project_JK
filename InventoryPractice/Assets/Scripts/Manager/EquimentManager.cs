@@ -14,6 +14,7 @@ public class EquimentManager : MonoBehaviour
         instance = this;
     }
     #endregion
+
     public Equipment[] defalutItems;
 
     public SkinnedMeshRenderer targetMesh;
@@ -42,7 +43,6 @@ public class EquimentManager : MonoBehaviour
         EquipDefalutItems();
 
         saveInventory.LoadItemListFromJson();   
-
     }
 
     private void Update()
