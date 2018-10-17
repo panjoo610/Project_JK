@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class UIController : MonoBehaviour {
 
-    public Button StatusBtn, InvenBtn, EquipBtn, GameStartButton;
+    public Button StatusBtn, InvenBtn, EquipBtn, combatStartButton, LobbyButton, GameStartButton;
     public GameObject InformationPanel, CombatPanel, HidePanel;
     public InventoyUI inventoyUI;
     public EquipmetInventoryUI equipmetInventoryUI;
@@ -21,6 +21,8 @@ public class UIController : MonoBehaviour {
     // Use this for initialization
     void Start ()
     {
+        StageManager.instance.OnGameClearCallBack += ShowLobbyBtn;
+
         inventoyUI = GetComponent<InventoyUI>();
         equipmetInventoryUI = GetComponent<EquipmetInventoryUI>();
         statusUI = GetComponent<StatusUI>();
@@ -28,7 +30,10 @@ public class UIController : MonoBehaviour {
         StatusBtn.onClick.AddListener(() => OnStatus());
         InvenBtn.onClick.AddListener(() => OnInven());
         EquipBtn.onClick.AddListener(() => OnEquip());
-        GameStartButton.onClick.AddListener(() => OnChangeCombatScene());
+        combatStartButton.onClick.AddListener(() => OnChangeCombatScene());
+
+        LobbyButton.onClick.AddListener(() => OnChangeLobbyScene());
+        GameStartButton.onClick.AddListener(() => OnclickFirstStart());
 
         OnStatus();
         OnInven();
@@ -52,11 +57,30 @@ public class UIController : MonoBehaviour {
         StatusBtn.gameObject.SetActive(!StatusBtn.gameObject.activeSelf);
         InvenBtn.gameObject.SetActive(!InvenBtn.gameObject.activeSelf);
         EquipBtn.gameObject.SetActive(!EquipBtn.gameObject.activeSelf);
-        GameStartButton.gameObject.SetActive(!GameStartButton.gameObject.activeSelf);
+        combatStartButton.gameObject.SetActive(!combatStartButton.gameObject.activeSelf);
         InformationPanel.SetActive(!InformationPanel.activeSelf);
 
         HidePanel.SetActive(!HidePanel.activeSelf);
         CombatPanel.SetActive(!CombatPanel.activeSelf);
+    }
+    public void OnclickFirstStart()
+    {
+        GameStartButton.gameObject.SetActive(false);
+        StageManager.instance.MoveLobbyScene();        
+    }
+
+    public void OnChangeLobbyScene()
+    {
+        ChangeCombatOrLobbyUI();
+        PlayerManager.instance.cameraContorller.offset = new Vector3(-0.17f, -0.2f, -0.12f);
+
+        StageManager.instance.MoveLobbyScene();
+        LobbyButton.gameObject.SetActive(false);  
+    }
+
+    public void ShowLobbyBtn()
+    {
+        LobbyButton.gameObject.SetActive(true);
     }
 
     public void OnStatus()

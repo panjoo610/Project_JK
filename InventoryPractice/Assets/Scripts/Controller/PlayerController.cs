@@ -27,7 +27,8 @@ public class PlayerController : MonoBehaviour {
     {
         playerCamera = Camera.main;
         motor = GetComponent<PlayerMotor>();
-	}
+        StageManager.instance.OnGameClearCallBack += RemoveFocus;
+    }
 	
 	// Update is called once per frame
 	void Update ()
@@ -74,10 +75,10 @@ public class PlayerController : MonoBehaviour {
             motor.FollowTarget(newFocus);
         }
       
-        newFocus.OnFocused(transform);
-      
+        newFocus.OnFocused(transform);     
     }
-    void RemoveFocus()
+
+    public void RemoveFocus()
     {
         if(Focus != null)
         Focus.OnDeFocused();

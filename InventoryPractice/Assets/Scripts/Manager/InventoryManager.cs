@@ -17,6 +17,7 @@ public class InventoryManager : MonoBehaviour {
         instance = this;
     }
     #endregion
+
     public delegate void OnItemChanged();
     public OnItemChanged onItemChangedCallBack;
 

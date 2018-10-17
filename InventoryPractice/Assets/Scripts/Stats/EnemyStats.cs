@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class EnemyStats : CharacterStats {
     EnemyAnimator enemyAnimator;
+    Enemy enemy;
 
     public void Start()
     {
         enemyAnimator = GetComponent<EnemyAnimator>();
+        enemy = GetComponent<Enemy>();
     }
     public override void TakeDamage(int damage)
     {
@@ -19,9 +21,11 @@ public class EnemyStats : CharacterStats {
     {
         base.Die();
         PlayerManager.instance.saveInventory.PlayerGold += 100;
+        PlayerManager.instance.playerController.RemoveFocus();
+        enemy.enabled = false;
         //add ragdooll effect death animation
-        Invoke("PushToPool", 2f);
-        
+
+        Invoke("PushToPool", 2f);       
     }
 
     void PushToPool()
@@ -32,6 +36,10 @@ public class EnemyStats : CharacterStats {
 
     private void OnEnable()
     {
+        if(enemy != null)
+        {
+            enemy.enabled = true;
+        }      
         currentHealth = maxHealth;
     }
 }

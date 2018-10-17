@@ -46,8 +46,7 @@ public class CameraContorller : MonoBehaviour {
     }
 
     private void LateUpdate()
-    {
-        
+    {        
         transform.position = target.position + shakePos - offset * currentZoom;
         //transform.position = transform.position + shakePos.position;
         transform.LookAt(target.position + Vector3.up * pitch);
