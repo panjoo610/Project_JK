@@ -21,6 +21,8 @@ public class EnemyManager : MonoBehaviour {
     public ParticleSystem GenerateParticle;
     public GameObject enemyPrefab;
 
+    public bool IsWorking;
+
     #region Singleton
     public static EnemyManager instance;
 
@@ -33,6 +35,9 @@ public class EnemyManager : MonoBehaviour {
         EnemyPoolObj.name = "EnemyPoolObj";
         EnemyGeneratorObj.transform.parent = gameObject.transform;
         EnemyGeneratorObj.name = "EnemyGeneratorObj";
+
+        StageManager.instance.OnGameClearCallBack += Initialize;
+
     }
     #endregion
 
@@ -42,20 +47,26 @@ public class EnemyManager : MonoBehaviour {
         EnemyGeneratorObj.AddComponent<EnemyGenerator>();
         enemyPool = EnemyPoolObj.GetComponent<EnemyPool>();
         enemyGenerator = EnemyGeneratorObj.GetComponent<EnemyGenerator>();
-	}
-    public void CheckClear(bool check)
+        
+    }
+    public void ClearStage()
     {
-        if (check)
-        {
-            StageManager.instance.ClearStage();
-        }
+        StageManager.instance.ClearStage();
     }
     public void GenerateEnemy(int currentStage)
     {
+        IsWorking = true;
         GenerateCount = GenerateDatas[currentStage-1].EnemyCount;
         WaveCount = GenerateDatas[currentStage-1].WaveCount;
         enemyPool.Initialize(GenerateCount, WaveCount, enemyPrefab);
         enemyGenerator.Initialize(GenerateCount, WaveCount, GenerateDatas[currentStage-1].GeneratePosition);
 
     }
+
+    void Initialize()
+    {
+        IsWorking = false;
+    }
+
+
 }

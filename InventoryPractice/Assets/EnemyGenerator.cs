@@ -40,31 +40,49 @@ public class EnemyGenerator : MonoBehaviour {
         finalWaveGenerateCount = nomalWaveGenerateCount + (generatorCount % waveCount);
         activeObjects = new List<GameObject>();
         StartCoroutine(GenerateObject(nomalWaveGenerateCount));
+        StartCoroutine(Generating());
     }
-    private void Update()
+
+    IEnumerator Generating()
     {
-        if (enemyPool != null)
+        while (EnemyManager.instance.IsWorking)
         {
-            StartCoroutine(CheckAliveEnemy());
-            if (activeObjects != null && activeObjects.Count<=0)//하나의 웨이브끝
+            if (enemyPool != null)
             {
-                coolTime -= Time.deltaTime;
-                if (waveCount > 1 && !IsGenerating && coolTime <= 0)
+                yield return null;
+                StartCoroutine(CheckAliveEnemy());
+                if (activeObjects != null && activeObjects.Count <= 0)//하나의 웨이브끝
                 {
-                    StartCoroutine(GenerateObject(nomalWaveGenerateCount));
+                    coolTime -= Time.deltaTime;
+                    if (waveCount > 1 && !IsGenerating && coolTime <= 0)
+                    {
+                        StartCoroutine(GenerateObject(nomalWaveGenerateCount));
+                    }
+                    else if (waveCount == 1 && !IsGenerating && coolTime <= 0)
+                    {
+                        StartCoroutine(GenerateObject(finalWaveGenerateCount));
+                    }
+                    else if (waveCount <= 0 && !IsStageClear)
+                    {
+                        IsStageClear = true;
+                        CheckClear(true);
+                    }
                 }
-                else if(waveCount == 1 && !IsGenerating && coolTime <= 0)
-                {
-                    StartCoroutine(GenerateObject(finalWaveGenerateCount));
-                }
-                else if(waveCount<=0 && !IsStageClear)
-                {
-                    IsStageClear = true;
-                    EnemyManager.instance.CheckClear(true);
-                }
+                yield return null;
             }
+            yield return new WaitForSeconds(0.4f);
         }
     }
+
+    private void CheckClear(bool check)
+    {
+        if (check)
+        {
+            IsStageClear = true;
+            EnemyManager.instance.ClearStage(); 
+        }
+    }
+
     //public static void Invoke(this MonoBehaviour m, Action method, float time)
     //{
     //    m.Invoke(method.Method.Name, time);
@@ -114,4 +132,5 @@ public class EnemyGenerator : MonoBehaviour {
         tempObject.SetActive(true);
         return tempObject;
     }
+
 }
