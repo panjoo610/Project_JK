@@ -27,12 +27,17 @@ public class StageManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+
         NoticeText.text = GetCurrentSceneName();
         LobbyButton.onClick.AddListener(() => MoveLobbyScene());
         if (saveInventory.CurrentStage == 0)
         {
             saveInventory.CurrentStage = CurrentStage;
             saveInventory.SaveItemListByJson();
+        }
+        else
+        {
+            CurrentStage = saveInventory.CurrentStage;
         }
     }
     public void MoveLobbyScene()
@@ -46,7 +51,7 @@ public class StageManager : MonoBehaviour
     {
         NoticeText.text = name + " Stage - " + CurrentStage.ToString();
         EnemyManager.instance.GenerateEnemy(CurrentStage);
-        SceneManager.LoadScene(StageName.InGame + CurrentStage.ToString());
+        SceneManager.LoadScene(StageName.Stage + CurrentStage.ToString());
     }
 
     public void ClearStage()
