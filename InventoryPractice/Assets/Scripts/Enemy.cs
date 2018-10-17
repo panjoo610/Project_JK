@@ -25,4 +25,6 @@ public class Enemy : Interactable {
             playerCombat.Attack(myStats);
         }
     }
+
+
 }

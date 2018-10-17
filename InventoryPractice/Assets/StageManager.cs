@@ -49,6 +49,7 @@ public class StageManager : MonoBehaviour
     public void ClearStage()
     {
         //EnemyManager 쪽에서 클리어 할 시에 명시적으로 부름.
+        Debug.Log("Stage Clear" + CurrentStage);
         CurrentStage += 1;
         saveInventory.CurrentStage = CurrentStage;
         saveInventory.SaveItemListByJson();

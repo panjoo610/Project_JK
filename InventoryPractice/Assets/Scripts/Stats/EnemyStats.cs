@@ -28,4 +28,10 @@ public class EnemyStats : CharacterStats {
     {
         EnemyManager.instance.enemyPool.Push(gameObject);
     }
+
+
+    private void OnEnable()
+    {
+        currentHealth = maxHealth;
+    }
 }

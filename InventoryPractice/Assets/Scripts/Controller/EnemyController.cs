@@ -34,6 +34,12 @@ public class EnemyController : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
+        Initialize();
+    }
+
+
+    public void Initialize()
+    {
         target = PlayerManager.instance.Player.transform;
         originalPos = transform.position;
         combat = GetComponent<EnemyCombat>();
@@ -98,8 +104,9 @@ public class EnemyController : MonoBehaviour {
         }
         else
         {
-            agent.SetDestination(transform.position);
-            gameObject.GetComponent<Collider>().enabled = false;
+            //agent.SetDestination(transform.position);
+            agent.enabled = false;
+            //gameObject.GetComponent<Collider>().enabled = false;
         }
     }
 
@@ -174,5 +181,17 @@ public class EnemyController : MonoBehaviour {
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, lookRadius);
+    }
+
+    private void OnEnable()
+    {
+        //Initialize();
+        if (agent == null)
+        {
+            Initialize();
+        }
+        if (agent.enabled != true)
+            agent.enabled = true;
+
     }
 }

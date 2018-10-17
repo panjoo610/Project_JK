@@ -102,6 +102,10 @@ public class EnemyAnimator : CharacterAnimator {
             animators[i].SetTrigger("attack1");
         }
     }
+    private void OnEnable()
+    {
+        isDie = false;
+    }
 
 
 

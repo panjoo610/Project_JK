@@ -51,10 +51,10 @@ public class EnemyManager : MonoBehaviour {
     }
     public void GenerateEnemy(int currentStage)
     {
-        GenerateCount = GenerateDatas[currentStage].EnemyCount;
-        WaveCount = GenerateDatas[currentStage].WaveCount;
+        GenerateCount = GenerateDatas[currentStage-1].EnemyCount;
+        WaveCount = GenerateDatas[currentStage-1].WaveCount;
         enemyPool.Initialize(GenerateCount, WaveCount, enemyPrefab);
-        enemyGenerator.Initialize(GenerateCount, WaveCount, GenerateDatas[currentStage].GeneratePosition);
+        enemyGenerator.Initialize(GenerateCount, WaveCount, GenerateDatas[currentStage-1].GeneratePosition);
 
     }
 }
