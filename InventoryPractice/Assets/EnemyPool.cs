@@ -17,11 +17,17 @@ public class EnemyPool : MonoBehaviour {
     /// </summary>
     public GameObject EnemyPrefab;
     public List<GameObject> PoolList;
-    
 
-    public void Initialize(int enemyCount)
+    int nomalWaveGenerateCount;
+    int finalWaveGenerateCount;
+
+    public void Initialize(int generatorCount, int waveCount, GameObject enemyPrefab)
     {
-        for (int i = 0; i < enemyCount; i++)
+        PoolList = new List<GameObject>();
+        EnemyPrefab = enemyPrefab;
+        nomalWaveGenerateCount = generatorCount / waveCount;
+        finalWaveGenerateCount = nomalWaveGenerateCount + (generatorCount % waveCount);
+        for (int i = 0; i < finalWaveGenerateCount; i++)
         {
             PoolList.Add(CreateObject(EnemyPrefab));
         }
@@ -35,6 +41,7 @@ public class EnemyPool : MonoBehaviour {
     GameObject CreateObject(GameObject enemyPrefab)
     {
         GameObject tempObject = Instantiate(enemyPrefab);
+        tempObject.transform.SetParent(gameObject.transform);
         tempObject.SetActive(false);
         return tempObject;
     }

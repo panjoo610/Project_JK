@@ -42,7 +42,7 @@ public class StageManager : MonoBehaviour
     public void ChangeCombatStage(string name)
     {
         NoticeText.text = name +" Stage - " + saveInventory.CurrentStage.ToString();
-        //EnemyManager.instance.GenerateEnemy(CurrentStage);
+        EnemyManager.instance.GenerateEnemy(CurrentStage);
         SceneManager.LoadScene(name);
     }
 

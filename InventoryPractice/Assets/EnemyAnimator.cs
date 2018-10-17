@@ -10,6 +10,7 @@ public class EnemyAnimator : CharacterAnimator {
     bool isDie;
 
     public IEnemyState IEnemyState;
+    public ParticleSystem ParticleSystem;
 
     protected override void Start()
     {
@@ -18,6 +19,7 @@ public class EnemyAnimator : CharacterAnimator {
         EnemyCount = GetComponentsInChildren<Animator>().Length;//GetComponentsInChildren<GameObject>().Length;
         animators = new Animator[EnemyCount];
         animators = GetComponentsInChildren<Animator>();
+        ParticleSystem = GetComponentInChildren<ParticleSystem>();
 
         currentAttackAnimSet = defaultAttackAnimSet;
         combat.OnAttack += OnAttack;
@@ -48,6 +50,12 @@ public class EnemyAnimator : CharacterAnimator {
         {
             PlayWalk(false);
         }
+    }
+    public void GetHitEffect()
+    {
+        int j = Random.Range(0, animators.Length);
+        ParticleSystem.transform.position = animators[j].transform.position;
+        ParticleSystem.Play();
     }
 
     private void PlayDeath()

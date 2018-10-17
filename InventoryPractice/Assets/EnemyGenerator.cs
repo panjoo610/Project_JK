@@ -14,6 +14,8 @@ public class EnemyGenerator : MonoBehaviour {
     int temp;
     EnemyPool enemyPool;
     List<GameObject> activeObjects;
+
+    [SerializeField]
     List<Vector3> generatePositions;
 
     int waveCount;

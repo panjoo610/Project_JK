@@ -3,16 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(EnemyGenerator),typeof(EnemyPool))]
+//[RequireComponent(typeof(EnemyGenerator),typeof(EnemyPool))]
 public class EnemyManager : MonoBehaviour {
-    #region Singleton
-    public static EnemyManager instance;
-
-    private void Awake()
-    {
-        instance = this;
-    }
-    #endregion
 
     public List<EnemyGenerateData> GenerateDatas;
     public EnemyPool enemyPool;
@@ -23,10 +15,32 @@ public class EnemyManager : MonoBehaviour {
     public int WaveCount;
     //public MeshRenderer meshRenderer;
 
+    GameObject EnemyPoolObj;
+    GameObject EnemyGeneratorObj;
+
+    public GameObject enemyPrefab;
+
+    #region Singleton
+    public static EnemyManager instance;
+
+    private void Awake()
+    {
+        instance = this;
+        EnemyPoolObj = new GameObject();
+        EnemyGeneratorObj = new GameObject();
+        EnemyPoolObj.transform.parent = gameObject.transform;
+        EnemyPoolObj.name = "EnemyPoolObj";
+        EnemyGeneratorObj.transform.parent = gameObject.transform;
+        EnemyGeneratorObj.name = "EnemyGeneratorObj";
+    }
+    #endregion
+
     // Use this for initialization
     void Start () {
-        enemyPool = GetComponent<EnemyPool>();
-        enemyGenerator = GetComponent<EnemyGenerator>();
+        EnemyPoolObj.AddComponent<EnemyPool>();
+        EnemyGeneratorObj.AddComponent<EnemyGenerator>();
+        enemyPool = EnemyPoolObj.GetComponent<EnemyPool>();
+        enemyGenerator = EnemyGeneratorObj.GetComponent<EnemyGenerator>();
 	}
     public void CheckClear(bool check)
     {
@@ -39,7 +53,7 @@ public class EnemyManager : MonoBehaviour {
     {
         GenerateCount = GenerateDatas[currentStage].EnemyCount;
         WaveCount = GenerateDatas[currentStage].WaveCount;
-        enemyPool.Initialize(GenerateCount);
+        enemyPool.Initialize(GenerateCount, WaveCount, enemyPrefab);
         enemyGenerator.Initialize(GenerateCount, WaveCount, GenerateDatas[currentStage].GeneratePosition);
 
     }
