@@ -15,7 +15,7 @@ public class EnemyController : MonoBehaviour {
     CharacterCombat combat;
 
     [SerializeField]
-    GameObject[] enemyObjects;
+    public GameObject[] enemyObjects;
     [SerializeField]
     Transform[] currentPosition;
     int count;
@@ -105,6 +105,7 @@ public class EnemyController : MonoBehaviour {
         else
         {
             //agent.SetDestination(transform.position);
+
             agent.enabled = false;
             //gameObject.GetComponent<Collider>().enabled = false;
         }
@@ -186,6 +187,8 @@ public class EnemyController : MonoBehaviour {
     private void OnEnable()
     {
         //Initialize();
+        
+
         if (agent == null)
         {
             Initialize();
@@ -193,5 +196,6 @@ public class EnemyController : MonoBehaviour {
         if (agent.enabled != true)
             agent.enabled = true;
 
+       
     }
 }

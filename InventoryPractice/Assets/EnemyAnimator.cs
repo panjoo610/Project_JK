@@ -19,7 +19,6 @@ public class EnemyAnimator : CharacterAnimator {
         EnemyCount = GetComponentsInChildren<Animator>().Length;//GetComponentsInChildren<GameObject>().Length;
         animators = new Animator[EnemyCount];
         animators = GetComponentsInChildren<Animator>();
-        ParticleSystem = GetComponentInChildren<ParticleSystem>();
 
         currentAttackAnimSet = defaultAttackAnimSet;
         combat.OnAttack += OnAttack;
@@ -66,7 +65,6 @@ public class EnemyAnimator : CharacterAnimator {
             isDie = true;
             for (int i = 0; i < animators.Length; i++)
             {
-                Debug.Log("죽는 에니메이션");
                 animators[i].SetTrigger("death1");
             }
         }
@@ -152,7 +150,6 @@ public class MoveState : IEnemyState
             animators[i].SetBool("Idle2", false);
             if (!animators[i].GetBool("walk"))
             {
-                Debug.Log("걷는다");
                 animators[i].SetBool("walk", true);
             }
         }

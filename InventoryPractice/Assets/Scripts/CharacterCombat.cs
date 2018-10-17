@@ -49,7 +49,6 @@ public class CharacterCombat : MonoBehaviour {
 
             if (OnAttack != null)
             {
-                Debug.Log("onattack");
                 OnAttack();
                 if (targetStats.tag=="Player")
                 {

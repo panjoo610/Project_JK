@@ -18,6 +18,7 @@ public class EnemyManager : MonoBehaviour {
     GameObject EnemyPoolObj;
     GameObject EnemyGeneratorObj;
 
+    public ParticleSystem GenerateParticle;
     public GameObject enemyPrefab;
 
     #region Singleton

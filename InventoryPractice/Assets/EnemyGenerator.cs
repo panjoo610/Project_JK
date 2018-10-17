@@ -8,11 +8,11 @@ public class EnemyGenerator : MonoBehaviour {
     /// Generator
     /// </summary>
     
-    float GenerateTime;
     float coolTime;
     
-    int temp;
     EnemyPool enemyPool;
+
+    ParticleSystem GenerateParticle;
 
 
     List<GameObject> activeObjects;
@@ -26,12 +26,14 @@ public class EnemyGenerator : MonoBehaviour {
     bool IsGenerating;
     bool IsChecking;
     bool IsStageClear;
+
+    
     public void Initialize(int generatorCount, int waveCount, List<Vector3> positions)
     {
+        GenerateParticle = EnemyManager.instance.GenerateParticle;
         enemyPool = EnemyManager.instance.enemyPool;
         coolTime = EnemyManager.instance.CoolTime;
         IsGenerating = false;
-
         generatePositions = positions;
         this.waveCount = waveCount;
         nomalWaveGenerateCount = generatorCount / waveCount;
@@ -90,17 +92,25 @@ public class EnemyGenerator : MonoBehaviour {
         waveCount -= 1;
         for (int i = 0; i < Count; i++)
         {
-            activeObjects.Add(GetObjectFromPool());
-            yield return new WaitForSeconds(1f);
+            Vector3 newTransform = generatePositions[UnityEngine.Random.Range(0, generatePositions.Count)];
+            
+            yield return null;
+            ParticleSystem test = Instantiate(GenerateParticle);
+            test.gameObject.transform.position = newTransform;
+            test.Play();
+
+            yield return new WaitForSeconds(.7f);
+            activeObjects.Add(GetObjectFromPool(newTransform));
+            yield return new WaitForSeconds(2f);
         }
         coolTime = EnemyManager.instance.CoolTime;
         yield return null;
         IsGenerating = false;
     }
-    GameObject GetObjectFromPool()
+    GameObject GetObjectFromPool(Vector3 newTransform)
     {
         GameObject tempObject = enemyPool.Pop();
-        tempObject.transform.position = generatePositions[UnityEngine.Random.Range(0, generatePositions.Count)];
+        tempObject.transform.position = newTransform;
         tempObject.SetActive(true);
         return tempObject;
     }
