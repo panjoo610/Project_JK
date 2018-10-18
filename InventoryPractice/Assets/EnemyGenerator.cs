@@ -26,7 +26,12 @@ public class EnemyGenerator : MonoBehaviour {
     bool IsGenerating;
     bool IsChecking;
     bool IsStageClear;
-    
+
+    IEnumerator EnemyGenerate;
+    IEnumerator nomalWaveGenerate;
+    IEnumerator finalWaveGenerate;
+
+    Vector3 Transform;
 
     public void Initialize(int generatorCount, int waveCount, List<Vector3> positions)
     {
@@ -40,14 +45,20 @@ public class EnemyGenerator : MonoBehaviour {
         nomalWaveGenerateCount = generatorCount / waveCount;
         finalWaveGenerateCount = nomalWaveGenerateCount + (generatorCount % waveCount);
         activeObjects = new List<GameObject>();
-        StartCoroutine(GenerateObject(nomalWaveGenerateCount));
+
         
-        StartCoroutine(Generating());
+
+        nomalWaveGenerate = GenerateObject(nomalWaveGenerateCount);
+        finalWaveGenerate = GenerateObject(finalWaveGenerateCount);
+        StartCoroutine(nomalWaveGenerate);
+        EnemyGenerate = Generating();
+
+        StartCoroutine(EnemyGenerate);
     }
 
     IEnumerator Generating()
     {
-        while (!IsStageClear)
+        while (EnemyManager.instance.IsWorking)
         {
             if (enemyPool != null)
             {
@@ -55,18 +66,17 @@ public class EnemyGenerator : MonoBehaviour {
                 StartCoroutine(CheckAliveEnemy());
                 if (activeObjects != null && activeObjects.Count <= 0)//하나의 웨이브끝
                 {
-                    if (waveCount > 1 && !IsGenerating && coolTime <= 0)
+                    if (waveCount > 1 && !IsGenerating)
                     {
-                        StartCoroutine(GenerateObject(nomalWaveGenerateCount));
+                        StartCoroutine(nomalWaveGenerate);
                     }
-                    else if (waveCount == 1 && !IsGenerating && coolTime <= 0)
+                    else if (waveCount == 1 && !IsGenerating)
                     {
-                        StartCoroutine(GenerateObject(finalWaveGenerateCount));
+                        StartCoroutine(finalWaveGenerate);
                     }
                     else if (waveCount <= 0 && !IsStageClear)
                     {
-                        IsStageClear = true;
-                        CheckClear(true);
+                        ClearStage(true);
                     }
                 }
                 yield return null;
@@ -75,8 +85,13 @@ public class EnemyGenerator : MonoBehaviour {
         }
     }
 
-    private void CheckClear(bool check)
+    /// <summary>
+    /// 모든 적을 제거하면 스테이지를 클리어 했다고 알린다
+    /// </summary>
+    /// <param name="check"></param>
+    private void ClearStage(bool check)
     {
+        IsStageClear = true;
         if (check)
         {
             IsStageClear = true;
@@ -88,6 +103,12 @@ public class EnemyGenerator : MonoBehaviour {
     //{
     //    m.Invoke(method.Method.Name, time);
     //}
+
+
+    /// <summary>
+    /// 생성된 적을 담고있는 리스트에서 죽은 적을 계속 체크하여 리스트에서 빼준다
+    /// </summary>
+    /// <returns></returns>
     IEnumerator CheckAliveEnemy()
     {
         while (activeObjects != null && !IsChecking)
@@ -109,26 +130,45 @@ public class EnemyGenerator : MonoBehaviour {
             yield return new WaitForSeconds(0.3f);
         }
     }
+
+    /// <summary>
+    /// 한개의 웨이브의 적 수만큼 적을 만들어낸다
+    /// </summary>
+    /// <param name="Count"></param>
+    /// <returns></returns>
     IEnumerator GenerateObject(int Count)
     {
         IsGenerating = true;
         for (int i = 0; i < Count; i++)
         {
-            Vector3 newTransform = generatePositions[UnityEngine.Random.Range(0, generatePositions.Count)];
-            
-            yield return null;
-            ParticleSystem test = Instantiate(GenerateParticle);
-            test.gameObject.transform.position = newTransform;
-            test.Play();
+            if (EnemyManager.instance.IsWorking)
+            {
+                Vector3 newTransform = generatePositions[UnityEngine.Random.Range(0, generatePositions.Count)];
 
-            yield return new WaitForSeconds(.7f);
-            activeObjects.Add(GetObjectFromPool(newTransform));
-            yield return new WaitForSeconds(2f);
-        }
+                yield return null;
+                ParticleSystem test = Instantiate(GenerateParticle);
+                test.gameObject.transform.position = newTransform;
+                test.Play();
+
+                yield return new WaitForSeconds(.7f);
+                if (EnemyManager.instance.IsWorking)
+                {
+                    activeObjects.Add(GetObjectFromPool(newTransform));
+                    yield return new WaitForSeconds(2f);  
+                }
+            }
+        } 
         waveCount -= 1;
         yield return null;
         IsGenerating = false;
     }
+
+
+    /// <summary>
+    /// 풀에서 오브젝트를 꺼내서 반환해준다
+    /// </summary>
+    /// <param name="newTransform"></param>
+    /// <returns></returns>
     GameObject GetObjectFromPool(Vector3 newTransform)
     {
         GameObject tempObject = enemyPool.Pop();
@@ -137,11 +177,24 @@ public class EnemyGenerator : MonoBehaviour {
         return tempObject;
     }
 
-
-    void StoppingGenerating()
+    /// <summary>
+    /// 생성을 멈추고 생성되있는 오브젝트를 모두 풀에 반환한다
+    /// </summary>
+    public void StoppingGenerating()
     {
-        //생성멈추고
-        //생성되있는 오브젝트를모두 풀에 반환한다
+        StopCoroutine(EnemyGenerate);
+        StopCoroutine(nomalWaveGenerate);
+        StopCoroutine(finalWaveGenerate);
+        enemyPool = null;
+        waveCount = 0;
+        for (int i = 0; i < activeObjects.Count; i++)
+        {
+            activeObjects[i].SetActive(false);
+            EnemyManager.instance.enemyPool.Push(activeObjects[i]);
+        }
+        EnemyGenerate = Generating();
+        nomalWaveGenerate = GenerateObject(nomalWaveGenerateCount);
+        finalWaveGenerate = GenerateObject(finalWaveGenerateCount);
     }
 
 }
