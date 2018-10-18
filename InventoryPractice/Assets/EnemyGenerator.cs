@@ -30,8 +30,7 @@ public class EnemyGenerator : MonoBehaviour {
     IEnumerator EnemyGenerate;
     IEnumerator nomalWaveGenerate;
     IEnumerator finalWaveGenerate;
-
-    Vector3 Transform;
+    
 
     public void Initialize(int generatorCount, int waveCount, List<Vector3> positions)
     {
@@ -66,16 +65,23 @@ public class EnemyGenerator : MonoBehaviour {
                 StartCoroutine(CheckAliveEnemy());
                 if (activeObjects != null && activeObjects.Count <= 0)//하나의 웨이브끝
                 {
-                    if (waveCount > 1 && !IsGenerating)
+                    Debug.Log("웨이브 시작 "+waveCount + " 제네레이팅");
+                    if (waveCount > 1 && IsGenerating == false)
                     {
+                        Debug.Log(waveCount + " 제네레이팅");
+                        nomalWaveGenerate = GenerateObject(nomalWaveGenerateCount);
                         StartCoroutine(nomalWaveGenerate);
                     }
-                    else if (waveCount == 1 && !IsGenerating)
+                    else if (waveCount == 1 && IsGenerating == false)
                     {
+                        Debug.Log(waveCount + " 제네레이팅");
+                        //StartCoroutine(GenerateObject(finalWaveGenerateCount));
                         StartCoroutine(finalWaveGenerate);
+                        finalWaveGenerate = GenerateObject(finalWaveGenerateCount);
                     }
                     else if (waveCount <= 0 && !IsStageClear)
                     {
+                        Debug.Log(waveCount + " 제네레이팅");
                         ClearStage(true);
                     }
                 }
@@ -138,7 +144,9 @@ public class EnemyGenerator : MonoBehaviour {
     /// <returns></returns>
     IEnumerator GenerateObject(int Count)
     {
+        Debug.Log(IsGenerating);
         IsGenerating = true;
+        Debug.Log(IsGenerating);
         for (int i = 0; i < Count; i++)
         {
             if (EnemyManager.instance.IsWorking)
@@ -157,10 +165,12 @@ public class EnemyGenerator : MonoBehaviour {
                     yield return new WaitForSeconds(2f);  
                 }
             }
-        } 
+        }
         waveCount -= 1;
         yield return null;
         IsGenerating = false;
+        StopCoroutine(GenerateObject(Count));
+        //StopCoroutine(finalWaveGenerate);
     }
 
 
