@@ -60,7 +60,6 @@ public class EnemyManager : MonoBehaviour {
         WaveCount = GenerateDatas[currentStage-1].WaveCount;
         enemyPool.Initialize(GenerateCount, WaveCount, enemyPrefab);
         enemyGenerator.Initialize(GenerateCount, WaveCount, GenerateDatas[currentStage-1].GeneratePosition);
-
     }
 
     public void Initialize()
@@ -70,8 +69,12 @@ public class EnemyManager : MonoBehaviour {
 
     public void StageExit()
     {
+        IsWorking = false;
         Debug.Log("강제종료");
+        enemyGenerator.StoppingGenerating();
     }
 
+
+    
 
 }

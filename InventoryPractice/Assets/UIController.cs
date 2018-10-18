@@ -86,7 +86,7 @@ public class UIController : MonoBehaviour {
     {
         ChangeCombatOrLobbyUI();
         OnClickStopPanel();
-
+        EnemyManager.instance.StageExit();
         StageManager.instance.MoveLobbyScene();
 
         int temp = PlayerManager.instance.saveInventory.PlayerGold - 100;
