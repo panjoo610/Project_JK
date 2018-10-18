@@ -38,4 +38,15 @@ public class CharacterStats : MonoBehaviour {
     {
         Debug.Log(transform.name + "died.");
     }
+
+    public void Initialization()
+    {
+        maxHealth = 100;
+        currentHealth = maxHealth;
+
+        if (OnHealthChanged != null)
+        {
+            OnHealthChanged(maxHealth, currentHealth);
+        }
+    }
 }

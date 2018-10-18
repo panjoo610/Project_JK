@@ -72,8 +72,9 @@ public class StageManager : MonoBehaviour
 
         if (OnGameClearCallBack != null)
             OnGameClearCallBack.Invoke();
-   
+
         CurrentStage += 1;
+        //게임을 완전히 클리어했다면 걸린 시간과 비교해서 골드를 줄 것과 획득 결과창만들 것
         saveInventory.CurrentStage = CurrentStage;
         saveInventory.SaveItemListByJson();
     }

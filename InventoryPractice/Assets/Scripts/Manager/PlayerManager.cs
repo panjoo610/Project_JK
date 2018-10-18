@@ -50,7 +50,7 @@ public class PlayerManager : MonoBehaviour {
     {
         playerStats = Player.GetComponent<PlayerStats>();
         playerController = Player.GetComponent<PlayerController>();
-
+       
         cameraContorller = mainCamera.GetComponent<CameraContorller>();
     }
 
@@ -58,6 +58,7 @@ public class PlayerManager : MonoBehaviour {
     {
         Player.transform.position = new Vector3(0.0f, 10.8f, -15.49f);
         cameraContorller.offset = new Vector3(-0.17f, -0.2f, -0.12f);
+        playerStats.Initialization();
         Player.transform.rotation = Quaternion.identity;
     }
 
