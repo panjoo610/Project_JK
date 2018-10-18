@@ -26,10 +26,11 @@ public class EnemyGenerator : MonoBehaviour {
     bool IsGenerating;
     bool IsChecking;
     bool IsStageClear;
-
     
+
     public void Initialize(int generatorCount, int waveCount, List<Vector3> positions)
     {
+        
         GenerateParticle = EnemyManager.instance.GenerateParticle;
         enemyPool = EnemyManager.instance.enemyPool;
         coolTime = EnemyManager.instance.CoolTime;
@@ -40,12 +41,13 @@ public class EnemyGenerator : MonoBehaviour {
         finalWaveGenerateCount = nomalWaveGenerateCount + (generatorCount % waveCount);
         activeObjects = new List<GameObject>();
         StartCoroutine(GenerateObject(nomalWaveGenerateCount));
+        
         StartCoroutine(Generating());
     }
 
     IEnumerator Generating()
     {
-        while (EnemyManager.instance.IsWorking)
+        while (!IsStageClear)
         {
             if (enemyPool != null)
             {
@@ -53,7 +55,6 @@ public class EnemyGenerator : MonoBehaviour {
                 StartCoroutine(CheckAliveEnemy());
                 if (activeObjects != null && activeObjects.Count <= 0)//하나의 웨이브끝
                 {
-                    coolTime -= Time.deltaTime;
                     if (waveCount > 1 && !IsGenerating && coolTime <= 0)
                     {
                         StartCoroutine(GenerateObject(nomalWaveGenerateCount));
@@ -91,23 +92,26 @@ public class EnemyGenerator : MonoBehaviour {
     {
         while (activeObjects != null && !IsChecking)
         {
-            IsChecking = true;
-            for (int i = 0; i < activeObjects.Count; i++)
+            if (IsGenerating == false)
             {
-                if (activeObjects[i].activeSelf == false)
+                IsChecking = true;
+                for (int i = 0; i < activeObjects.Count; i++)
                 {
-                    activeObjects.Remove(activeObjects[i].gameObject);
-                    yield return new WaitForSeconds(0.3f);
+                    if (activeObjects[i].activeSelf == false)
+                    {
+                        activeObjects.Remove(activeObjects[i].gameObject);
+                        yield return new WaitForSeconds(0.3f);
+                    }
                 }
+                IsChecking = false;
             }
-            IsChecking = false;
+
             yield return new WaitForSeconds(0.3f);
         }
     }
     IEnumerator GenerateObject(int Count)
     {
         IsGenerating = true;
-        waveCount -= 1;
         for (int i = 0; i < Count; i++)
         {
             Vector3 newTransform = generatePositions[UnityEngine.Random.Range(0, generatePositions.Count)];
@@ -121,7 +125,7 @@ public class EnemyGenerator : MonoBehaviour {
             activeObjects.Add(GetObjectFromPool(newTransform));
             yield return new WaitForSeconds(2f);
         }
-        coolTime = EnemyManager.instance.CoolTime;
+        waveCount -= 1;
         yield return null;
         IsGenerating = false;
     }
@@ -131,6 +135,13 @@ public class EnemyGenerator : MonoBehaviour {
         tempObject.transform.position = newTransform;
         tempObject.SetActive(true);
         return tempObject;
+    }
+
+
+    void StoppingGenerating()
+    {
+        //생성멈추고
+        //생성되있는 오브젝트를모두 풀에 반환한다
     }
 
 }

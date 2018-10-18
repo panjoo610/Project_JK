@@ -63,9 +63,14 @@ public class EnemyManager : MonoBehaviour {
 
     }
 
-    void Initialize()
+    public void Initialize()
     {
         IsWorking = false;
+    }
+
+    public void StageExit()
+    {
+        Debug.Log("강제종료");
     }
 
 
