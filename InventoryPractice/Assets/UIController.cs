@@ -7,8 +7,8 @@ using UnityEngine.UI;
 
 public class UIController : MonoBehaviour {
 
-    public Button StatusBtn, InvenBtn, EquipBtn, combatStartButton, LobbyButton, GameStartButton;
-    public GameObject InformationPanel, CombatPanel, HidePanel;
+    public Button StatusBtn, InvenBtn, EquipBtn, combatStartButton, LobbyButton, GameStartButton, StopButton;
+    public GameObject InformationPanel, CombatPanel, HidePanel, NoticePanel;
     public InventoyUI inventoyUI;
     public EquipmetInventoryUI equipmetInventoryUI;
     public StatusUI statusUI;
@@ -55,24 +55,49 @@ public class UIController : MonoBehaviour {
     public void ChangeCombatOrLobbyUI()
     {
         StatusBtn.gameObject.SetActive(!StatusBtn.gameObject.activeSelf);
+        StopButton.gameObject.SetActive(!StopButton.gameObject.activeSelf);
+
         InvenBtn.gameObject.SetActive(!InvenBtn.gameObject.activeSelf);
         EquipBtn.gameObject.SetActive(!EquipBtn.gameObject.activeSelf);
+
         combatStartButton.gameObject.SetActive(!combatStartButton.gameObject.activeSelf);
+
         InformationPanel.SetActive(!InformationPanel.activeSelf);
+        
 
         HidePanel.SetActive(!HidePanel.activeSelf);
         CombatPanel.SetActive(!CombatPanel.activeSelf);
     }
+
     public void OnclickFirstStart()
     {
         GameStartButton.gameObject.SetActive(false);
         StageManager.instance.MoveLobbyScene();        
     }
 
+
+    public void OnClickStopPanel()
+    {
+        NoticePanel.SetActive(!NoticePanel.activeSelf);
+    }
+
+
+    public void OnclickStopCombatStage()
+    {
+        ChangeCombatOrLobbyUI();
+        OnClickStopPanel();
+
+        StageManager.instance.MoveLobbyScene();
+
+        int temp = PlayerManager.instance.saveInventory.PlayerGold - 100;
+
+        PlayerManager.instance.ShowPlayerGold(temp);
+    }
+
+
     public void OnChangeLobbyScene()
     {
         ChangeCombatOrLobbyUI();
-        PlayerManager.instance.cameraContorller.offset = new Vector3(-0.17f, -0.2f, -0.12f);
 
         StageManager.instance.MoveLobbyScene();
         LobbyButton.gameObject.SetActive(false);  

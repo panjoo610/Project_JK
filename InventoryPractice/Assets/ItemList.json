@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 {"items":[],"equipmentItems":[],"PlayerGold":0,"CurrentStage":0,"DamageModifiers":[],"AromorModifiers":[]}
+=======
+{"items":[{"instanceID":13636}],"equipmentItems":[],"PlayerGold":0,"CurrentStage":1,"DamageModifiers":[],"AromorModifiers":[]}
+>>>>>>> 43388f2cbc3a119ce93734f8eb0a8ed42d8cc8f1
