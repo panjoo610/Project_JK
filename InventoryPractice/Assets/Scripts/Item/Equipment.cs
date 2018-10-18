@@ -13,6 +13,8 @@ public class Equipment : Item
     public int armorModifier;
     public int damageModifier;
 
+    public Sprite combatImage = null;
+
     public override void Use()
     {
         base.Use();

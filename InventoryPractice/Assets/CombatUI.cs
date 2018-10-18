@@ -9,21 +9,20 @@ public class CombatUI : MonoBehaviour {
 
     void Start ()
     {
-        //equimentManager = EquimentManager.instance;
-        //equimentManager.onEquipmentChanged += OnEquipmentChanged;
-
         ChangeGunImage();
-
     }
 
-    //void OnEquipmentChanged(Equipment newItem, Equipment oldItem)
-    //{
-    //    ChangeGunImage();
-    //}
 
     void ChangeGunImage()
     {
-        GunImgae.sprite = EquimentManager.instance.currentEquiment[3].icon;
+        if(EquimentManager.instance.currentEquiment[3].combatImage != null)
+        {
+            GunImgae.sprite = EquimentManager.instance.currentEquiment[3].combatImage;
+        }
+        else
+        {
+            return;
+        }   
     }
 
 }

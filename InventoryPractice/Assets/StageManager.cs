@@ -47,6 +47,7 @@ public class StageManager : MonoBehaviour
             CurrentStage = saveInventory.CurrentStage;
         }
     }
+
     public void MoveLobbyScene()
     {
         NoticeText.text = StageName.Lobby.ToString();
