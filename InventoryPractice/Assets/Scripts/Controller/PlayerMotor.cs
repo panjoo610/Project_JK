@@ -21,7 +21,7 @@ public class PlayerMotor : MonoBehaviour {
         if(target != null)
         {
             FaceTarget();
-            agent.SetDestination(target.position);
+            //agent.SetDestination(target.position); 공격 중 이동 막음 무제한 거리
         }
     }
 

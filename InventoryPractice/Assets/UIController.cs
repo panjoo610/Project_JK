@@ -84,6 +84,8 @@ public class UIController : MonoBehaviour {
 
     public void OnclickStopCombatStage()
     {
+        PlayerManager.instance.playerController.RemoveFocus();
+
         ChangeCombatOrLobbyUI();
         OnClickStopPanel();
         EnemyManager.instance.StageExit();
