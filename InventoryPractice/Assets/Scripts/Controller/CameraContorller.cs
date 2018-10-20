@@ -13,7 +13,7 @@ public class CameraContorller : MonoBehaviour {
     public Color HitImageColor;
 
     [SerializeField]
-    private float currentZoom = 10.0f;
+    public float currentZoom = 10.0f;
     [SerializeField]
     private float currentYaw = 0f;
 

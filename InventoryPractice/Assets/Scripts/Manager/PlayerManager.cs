@@ -57,7 +57,6 @@ public class PlayerManager : MonoBehaviour {
     public void ResetPlayerPosition()
     {
         Player.transform.position = new Vector3(0.0f, 10.8f, -15.49f);
-        cameraContorller.offset = new Vector3(-0.17f, -0.2f, -0.12f);
         playerStats.Initialization();
         Player.transform.rotation = Quaternion.identity;
     }
