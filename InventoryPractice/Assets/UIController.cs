@@ -48,8 +48,7 @@ public class UIController : MonoBehaviour {
         inventoyUI.inventotyUI.gameObject.SetActive(false);
         equipmetInventoryUI.inventotyUI.gameObject.SetActive(false);
 
-        StageManager.instance.ChangeCombatStage();
-        
+        StageManager.instance.ChangeCombatStage();       
     }
 
     public void ChangeCombatOrLobbyUI()

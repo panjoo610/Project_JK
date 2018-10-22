@@ -42,6 +42,7 @@ public class StageManager : MonoBehaviour
     // Use this for initialization
     void Start() //초기화 함수 Initialization
     {
+        ClearText.gameObject.SetActive(false);
         NoticeText.text = GetCurrentSceneName();
 
         if (saveInventory.CurrentStage == 0)
