@@ -79,13 +79,13 @@ public class StageManager : MonoBehaviour
     {
         NoticeText.text = name + " Stage - " + CurrentStage.ToString();
         EnemyManager.instance.GenerateEnemy(CurrentStage);
-<<<<<<< HEAD
+
         LoadScene(StageName.Stage + CurrentStage.ToString());
-=======
+
         SceneManager.LoadScene(StageName.Stage + CurrentStage.ToString());
         PlayerManager.instance.cameraContorller.offset = new Vector3(-1f, -1.5f, 0f);
         PlayerManager.instance.cameraContorller.currentZoom = 10f;
->>>>>>> ebfa7d5159a5f4974817ffa3a97dd6ee9507f165
+
     }
 
     public void ClearStage()
