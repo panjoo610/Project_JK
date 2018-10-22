@@ -49,7 +49,7 @@ public class UIController : MonoBehaviour {
         equipmetInventoryUI.inventotyUI.gameObject.SetActive(false);
 
         StageManager.instance.ChangeCombatStage();
-        PlayerManager.instance.cameraContorller.offset = new Vector3(-0.59f, -0.56f, 0.68f);         
+        
     }
 
     public void ChangeCombatOrLobbyUI()
