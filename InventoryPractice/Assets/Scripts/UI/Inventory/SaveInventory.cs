@@ -45,6 +45,7 @@ public class SaveInventory : ScriptableObject
 
         savedItems.AromorModifiers = AromorModifiers;
         savedItems.DamageModifiers = DamageModifiers;
+
         JasonData = JsonUtility.ToJson(savedItems);
         
         File.WriteAllText(Application.dataPath + "/ItemList.json", JasonData);
@@ -55,8 +56,18 @@ public class SaveInventory : ScriptableObject
         if (!File.Exists(Application.dataPath + "/ItemList.json"))
         {
             File.CreateText(Application.dataPath + "/ItemList.json");
-        }
 
+            SaveItemListByJson();        
+        }
+        else
+        {
+            LoabJson();
+        }
+        EquimentManager.instance.EquipToSaveInven();
+        PlayerManager.instance.UpdateStatusUI();
+    }
+    void LoabJson()
+    {
         string load = File.ReadAllText(Application.dataPath + "/ItemList.json");
         var LoadData = JsonUtility.FromJson<SavedItems>(load);
 
@@ -67,19 +78,8 @@ public class SaveInventory : ScriptableObject
         AromorModifiers = LoadData.AromorModifiers;
         DamageModifiers = LoadData.DamageModifiers;
 
-
-        savedItems.items = items;
-        savedItems.equipmentItems = equipmentItems;
-        savedItems.PlayerGold = PlayerGold;
-        savedItems.CurrentStage = CurrentStage;
-        savedItems.AromorModifiers = AromorModifiers;
-        savedItems.DamageModifiers = DamageModifiers;
-
-        EquimentManager.instance.EquipToSaveInven();
-        PlayerManager.instance.UpdateStatusUI();
         SaveItemListByJson();
     }
-
     public void ResetData()
     {
         PlayerGold = 0;
@@ -90,6 +90,7 @@ public class SaveInventory : ScriptableObject
 
         AromorModifiers.Clear();
         DamageModifiers.Clear();
+
         // ---------------------------
         savedItems.PlayerGold = 0;
         savedItems.CurrentStage = 0;

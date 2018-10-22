@@ -124,16 +124,14 @@ public class EquimentManager : MonoBehaviour
 
     public void EquipToSaveInven()
     {
-        if (saveInventory.equipmentItems == null)
+        if (saveInventory.equipmentItems != null)
         {
-            return;
+            for (int i = 0; i < saveInventory.equipmentItems.Count; i++)
+            {
+                FirstEquip((Equipment)saveInventory.equipmentItems[i]);
+            }
+            inventory.Setting();
         }
-
-        for (int i = 0; i < saveInventory.equipmentItems.Count; i++)
-        {
-            FirstEquip((Equipment)saveInventory.equipmentItems[i]);
-        }
-        inventory.Setting();
     }
 
     void FirstEquip(Equipment newItem)

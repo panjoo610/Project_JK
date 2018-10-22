@@ -43,10 +43,7 @@ public class StatusSlot : MonoBehaviour {
         {
             playerStatusData.AddStatus(playerStatusData.kindOfStatus);
 
-
-            int temp = PlayerManager.instance.saveInventory.PlayerGold - Price;
-
-            PlayerManager.instance.ShowPlayerGold(temp);           
+            PlayerManager.instance.ShowPlayerGold(-Price);
         }
         UpdateUI();
     }

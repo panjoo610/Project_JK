@@ -32,6 +32,13 @@ public class StageManager : MonoBehaviour
     public delegate void OnGameClear();
     public OnGameClear OnGameClearCallBack;
 
+    public string nextScene;
+
+    [SerializeField]
+    Image progressBar;
+    [SerializeField]
+    GameObject loadingPanel;
+
     // Use this for initialization
     void Start() //초기화 함수 Initialization
     {
@@ -48,13 +55,20 @@ public class StageManager : MonoBehaviour
         }
     }
 
+    public void FirstLobby()
+    {
+        LoadScene(StageName.Lobby.ToString());
+
+        PlayerManager.instance.ResetPlayerPosition();
+    }
+
     public void MoveLobbyScene()
     {
         NoticeText.text = StageName.Lobby.ToString();
 
         EquimentManager.instance.saveInventory.SaveItemListByJson();
 
-        SceneManager.LoadScene(StageName.Lobby.ToString());
+        LoadScene(StageName.Lobby.ToString());
         
         PlayerManager.instance.ResetPlayerPosition();
     }
@@ -63,7 +77,7 @@ public class StageManager : MonoBehaviour
     {
         NoticeText.text = name + " Stage - " + CurrentStage.ToString();
         EnemyManager.instance.GenerateEnemy(CurrentStage);
-        SceneManager.LoadScene(StageName.Stage + CurrentStage.ToString());
+        LoadScene(StageName.Stage + CurrentStage.ToString());
     }
 
     public void ClearStage()
@@ -92,6 +106,48 @@ public class StageManager : MonoBehaviour
         string temp;
         temp = SceneManager.GetActiveScene().name;
         return temp;
+    }
+
+    public void LoadScene(string sceneName)
+    {
+        nextScene = sceneName;
+        loadingPanel.SetActive(!loadingPanel.activeSelf);
+        SceneManager.LoadScene("LoadingScene");
+        StartCoroutine(LoadScene());
+    }
+
+    IEnumerator LoadScene()
+    {
+        yield return null;
+
+        AsyncOperation op = SceneManager.LoadSceneAsync(nextScene);
+        op.allowSceneActivation = false;
+
+        float timer = 0.0f;
+        while (!op.isDone)
+        {
+            yield return null;
+
+            timer += Time.deltaTime;
+
+            if (op.progress >= 0.9f)
+            {
+                progressBar.fillAmount = Mathf.Lerp(progressBar.fillAmount, 1f, timer);
+
+                if (progressBar.fillAmount == 1.0f)
+                    op.allowSceneActivation = true;
+            }
+            else
+            {
+                progressBar.fillAmount = Mathf.Lerp(progressBar.fillAmount, op.progress, timer);
+                if (progressBar.fillAmount >= op.progress)
+                {
+                    timer = 0f;
+                }
+            }            
+        }
+        loadingPanel.SetActive(!loadingPanel.activeSelf);
+        progressBar.fillAmount = 0;
     }
 }
 public enum StageName { Lobby, InGame, Stage}

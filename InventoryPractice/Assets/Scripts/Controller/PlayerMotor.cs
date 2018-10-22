@@ -18,10 +18,11 @@ public class PlayerMotor : MonoBehaviour {
 
     private void Update()
     {
+
         if(target != null)
         {
             FaceTarget();
-            //agent.SetDestination(target.position); 공격 중 이동 막음 무제한 거리
+            agent.SetDestination(target.position);
         }
     }
 

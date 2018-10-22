@@ -40,9 +40,9 @@ public class CameraContorller : MonoBehaviour {
 
     public void Update()
     {
-        currentZoom -= Input.GetAxis("Mouse ScrollWheel") * zoomSpeed;
-        currentZoom = Mathf.Clamp(currentZoom, minZoom, maxZoom);
-        currentYaw -= Input.GetAxis("Horizontal") * yawSpeed * Time.deltaTime;     
+        //currentZoom -= Input.GetAxis("Mouse ScrollWheel") * zoomSpeed;
+        //currentZoom = Mathf.Clamp(currentZoom, minZoom, maxZoom);
+        //currentYaw -= Input.GetAxis("Horizontal") * yawSpeed * Time.deltaTime;     
     }
 
     private void LateUpdate()

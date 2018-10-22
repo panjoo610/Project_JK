@@ -72,7 +72,7 @@ public class UIController : MonoBehaviour {
     public void OnclickFirstStart()
     {
         GameStartButton.gameObject.SetActive(false);
-        StageManager.instance.MoveLobbyScene();        
+        StageManager.instance.FirstLobby();        
     }
 
 
@@ -85,15 +85,14 @@ public class UIController : MonoBehaviour {
     public void OnclickStopCombatStage()
     {
         PlayerManager.instance.playerController.RemoveFocus();
+        EnemyManager.instance.StageExit();
 
         ChangeCombatOrLobbyUI();
         OnClickStopPanel();
-        EnemyManager.instance.StageExit();
+
+        PlayerManager.instance.ShowPlayerGold(-100);
+
         StageManager.instance.MoveLobbyScene();
-
-        int temp = PlayerManager.instance.saveInventory.PlayerGold - 100;
-
-        PlayerManager.instance.ShowPlayerGold(temp);
     }
 
 
@@ -107,6 +106,7 @@ public class UIController : MonoBehaviour {
 
     public void ShowLobbyBtn()
     {
+        StopButton.gameObject.SetActive(!StopButton.gameObject.activeSelf);
         LobbyButton.gameObject.SetActive(true);
     }
 

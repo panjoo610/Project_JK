@@ -59,6 +59,7 @@ public class PlayerManager : MonoBehaviour {
         Player.transform.position = new Vector3(0.0f, 10.8f, -15.49f);
         cameraContorller.offset = new Vector3(-0.17f, -0.2f, -0.12f);
         playerStats.Initialization();
+        UpdateStatusUI();
         Player.transform.rotation = Quaternion.identity;
     }
 
@@ -66,15 +67,17 @@ public class PlayerManager : MonoBehaviour {
     {
         DamageCounter(playerStats.damage.GetValue());
         ArmorCounter(playerStats.armor.GetValue());
+        GoldCounter(saveInventory.PlayerGold);
     }
 
     public void ShowPlayerGold(int gold)
     {
-        if (gold > 0)
+        int temp = saveInventory.PlayerGold + gold;
+        if (temp > 0)
         {
-            iTween.ValueTo(gameObject, iTween.Hash("from", saveInventory.PlayerGold, "to", gold, "onUpdate", "GoldCounter", "delay", 0, "time", 2));
+            iTween.ValueTo(gameObject, iTween.Hash("from", saveInventory.PlayerGold, "to", temp, "onUpdate", "GoldCounter", "delay", 0, "time", 2));
 
-            saveInventory.PlayerGold = gold;
+            saveInventory.PlayerGold = temp;
             saveInventory.SaveItemListByJson();
         }
         else

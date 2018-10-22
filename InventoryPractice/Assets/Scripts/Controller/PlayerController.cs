@@ -46,19 +46,13 @@ public class PlayerController : MonoBehaviour {
 
                 RemoveFocus();
             }
-        }
-
-        if (Input.GetMouseButtonDown(0))
-        {
-            Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-
             if (Physics.Raycast(ray, out hit, 100))
             {
                 Debug.Log(hit.collider.GetComponent<Interactable>());
-                Interactable interactable =  hit.collider.GetComponent<Interactable>();
+                Interactable interactable = hit.collider.GetComponent<Interactable>();
                 if (interactable != null)
                 {
+                    // RemoveFocus();
                     SetFocus(interactable);
                 }
             }
@@ -97,13 +91,14 @@ public class PlayerController : MonoBehaviour {
 
             Vector3 focusPositon = new Vector3(Focus.transform.position.x, Focus.transform.position.y + 1.0f, Focus.transform.position.z);
             iTween.MoveTo(Bullet, iTween.Hash("position", focusPositon, "easeType", iTween.EaseType.easeInOutSine, "time", 0.2f));
-
-            Invoke("HideBullet", 0.3f);
+            //거리에 비례해서 총알이 점점 사라지게 만들 것
+            Invoke("HideBullet", 0.25f);
         }
     }
 
     public void HideBullet()
     {
+
         Bullet.SetActive(false);
         Bullet.transform.position = BulletPoint.transform.position;       
     }
