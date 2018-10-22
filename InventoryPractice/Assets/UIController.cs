@@ -22,6 +22,7 @@ public class UIController : MonoBehaviour {
     void Start ()
     {
         StageManager.instance.OnGameClearCallBack += ShowLobbyBtn;
+        StageManager.instance.OnGameOverCallBack += OnGameOver;
 
         inventoyUI = GetComponent<InventoyUI>();
         equipmetInventoryUI = GetComponent<EquipmetInventoryUI>();
@@ -53,6 +54,7 @@ public class UIController : MonoBehaviour {
 
     public void ChangeCombatOrLobbyUI()
     {
+        StopButton.interactable = true;
         StatusBtn.gameObject.SetActive(!StatusBtn.gameObject.activeSelf);
         StopButton.gameObject.SetActive(!StopButton.gameObject.activeSelf);
 
@@ -100,13 +102,27 @@ public class UIController : MonoBehaviour {
         ChangeCombatOrLobbyUI();
 
         StageManager.instance.MoveLobbyScene();
+
         LobbyButton.gameObject.SetActive(false);  
     }
 
     public void ShowLobbyBtn()
     {
-        StopButton.gameObject.SetActive(!StopButton.gameObject.activeSelf);
+        StopButton.interactable = false;
         LobbyButton.gameObject.SetActive(true);
+
+        EnemyManager.instance.StageExit();
+    }
+
+    public void OnGameOver()
+    {
+        ChangeCombatOrLobbyUI();
+
+        PlayerManager.instance.ShowPlayerGold(-100);
+
+        StageManager.instance.MoveLobbyScene();
+
+        EnemyManager.instance.StageExit();
     }
 
     public void OnStatus()

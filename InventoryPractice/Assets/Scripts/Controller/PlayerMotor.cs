@@ -10,6 +10,7 @@ public class PlayerMotor : MonoBehaviour {
 
     [SerializeField]
     Transform target;
+
 	// Use this for initialization
 	void Start ()
     {
@@ -18,11 +19,10 @@ public class PlayerMotor : MonoBehaviour {
 
     private void Update()
     {
-
         if(target != null)
         {
             FaceTarget();
-            agent.SetDestination(target.position);
+            //agent.SetDestination(target.position);
         }
     }
 
@@ -50,6 +50,6 @@ public class PlayerMotor : MonoBehaviour {
     {
         Vector3 direction = (target.position - transform.position).normalized;
         Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0f, direction.z));
-        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 10f);
     }
 }

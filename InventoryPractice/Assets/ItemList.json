@@ -1,5 +1,1 @@
-<<<<<<< HEAD
-{"items":[{"instanceID":17958},{"instanceID":16046},{"instanceID":15570}],"equipmentItems":[],"PlayerGold":0,"CurrentStage":1,"DamageModifiers":[],"AromorModifiers":[]}
-=======
-{"items":[{"instanceID":12724}],"equipmentItems":[],"PlayerGold":0,"CurrentStage":1,"DamageModifiers":[],"AromorModifiers":[]}
->>>>>>> 513584b1663618a791b65c52b60185bba16536a6
+{"items":[{"instanceID":12506}],"equipmentItems":[{"instanceID":12016},{"instanceID":14456}],"PlayerGold":300,"CurrentStage":1,"DamageModifiers":[],"AromorModifiers":[]}

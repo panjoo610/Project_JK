@@ -25,12 +25,15 @@ public class StageManager : MonoBehaviour
 
     public SaveInventory saveInventory;
 
-    public TextMeshProUGUI NoticeText, ClearText;
+    public TextMeshProUGUI SceneNoticeText, NoticeText, ClearBonusText;
 
     public int CurrentStage = 1;
 
     public delegate void OnGameClear();
     public OnGameClear OnGameClearCallBack;
+
+    public delegate void OnGameOver();
+    public OnGameOver OnGameOverCallBack;
 
     public string nextScene;
 
@@ -42,8 +45,8 @@ public class StageManager : MonoBehaviour
     // Use this for initialization
     void Start() //초기화 함수 Initialization
     {
-        ClearText.gameObject.SetActive(false);
-        NoticeText.text = GetCurrentSceneName();
+        NoticeText.gameObject.SetActive(false);
+        SceneNoticeText.text = GetCurrentSceneName();
 
         if (saveInventory.CurrentStage == 0)
         {
@@ -56,16 +59,27 @@ public class StageManager : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            ClearStage();
+        }
+    }
+
     public void FirstLobby()
     {
         LoadScene(StageName.Lobby.ToString());
-
+        SceneNoticeText.text = GetCurrentSceneName();
         PlayerManager.instance.ResetPlayerPosition();
     }
 
     public void MoveLobbyScene()
     {
-        NoticeText.text = StageName.Lobby.ToString();
+        ClearBonusText.gameObject.SetActive(false);
+        NoticeText.gameObject.SetActive(false);
+
+        SceneNoticeText.text = StageName.Lobby.ToString();
 
         EquimentManager.instance.saveInventory.SaveItemListByJson();
 
@@ -78,37 +92,48 @@ public class StageManager : MonoBehaviour
 
     public void ChangeCombatStage()
     {
-        NoticeText.text = name + " Stage - " + CurrentStage.ToString();
+        SceneNoticeText.text = " Stage - " + CurrentStage.ToString();
         EnemyManager.instance.GenerateEnemy(CurrentStage);
 
         LoadScene(StageName.Stage + CurrentStage.ToString());
 
-        SceneManager.LoadScene(StageName.Stage + CurrentStage.ToString());
         PlayerManager.instance.cameraContorller.offset = new Vector3(-1f, -1.5f, 0f);
         PlayerManager.instance.cameraContorller.currentZoom = 10f;
-
     }
 
     public void ClearStage()
     {
-        StartCoroutine(ShowClearText());
+        NoticeText.gameObject.SetActive(true);
+        ClearBonusText.gameObject.SetActive(true);
+
+        int bonousAmout = CurrentStage * 1000;
+        PlayerManager.instance.ShowPlayerGold(bonousAmout);
+
+        NoticeText.text = "Stage - " + CurrentStage.ToString() + " Clear !";
+        ClearBonusText.text = "Clear Reward : $" + bonousAmout.ToString();
 
         if (OnGameClearCallBack != null)
             OnGameClearCallBack.Invoke();
 
         CurrentStage += 1;
+        
         //게임을 완전히 클리어했다면 걸린 시간과 비교해서 골드를 줄 것과 획득 결과창만들 것
         
         saveInventory.CurrentStage = CurrentStage;
-        saveInventory.SaveItemListByJson();
+        saveInventory.SaveItemListByJson();   
     }
 
-    IEnumerator ShowClearText()
+    public void GameOver()
     {
-        ClearText.gameObject.SetActive(true);
-        ClearText.text = "Stage" + CurrentStage.ToString() + " Clear !";
-        yield return new WaitForSeconds(3.0f);
-        ClearText.gameObject.SetActive(false);
+        NoticeText.gameObject.SetActive(true);
+        NoticeText.text = "GAME OVER";
+
+        Invoke("GameOverNotice", 2.5f);
+    }
+    public void GameOverNotice()
+    {
+        if (OnGameOverCallBack != null)
+            OnGameOverCallBack.Invoke();
     }
 
     public string GetCurrentSceneName()

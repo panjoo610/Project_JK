@@ -56,6 +56,7 @@ public class PlayerManager : MonoBehaviour {
 
     public void ResetPlayerPosition()
     {
+        cameraContorller.HideHitImage();
         Player.transform.position = new Vector3(0.0f, 10.8f, -15.49f);
         playerStats.Initialization();
         UpdateStatusUI();

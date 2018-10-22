@@ -66,7 +66,7 @@ public class CharacterCombat : MonoBehaviour {
     public virtual void AttackHit_AnimationEvent() 
     {
         oppoenentStats.TakeDamage(myStats.damage.GetValue());
-
+        
         if (oppoenentStats.currentHealth <= 0)
         {
             InCombat = false;

@@ -15,7 +15,7 @@ public class PlayerStats : CharacterStats {
     {
         if (Input.GetKeyDown(KeyCode.T))
         {
-            TakeDamage(10);
+            TakeDamage(50);
         }
     }
 
@@ -48,7 +48,6 @@ public class PlayerStats : CharacterStats {
         //리스타트 씬
         PlayerManager.instance.ShowPlayerGold(-100);
 
-        StageManager.instance.MoveLobbyScene();
-        //PlayerManager.instance.KillPlayer();
+        StageManager.instance.GameOver();
     }
 }

@@ -33,35 +33,34 @@ public class CameraContorller : MonoBehaviour {
     }
 
     private void Start()
-    {
+    {   
         target = PlayerManager.instance.Player.transform;
         HitImageColor = HitImage.color;
-    }
-
-    public void Update()
-    {
-        //currentZoom -= Input.GetAxis("Mouse ScrollWheel") * zoomSpeed;
-        //currentZoom = Mathf.Clamp(currentZoom, minZoom, maxZoom);
-        //currentYaw -= Input.GetAxis("Horizontal") * yawSpeed * Time.deltaTime;     
     }
 
     private void LateUpdate()
     {        
         transform.position = target.position + shakePos - offset * currentZoom;
-        //transform.position = transform.position + shakePos.position;
+
         transform.LookAt(target.position + Vector3.up * pitch);
 
         transform.RotateAround(target.position, Vector3.up, currentYaw);
     }
 
+    public void HideHitImage()
+    {
+        StopCoroutine(Shake(0f,0f));
+        HitImage.gameObject.SetActive(false);
+    }
+
     public void ShakeCamera()
     {
+        HitImage.gameObject.SetActive(true);
         if (!isShake)
         {
             isShake = true;
             StartCoroutine(Shake(.25f, .7f)); 
-        }
-        
+        }    
     }
     IEnumerator Shake(float duation, float magnitude)
     {

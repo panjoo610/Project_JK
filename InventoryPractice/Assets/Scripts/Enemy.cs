@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 [RequireComponent(typeof(CharacterStats))]
 public class Enemy : Interactable {
@@ -20,7 +21,7 @@ public class Enemy : Interactable {
 
         CharacterCombat playerCombat = PlayerManager.instance.Player.GetComponent<CharacterCombat>();
 
-        if (playerCombat != null)
+        if (playerCombat != null) //네비메쉬가 작동 중임을 체크할 것
         {
             playerCombat.Attack(myStats);
         }
