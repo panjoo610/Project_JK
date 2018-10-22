@@ -1,121 +1,110 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
+public enum BossState
+{
+    Idle, Move, Attack, Skill, Dead
+}
+
 public class BossController : MonoBehaviour {
+    
+
+    BossAnimator animator;
+    BossMovement movement;
+    BossState state;
 
     public Transform target;
     public float lookRadius;
-
     NavMeshAgent agent;
-    IBossState bossState;
-    
+    bool IsEngage;
+    float coolTime;
 
-    // Use this for initialization
     void Start () {
         Initialize();
 	}
-    public void Initialize()
+
+    void Initialize()
     {
-        agent = GetComponent<NavMeshAgent>();
         //target = PlayerManager.instance.transform;
-        bossState = new IBossIdleState();
+        agent = GetComponent<NavMeshAgent>();
+        target = GameObject.FindGameObjectWithTag("Player").transform;
+        animator = GetComponent<BossAnimator>();
+        ChangeState(BossState.Idle);
     }
-    // Update is called once per frame
+
     void Update () {
-        float distance = Vector3.Distance(target.position, transform.position);
-        if (distance <= lookRadius)
+        if (!IsEngage) //플레이어를 발견조건
         {
-            //이동으로 상태 변경
-            //agent.SetDestination(target.position);
+            float distance = Vector3.Distance(target.position, transform.position);
+            if (distance <= lookRadius)
+            {
+                ChangeState(BossState.Move);
+                IsEngage = true;
+            }
         }
-        if(distance<= agent.stoppingDistance)
+        else //교전시작후 스킬 쿨타임
         {
-            //공격으로 상태변경
+            float runtime = Time.deltaTime;
+            if (runtime >= coolTime)
+            {
+                ChangeState(BossState.Skill);
+                runtime = 0;
+            }
+        }
+        
+        movement.Behaviour();
+        Debug.Log(state + " 0");
+        if (movement.CheckIsDone(out state))
+        {
+            Debug.Log(state + " 1");
+            movement.CheckIsDone(out state);
+            Debug.Log(state + " 2");
+            AnimationState(state);
         }
 	}
 
-
-    void FaceTarget(Vector3 target, Transform my)
+    private void AnimationState(BossState state)
     {
-        Vector3 directiont = (target - my.position).normalized;
-        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(directiont.x, 0, directiont.z));
-        my.rotation = Quaternion.Slerp(my.rotation, lookRotation, Time.deltaTime * 5f);
+        switch (state)
+        {
+            case BossState.Attack:
+                animator.Attack();
+                //EnemyCombet.Attack();
+                Debug.Log("Attack");
+                break;
+            case BossState.Skill:
+                Debug.Log("Skill");
+                //EnemyCombet.Attack();
+                animator.Skill();
+                break;
+            default:
+                break;
+        }
     }
-    
-
-
-}
-
-public interface IBossState
-{
-    void Behavior();
-}
-public class IBossIdleState : IBossState
-{
-    public void Behavior()
+    private void ChangeState(BossState state)
     {
-        
-    }
-}
-public class IBossAttackState : IBossState
-{
-    Vector3 target;
-    Transform myTransform;
-    Animator animator;
-
-    public IBossAttackState(Vector3 target, Transform myTransform, Animator animator)
-    {
-        this.target = target;
-        this.myTransform = myTransform;
-        this.animator = animator;
-    }
-    public void Behavior()
-    {
-        animator.SetTrigger("Attack01");
-        FaceTarget(target, myTransform);
-    }
-
-    void FaceTarget(Vector3 target, Transform my)
-    {
-        Vector3 directiont = (target - my.position).normalized;
-        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(directiont.x, 0, directiont.z));
-        my.rotation = Quaternion.Slerp(my.rotation, lookRotation, Time.deltaTime * 5f);
+        switch (state)
+        {
+            case BossState.Idle:
+                movement = new IdleMovement(agent, transform, 1f);
+                animator.Idle();
+                break;
+            case BossState.Move:
+                movement = new NomalMovement(agent, target, transform, 1f);
+                break;
+            case BossState.Skill:
+                movement = new StraightMovement(agent, target, transform, 3f);
+                break;
+            case BossState.Dead:
+                movement = new DoNotMovement();
+                animator.Dead();
+                break;
+            default:
+                break;
+        }
     }
 }
 
-
-
-//public Item item;
-//public GameObject particle, itemMesh;
-
-//public override void Interact()
-//{
-//    base.Interact();
-//    PickUp();
-//}
-//void PickUp()
-//{
-//    Debug.Log("아이템을 집었다");
-//    bool wasPickedUp = InventoryManager.instance.Add(item);
-
-//    if (wasPickedUp)
-//    {
-//        Vector3 playerPosition = new Vector3(PlayerManager.instance.Player.transform.position.x, PlayerManager.instance.Player.transform.position.y + 1.0f, PlayerManager.instance.Player.transform.position.z);
-//        iTween.MoveTo(gameObject, iTween.Hash("position", playerPosition, "easeType", iTween.EaseType.easeInOutSine, "oncomplete", "Destroy", "time", 0.2f));
-//    }
-
-//}
-
-//void Destroy()
-//{
-//    StartCoroutine(DestroyItem());
-//}
-//IEnumerator DestroyItem()
-//{
-//    particle.SetActive(true);
-//    Destroy(itemMesh);
-//    yield return new WaitForSeconds(0.5f);
-//    Destroy(gameObject);
-//}

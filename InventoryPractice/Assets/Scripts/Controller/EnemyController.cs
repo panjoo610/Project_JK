@@ -53,7 +53,7 @@ public class EnemyController : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        if (combat.myStats.currentHealth>=1)
+        if (combat.myStats.currentHealth >= 1 && EnemyManager.instance.IsWorking)
         {
             float distance = Vector3.Distance(target.position, transform.position);
 
@@ -78,7 +78,6 @@ public class EnemyController : MonoBehaviour {
             }
             else if (distance > lookRadius && isIdle == false)
             {
-                StopCoroutine(EnemyObjectMove());
                 agent.stoppingDistance = 0f;
                 Debug.Log("오리지널포지션으로");
                 agent.SetDestination(originalPos);
