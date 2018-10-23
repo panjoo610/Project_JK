@@ -18,7 +18,7 @@ public class EnemyController : MonoBehaviour {
     public GameObject[] enemyObjects;
     [SerializeField]
     Transform[] currentPosition;
-    //int count;
+    int count;
     private bool isMove;
     private bool isIdle;
     EnemyAnimator enemyAnimator;
@@ -43,7 +43,7 @@ public class EnemyController : MonoBehaviour {
         target = PlayerManager.instance.Player.transform;
         originalPos = transform.position;
         combat = GetComponent<EnemyCombat>();
-        //count = GetComponentsInChildren<Animator>().Length;
+        count = GetComponentsInChildren<Animator>().Length;
         enemyAnimator = GetComponent<EnemyAnimator>();
         targetStats = target.GetComponent<CharacterStats>();
         agent = GetComponent<NavMeshAgent>();
