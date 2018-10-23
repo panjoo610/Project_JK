@@ -7,7 +7,6 @@ public class Interactable : MonoBehaviour {
     public float radius = 10.0f;
     public Transform interactionTransform;
     bool isFocus = false;
-    Transform player;
 
     bool hasInteracted = false;
 
@@ -27,14 +26,12 @@ public class Interactable : MonoBehaviour {
     public void OnFocused(Transform playerTransform)
     {
         isFocus = true;
-        player = playerTransform; 
         hasInteracted = false;
     }
 
     public void OnDeFocused()
     {
         isFocus = false;
-        player = null;
         hasInteracted = false;
     }
 
