@@ -104,9 +104,9 @@ public class CharacterCreator : ScriptableWizard
         
 
         //Move Objects
-        ReparentObjects(newReferencePlayer.transform.FindChild("PlayerLight"), characterGO.transform);
-        ReparentObjects(newReferencePlayer.transform.FindChild("HUD"), characterGO.transform);
-        ReparentObjects(newReferencePlayer.transform.FindChild("CameraTarget"), characterGO.transform);
+        //ReparentObjects(newReferencePlayer.transform.FindChild("PlayerLight"), characterGO.transform);
+        //ReparentObjects(newReferencePlayer.transform.FindChild("HUD"), characterGO.transform);
+        //ReparentObjects(newReferencePlayer.transform.FindChild("CameraTarget"), characterGO.transform);
 
         //Set New Skinned Meshes to inventory
         characterGO.GetComponent<PrTopDownCharInventory>().MeshRenderers = characterGO.GetComponentsInChildren<SkinnedMeshRenderer>();
@@ -201,7 +201,7 @@ public class CharacterCreator : ScriptableWizard
         CopyComponents(newReferencePlayer.GetComponent<NavMeshAgent>(), characterGO);
 
         //Move Objects
-        ReparentObjects(newReferencePlayer.transform.FindChild("DebugText"), characterGO.transform);
+        //ReparentObjects(newReferencePlayer.transform.FindChild("DebugText"), characterGO.transform);
 
         //Set Weapon Grip
         if (WeaponGrip != null && RefWeaponGrip != null)
