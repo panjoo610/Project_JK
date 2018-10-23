@@ -13,7 +13,7 @@ public class SquadTest : Enemy {
     private Vector3 offset;
     Transform target;
     int InRangeCount;
-    Collider[] collider;
+    Collider[] colliders;
     public int HitPoint;
     
 
@@ -24,13 +24,13 @@ public class SquadTest : Enemy {
         target = GameObject.FindGameObjectWithTag("Player").transform;
         squadMember = new GameObject[UnitCount];
         currentPosition = new Transform[UnitCount];
-        collider = new Collider[UnitCount];
+        colliders = new Collider[UnitCount];
         for (int i = 0; i < squadMember.Length; i++)
         {
             squadMember[i] = transform.GetChild(i).gameObject;
             squadUnit.Add(squadMember[i].GetComponent<SquadUnit>());
             currentPosition[i] = new GameObject().transform;
-            collider[i] = squadMember[i].gameObject.GetComponent<Collider>();
+            colliders[i] = squadMember[i].gameObject.GetComponent<Collider>();
             
         }
         //gameObject.AddComponent<Collider>();
@@ -55,7 +55,7 @@ public class SquadTest : Enemy {
         {
             return squadMember[0].transform.position;
         }
-        var bounds = new Bounds(squadMember[0].transform.position, Vector3.zero);
+        //var bounds = new Bounds(squadMember[0].transform.position, Vector3.zero);
         
         return Vector3.zero;
     }
