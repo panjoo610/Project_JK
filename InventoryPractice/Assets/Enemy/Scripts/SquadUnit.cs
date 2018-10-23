@@ -17,10 +17,10 @@ public class SquadUnit : MonoBehaviour {
 
     float distance;
     public bool isEngage;
-    CharacterCombat combat;
+    //CharacterCombat combat;
     public float attackSpeed = 2f;
     float attackCoolDown = 0f;
-    float lastAttackTime;
+    //float lastAttackTime;
 
     const float combatCoolDown = 2.0f;
 
@@ -33,7 +33,7 @@ public class SquadUnit : MonoBehaviour {
         agent = GetComponent<NavMeshAgent>();
         squadTest = GetComponentInParent<SquadTest>();
         animator = GetComponentInChildren<Animator>();
-        combat = GetComponentInParent<CharacterCombat>();
+        //combat = GetComponentInParent<CharacterCombat>();
     }
 	
 	// Update is called once per frame
@@ -95,7 +95,7 @@ public class SquadUnit : MonoBehaviour {
             animator.SetTrigger("attack1");
 
             attackCoolDown = 0.5f / attackSpeed;
-            lastAttackTime = Time.time;
+            //lastAttackTime = Time.time;
         }
     }
     public void Die()
