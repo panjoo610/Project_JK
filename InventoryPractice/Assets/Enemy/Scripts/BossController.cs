@@ -20,7 +20,8 @@ public class BossController : MonoBehaviour {
     public float lookRadius;
     NavMeshAgent agent;
     bool IsEngage;
-    float coolTime;
+    public float coolTime;
+    float runtime;
 
     void Start () {
         Initialize();
@@ -47,9 +48,10 @@ public class BossController : MonoBehaviour {
         }
         else //교전시작후 스킬 쿨타임
         {
-            float runtime = Time.deltaTime;
+            runtime += Time.deltaTime;
             if (runtime >= coolTime)
             {
+                Debug.Log("스킬을 사용함 "+ runtime);
                 ChangeState(BossState.Skill);
                 runtime = 0;
             }
@@ -59,9 +61,8 @@ public class BossController : MonoBehaviour {
         Debug.Log(state + " 0");
         if (movement.CheckIsDone(out state))
         {
-            Debug.Log(state + " 1");
-            movement.CheckIsDone(out state);
-            Debug.Log(state + " 2");
+            //movement.CheckIsDone(out state);
+            Debug.Log(state);
             AnimationState(state);
         }
 	}
@@ -73,7 +74,7 @@ public class BossController : MonoBehaviour {
             case BossState.Attack:
                 animator.Attack();
                 //EnemyCombet.Attack();
-                Debug.Log("Attack");
+                Debug.Log("Attack 애니메이션 재생");
                 break;
             case BossState.Skill:
                 Debug.Log("Skill");
@@ -105,6 +106,12 @@ public class BossController : MonoBehaviour {
             default:
                 break;
         }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, lookRadius);
     }
 }
 

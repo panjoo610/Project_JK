@@ -35,7 +35,7 @@ public class NomalMovement : BossMovement
         base.myTransform = myTransform;
         base.speed = speed;
         IsDone = false;
-        agent.stoppingDistance = 1f;
+        agent.stoppingDistance = 5f;
     }
 
     public override void Behaviour()
@@ -66,31 +66,31 @@ public class NomalMovement : BossMovement
 
 public class StraightMovement : BossMovement
 {
-    Transform newTransform;
+    Vector3 newTransform;
     public StraightMovement(NavMeshAgent agent, Transform target, Transform myTransform, float speed)
     {
         base.agent = agent;
         base.myTransform = myTransform;
         base.speed = speed;
         IsDone = false;
-        newTransform.position = new Vector3(target.position.x, target.position.y, target.position.z);
-        agent.stoppingDistance = 0.3f;
+        newTransform = new Vector3(target.position.x, target.position.y, target.position.z);
+        agent.stoppingDistance = 3f;
     }
 
     public override void Behaviour()
     {
         if (!IsDone)
         {
-            float distance = Vector3.Distance(newTransform.position, myTransform.position);
+            float distance = Vector3.Distance(newTransform, myTransform.position);
             if (distance <= agent.stoppingDistance)
             {
                 ArriveAtDestination();
             }
             else
             {
-                FaceTarget(newTransform.position, myTransform);
+                FaceTarget(newTransform, myTransform);
                 agent.speed = speed;
-                agent.SetDestination(newTransform.position);
+                agent.SetDestination(newTransform);
             } 
         }
     }
@@ -105,7 +105,7 @@ public class StraightMovement : BossMovement
 public class IdleMovement : BossMovement
 {
     Transform originalTransfrom;
-    Transform newTransform;
+    Vector3 newTransform;
     public IdleMovement(NavMeshAgent agent, Transform myTransform, float speed)
     {
         base.agent = agent;
@@ -113,7 +113,8 @@ public class IdleMovement : BossMovement
         base.speed = speed;
         IsDone = false;
         originalTransfrom = base.myTransform;
-        newTransform.position = new Vector3(originalTransfrom.position.x - Random.Range(0, 2f), originalTransfrom.position.y, originalTransfrom.position.z - Random.Range(0, 2f));
+        newTransform = new Vector3(originalTransfrom.position.x - Random.Range(0, 2f), originalTransfrom.position.y, originalTransfrom.position.z - Random.Range(0, 2f));
+        //newTransform.position = new Vector3(originalTransfrom.position.x - Random.Range(0, 2f), originalTransfrom.position.y, originalTransfrom.position.z - Random.Range(0, 2f));
         agent.stoppingDistance = 0.3f;
     }
 
@@ -121,16 +122,16 @@ public class IdleMovement : BossMovement
     {
         if (!IsDone)
         {
-            float distance = Vector3.Distance(newTransform.position, myTransform.position);
+            float distance = Vector3.Distance(newTransform, myTransform.position);
             if (distance <= agent.stoppingDistance)
             {
                 ArriveAtDestination();
             }
             else
             {
-                FaceTarget(newTransform.position, myTransform);
+                FaceTarget(newTransform, myTransform);
                 agent.speed = speed;
-                agent.SetDestination(newTransform.position);
+                agent.SetDestination(newTransform);
             }
         }
     }
