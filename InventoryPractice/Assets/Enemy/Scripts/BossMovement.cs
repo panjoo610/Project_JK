@@ -72,6 +72,7 @@ public class StraightMovement : BossMovement
         base.agent = agent;
         base.myTransform = myTransform;
         base.speed = speed;
+        newTransform = base.myTransform;
         IsDone = false;
         newTransform.position = new Vector3(target.position.x, target.position.y, target.position.z);
         agent.stoppingDistance = 0.3f;
@@ -113,6 +114,7 @@ public class IdleMovement : BossMovement
         base.speed = speed;
         IsDone = false;
         originalTransfrom = base.myTransform;
+        newTransform = originalTransfrom;
         newTransform.position = new Vector3(originalTransfrom.position.x - Random.Range(0, 2f), originalTransfrom.position.y, originalTransfrom.position.z - Random.Range(0, 2f));
         agent.stoppingDistance = 0.3f;
     }

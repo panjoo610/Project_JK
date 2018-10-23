@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SquadHealthUI : MonoBehaviour
 {
-    Transform cam;
+    //Transform cam;
     Transform ui;
     public GameObject sq;
 
@@ -13,7 +13,7 @@ public class SquadHealthUI : MonoBehaviour
     void Start()
     {
         Debug.Log(sq);
-        cam = Camera.main.transform;
+        //cam = Camera.main.transform;
 
         ui = transform.GetChild(0).gameObject.transform;
     }

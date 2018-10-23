@@ -8,7 +8,6 @@ public class EnemyGenerator : MonoBehaviour {
     /// Generator
     /// </summary>
     
-    float coolTime;
     
     EnemyPool enemyPool;
 
@@ -37,7 +36,6 @@ public class EnemyGenerator : MonoBehaviour {
         
         GenerateParticle = EnemyManager.instance.GenerateParticle;
         enemyPool = EnemyManager.instance.enemyPool;
-        coolTime = EnemyManager.instance.CoolTime;
         IsGenerating = false;
         generatePositions = positions;
         this.waveCount = waveCount;
