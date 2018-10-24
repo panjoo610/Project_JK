@@ -18,12 +18,13 @@ public class CharacterCombat : MonoBehaviour {
 
     public event System.Action OnAttack;
 
-    public bool InCombat;
+    public bool InCombat, Die;
 
     public CharacterStats oppoenentStats;
 
     public virtual void Start()
     {
+        Die = false;
         myStats = GetComponent<CharacterStats>();
         if(myStats == null)
         {
@@ -52,7 +53,7 @@ public class CharacterCombat : MonoBehaviour {
                 OnAttack();
                 if (targetStats.tag=="Player")
                 {
-                    Invoke("AttackHit_AnimationEvent",.5f);
+                    Invoke("AttackHit_AnimationEvent", 0.5f);
                     SoundManager.instance.PlaySFX("MonsterAttack", false);
                 }
             }
@@ -69,7 +70,7 @@ public class CharacterCombat : MonoBehaviour {
         
         if (oppoenentStats.currentHealth <= 0)
         {
-            InCombat = false;
+            InCombat = false;        
         }
     }
 }

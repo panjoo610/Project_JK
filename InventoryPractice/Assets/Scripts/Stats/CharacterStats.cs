@@ -10,6 +10,7 @@ public class CharacterStats : MonoBehaviour {
     public Stats armor;
 
     public event System.Action<int, int> OnHealthChanged;
+    
 
     private void Awake()
     {
@@ -30,7 +31,7 @@ public class CharacterStats : MonoBehaviour {
 
         if(currentHealth <= 0)
         {
-            Die();
+            Die();        
         }
     }
 
@@ -39,7 +40,7 @@ public class CharacterStats : MonoBehaviour {
         Debug.Log(transform.name + "died.");
     }
 
-    public void Initialization()
+    public virtual void Initialization()
     {
         maxHealth = 100;
         currentHealth = maxHealth;

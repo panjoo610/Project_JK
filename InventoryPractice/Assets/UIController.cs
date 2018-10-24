@@ -22,7 +22,8 @@ public class UIController : MonoBehaviour {
     void Start ()
     {
         StageManager.instance.OnGameClearCallBack += ShowLobbyBtn;
-        StageManager.instance.OnGameOverCallBack += OnGameOver;
+        StageManager.instance.OnMoveLobbySceneCallBack += MoveLobbyWhenGameOver;
+        StageManager.instance.OnGameOverCallBack += ShowHidePaenl;
 
         inventoyUI = GetComponent<InventoyUI>();
         equipmetInventoryUI = GetComponent<EquipmetInventoryUI>();
@@ -64,18 +65,47 @@ public class UIController : MonoBehaviour {
         combatStartButton.gameObject.SetActive(!combatStartButton.gameObject.activeSelf);
 
         InformationPanel.SetActive(!InformationPanel.activeSelf);
-        
 
-        HidePanel.SetActive(!HidePanel.activeSelf);
+        StartCoroutine(ShowHidePanelCoroutine(3.0f));
+        
         CombatPanel.SetActive(!CombatPanel.activeSelf);
     }
+
+    IEnumerator ShowHidePanelCoroutine(float time)
+    {
+        if (!HidePanel.activeInHierarchy)
+        {
+            HidePanel.SetActive(true);
+            yield return null;
+        }
+        else
+        {
+            HidePanel.SetActive(true);
+            yield return new WaitForSeconds(time);
+            HidePanel.SetActive(false);
+        }
+    }
+    public void ShowHidePaenl()
+    {
+        EnemyManager.instance.StageExit();
+        HidePanel.SetActive(true);
+    }
+
+    public void MoveLobbyWhenGameOver()
+    {
+        ChangeCombatOrLobbyUI();
+        
+        PlayerManager.instance.ShowPlayerGold(-100);
+
+        StageManager.instance.MoveLobbyScene();
+    }
+
 
     public void OnclickFirstStart()
     {
         GameStartButton.gameObject.SetActive(false);
         StageManager.instance.FirstLobby();        
     }
-
 
     public void OnClickStopPanel()
     {
@@ -114,16 +144,6 @@ public class UIController : MonoBehaviour {
         EnemyManager.instance.StageExit();
     }
 
-    public void OnGameOver()
-    {
-        ChangeCombatOrLobbyUI();
-
-        PlayerManager.instance.ShowPlayerGold(-100);
-
-        StageManager.instance.MoveLobbyScene();
-
-        EnemyManager.instance.StageExit();
-    }
 
     public void OnStatus()
     {

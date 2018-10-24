@@ -5,9 +5,11 @@ using UnityEngine;
 public class PlayerStats : CharacterStats {
 
 
-	
-	void Start ()
-    {     
+    public CharacterCombat characterCombat;
+
+    void Start ()
+    {
+        characterCombat = GetComponent<CharacterCombat>();
         EquimentManager.instance.onEquipmentChanged += OnEquipmentChanged;
 	}
 
@@ -39,10 +41,17 @@ public class PlayerStats : CharacterStats {
         SoundManager.instance.PlaySFX("PlayerHit", false);
         PlayerManager.instance.cameraContorller.ShakeCamera(); //플레이어매니저로 이동할 것
     }
+    public override void Initialization()
+    {
+        base.Initialization();
+        characterCombat.Die = false;
+    }
 
     public override void Die()
     {
         base.Die();
+        PlayerManager.instance.playerController.RemoveFocus();
+        characterCombat.Die = true;
         //KILL THE PLAYER
         //게임오버스크린 , 패널티 , 리스폰
         //리스타트 씬

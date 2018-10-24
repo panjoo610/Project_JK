@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CameraContorller : MonoBehaviour {
+public class CameraContorller : MonoBehaviour
+{
     public Transform target;
     public Vector3 shakePos;
     
@@ -62,14 +63,52 @@ public class CameraContorller : MonoBehaviour {
             StartCoroutine(Shake(.25f, .7f)); 
         }    
     }
-    IEnumerator Shake(float duation, float magnitude)
+
+    public void RobbyCamera()
+    {
+        offset = new Vector3(-0.17f, -0.2f, -0.12f); //로비씬
+        currentZoom = 15f;
+    }
+
+    IEnumerator DirectingCameraCoroutine(float x, float y, float z)
+    {
+        Vector3 goalPosition = new Vector3(x, y, z);
+
+        float duration = 3.0f;
+
+        float elapsed = .0f;
+
+        float zoom = 10.0f;
+
+        //float currentZooms = 0.0f;
+
+        Vector3 prvePositoin = offset;
+
+        while (elapsed < duration)
+        {
+            offset = Vector3.Lerp(prvePositoin, goalPosition, elapsed / duration);
+            
+            currentZoom = zoom * elapsed / duration;
+            
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+        currentZoom = 10f;    
+    }
+
+    public void ActingCombat()
+    {
+        StartCoroutine(DirectingCameraCoroutine(-1f, -1.5f, 0f));
+    }
+
+    IEnumerator Shake(float duration, float magnitude)
     {
         Vector3 originalPos = shakePos;
 
         float elapsed = 0.0f;
         HitImageColor.a = 0f;
         HitImage.color = HitImageColor;
-        while (elapsed < duation)
+        while (elapsed < duration)
         {
             if (HitImageColor.a <= 128)
             {

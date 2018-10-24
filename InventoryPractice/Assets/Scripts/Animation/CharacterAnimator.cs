@@ -45,7 +45,9 @@ public class CharacterAnimator : MonoBehaviour {
         animator.SetFloat("SpeedPercent", speedPercent, locomationAnimationSmoothTime, Time.deltaTime);
 
         animator.SetBool("InCombat", combat.InCombat);
-	}
+
+        animator.SetBool("Die", combat.Die);
+    }
 
      protected virtual void OnAttack()
      {

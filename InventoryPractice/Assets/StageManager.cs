@@ -32,6 +32,9 @@ public class StageManager : MonoBehaviour
     public delegate void OnGameClear();
     public OnGameClear OnGameClearCallBack;
 
+    public delegate void OnMoveLobbyScene();
+    public OnMoveLobbyScene OnMoveLobbySceneCallBack;
+
     public delegate void OnGameOver();
     public OnGameOver OnGameOverCallBack;
 
@@ -42,6 +45,7 @@ public class StageManager : MonoBehaviour
     [SerializeField]
     GameObject loadingPanel;
 
+    const int clearAmount = 1000;
     // Use this for initialization
     void Start() //초기화 함수 Initialization
     {
@@ -86,8 +90,7 @@ public class StageManager : MonoBehaviour
         LoadScene(StageName.Lobby.ToString());
         
         PlayerManager.instance.ResetPlayerPosition();
-        PlayerManager.instance.cameraContorller.offset = new Vector3(-0.17f, -0.2f, -0.12f);
-        PlayerManager.instance.cameraContorller.currentZoom = 15f;
+        PlayerManager.instance.cameraContorller.RobbyCamera(); 
     }
 
     public void ChangeCombatStage()
@@ -97,8 +100,17 @@ public class StageManager : MonoBehaviour
 
         LoadScene(StageName.Stage + CurrentStage.ToString());
 
-        PlayerManager.instance.cameraContorller.offset = new Vector3(-1f, -1.5f, 0f);
-        PlayerManager.instance.cameraContorller.currentZoom = 10f;
+        StartCoroutine(ShowGameStartText(2.0f));
+        PlayerManager.instance.cameraContorller.ActingCombat();
+
+    }
+
+    IEnumerator ShowGameStartText(float time)
+    {
+        NoticeText.gameObject.SetActive(true);
+        NoticeText.text = "Game Start !";
+        yield return new WaitForSeconds(time);
+        NoticeText.gameObject.SetActive(false);
     }
 
     public void ClearStage()
@@ -106,7 +118,7 @@ public class StageManager : MonoBehaviour
         NoticeText.gameObject.SetActive(true);
         ClearBonusText.gameObject.SetActive(true);
 
-        int bonousAmout = CurrentStage * 1000;
+        int bonousAmout = CurrentStage * clearAmount;
         PlayerManager.instance.ShowPlayerGold(bonousAmout);
 
         NoticeText.text = "Stage - " + CurrentStage.ToString() + " Clear !";
@@ -123,14 +135,23 @@ public class StageManager : MonoBehaviour
         saveInventory.SaveItemListByJson();   
     }
 
+
     public void GameOver()
     {
         NoticeText.gameObject.SetActive(true);
         NoticeText.text = "GAME OVER";
 
-        Invoke("GameOverNotice", 2.5f);
+        prevGameOver();
+
+        Invoke("GameOverNotice", 3f);
     }
     public void GameOverNotice()
+    {
+        if (OnMoveLobbySceneCallBack != null)
+            OnMoveLobbySceneCallBack.Invoke();
+    }
+
+    public void prevGameOver()
     {
         if (OnGameOverCallBack != null)
             OnGameOverCallBack.Invoke();

@@ -20,8 +20,6 @@ public class HealthUI : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
     {
-        cam = Camera.main.transform;
-
 		foreach(Canvas c in FindObjectsOfType<Canvas>())
         {
             if(c.renderMode == RenderMode.WorldSpace)
@@ -56,8 +54,6 @@ public class HealthUI : MonoBehaviour {
         if(ui != null)
         {
             ui.position = target.position;
-            ui.forward = new Vector3(-cam.position.x, 0, -cam.position.z);//
-
             if (Time.time - lastMadeVisibleTime > visibleTime)
             {
                 ui.gameObject.SetActive(false);
