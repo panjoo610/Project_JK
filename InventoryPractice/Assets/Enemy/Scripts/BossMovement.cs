@@ -10,7 +10,7 @@ public abstract class BossMovement {
 
 
     public abstract void Behaviour();
-    public abstract bool CheckIsDone(out BossState bossState);
+    public abstract bool CheckIsDone(out BossMovementState bossState);
 
 
     protected void FaceTarget(Vector3 target, Transform my)
@@ -35,7 +35,8 @@ public class NomalMovement : BossMovement
         base.myTransform = myTransform;
         base.speed = speed;
         IsDone = false;
-        agent.stoppingDistance = 5f;
+        base.agent.stoppingDistance = 5f;
+        base.agent.speed = speed;
     }
 
     public override void Behaviour()
@@ -43,22 +44,23 @@ public class NomalMovement : BossMovement
         if (!IsDone)
         {
             float distance = Vector3.Distance(target.position, myTransform.position);
-            if (distance <= agent.stoppingDistance)
+            if (distance <= agent.stoppingDistance+1)
             {
+                Debug.Log("test");
+                FaceTarget(target.position, myTransform);
                 ArriveAtDestination();
             }
             else
             {
                 FaceTarget(target.position, myTransform);
-                agent.speed = speed;
                 agent.SetDestination(target.position);
             } 
         }
     }
 
-    public override bool CheckIsDone(out BossState bossState)
+    public override bool CheckIsDone(out BossMovementState bossState)
     {
-        bossState = BossState.Attack;
+        bossState = BossMovementState.Move;
         return IsDone;
     }
 }
@@ -74,7 +76,8 @@ public class StraightMovement : BossMovement
         base.speed = speed;
         IsDone = false;
         newTransform = new Vector3(target.position.x, target.position.y, target.position.z);
-        agent.stoppingDistance = 3f;
+        agent.stoppingDistance = 5f;
+        base.agent.speed = speed;
     }
 
     public override void Behaviour()
@@ -82,30 +85,31 @@ public class StraightMovement : BossMovement
         if (!IsDone)
         {
             float distance = Vector3.Distance(newTransform, myTransform.position);
-            if (distance <= agent.stoppingDistance)
+            if (distance <= agent.stoppingDistance-1)
             {
                 ArriveAtDestination();
             }
             else
             {
                 FaceTarget(newTransform, myTransform);
-                agent.speed = speed;
                 agent.SetDestination(newTransform);
             } 
         }
     }
 
-    public override bool CheckIsDone(out BossState bossState)
+    public override bool CheckIsDone(out BossMovementState bossState)
     {
-        bossState = BossState.Skill;
+        bossState = BossMovementState.Skill;
         return IsDone;
     }
+    
 }
 
 public class IdleMovement : BossMovement
 {
     Transform originalTransfrom;
     Vector3 newTransform;
+    float StayTime;
     public IdleMovement(NavMeshAgent agent, Transform myTransform, float speed)
     {
         base.agent = agent;
@@ -113,9 +117,11 @@ public class IdleMovement : BossMovement
         base.speed = speed;
         IsDone = false;
         originalTransfrom = base.myTransform;
-        newTransform = new Vector3(originalTransfrom.position.x - Random.Range(0, 2f), originalTransfrom.position.y, originalTransfrom.position.z - Random.Range(0, 2f));
+        newTransform = new Vector3(originalTransfrom.position.x - Random.Range(-2f, 2f), originalTransfrom.position.y, originalTransfrom.position.z - Random.Range(-2f, 2f));
         //newTransform.position = new Vector3(originalTransfrom.position.x - Random.Range(0, 2f), originalTransfrom.position.y, originalTransfrom.position.z - Random.Range(0, 2f));
         agent.stoppingDistance = 0.3f;
+        base.agent.speed = speed;
+        StayTime = 0f;
     }
 
     public override void Behaviour()
@@ -125,20 +131,23 @@ public class IdleMovement : BossMovement
             float distance = Vector3.Distance(newTransform, myTransform.position);
             if (distance <= agent.stoppingDistance)
             {
-                ArriveAtDestination();
+                StayTime += Time.deltaTime;
+                if (StayTime >= 10f)
+                {
+                    ArriveAtDestination(); 
+                }
             }
             else
             {
                 FaceTarget(newTransform, myTransform);
-                agent.speed = speed;
                 agent.SetDestination(newTransform);
             }
         }
     }
 
-    public override bool CheckIsDone(out BossState bossState)
+    public override bool CheckIsDone(out BossMovementState bossState)
     {
-        bossState = BossState.Idle;
+        bossState = BossMovementState.Idle;
         return IsDone;
     }
 }
@@ -151,9 +160,9 @@ public class DoNotMovement : BossMovement
         ArriveAtDestination();
     }
 
-    public override bool CheckIsDone(out BossState bossState)
+    public override bool CheckIsDone(out BossMovementState bossState)
     {
-        bossState = BossState.Idle;
+        bossState = BossMovementState.Stop;
         return IsDone;
     }
 }

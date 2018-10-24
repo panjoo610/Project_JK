@@ -97,7 +97,6 @@ public class EnemyGenerator : MonoBehaviour {
     /// <param name="check"></param>
     private void ClearStage(bool check)
     {
-        IsStageClear = true;
         if (check)
         {
             IsStageClear = true;

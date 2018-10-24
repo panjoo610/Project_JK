@@ -17,9 +17,9 @@ public class BossAnimator : MonoBehaviour {
     private void Update()
     {
         float speedPercent = agent.velocity.magnitude / agent.speed;
+        //Debug.Log(speedPercent);
         animator.SetFloat("Speed", speedPercent);
     }
-
     public void Attack()
     {
         animator.SetTrigger("Attack01");
@@ -42,6 +42,8 @@ public class BossAnimator : MonoBehaviour {
     }
     public void Shout()
     {
-
+        animator.SetTrigger("Shout");
+        
+        
     }
 }

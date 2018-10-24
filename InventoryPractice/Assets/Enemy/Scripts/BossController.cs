@@ -4,9 +4,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public enum BossState
+public enum BossMovementState
 {
-    Idle, Move, Attack, Skill, Dead
+    Stop, Idle, Move, Skill
+}
+public enum BossActionState
+{
+    Attack, Skill, Dead, Shout
 }
 
 public class BossController : MonoBehaviour {
@@ -14,13 +18,17 @@ public class BossController : MonoBehaviour {
 
     BossAnimator animator;
     BossMovement movement;
-    BossState state;
+    BossMovementState MovementState;
 
     public Transform target;
     public float lookRadius;
     NavMeshAgent agent;
     bool IsEngage;
+    bool IsSkillActive;
     public float coolTime;
+    //public float NomalAttackDistance;
+    //public float SkillAttackDistance;
+    //public float StoppingDistance;
     float runtime;
 
     void Start () {
@@ -29,11 +37,11 @@ public class BossController : MonoBehaviour {
 
     void Initialize()
     {
-        //target = PlayerManager.instance.transform;
         agent = GetComponent<NavMeshAgent>();
+        //target = PlayerManager.instance.transform;
         target = GameObject.FindGameObjectWithTag("Player").transform;
         animator = GetComponent<BossAnimator>();
-        ChangeState(BossState.Idle);
+        ChangeMovementState(BossMovementState.Idle);
     }
 
     void Update () {
@@ -42,71 +50,114 @@ public class BossController : MonoBehaviour {
             float distance = Vector3.Distance(target.position, transform.position);
             if (distance <= lookRadius)
             {
-                ChangeState(BossState.Move);
+                ChangeMovementState(BossMovementState.Move);
                 IsEngage = true;
             }
         }
         else //교전시작후 스킬 쿨타임
         {
             runtime += Time.deltaTime;
-            if (runtime >= coolTime)
+            if (runtime >= coolTime && IsSkillActive == false)
             {
                 Debug.Log("스킬을 사용함 "+ runtime);
-                ChangeState(BossState.Skill);
-                runtime = 0;
+                StartCoroutine(UseSkill());
             }
         }
         
         movement.Behaviour();
-        Debug.Log(state + " 0");
-        if (movement.CheckIsDone(out state))
+        Debug.Log(MovementState + " 0");
+        if (movement.CheckIsDone(out MovementState) && IsSkillActive == false)
         {
-            //movement.CheckIsDone(out state);
-            Debug.Log(state);
-            AnimationState(state);
+            Debug.Log(MovementState);
+            ActionByState(MovementState);
         }
 	}
 
-    private void AnimationState(BossState state)
+    private void ActionByState(BossMovementState state)
     {
         switch (state)
         {
-            case BossState.Attack:
+            case BossMovementState.Idle:
+                ChangeMovementState(state);
+                break;
+            case BossMovementState.Move:
                 animator.Attack();
+                ChangeMovementState(BossMovementState.Move);
                 //EnemyCombet.Attack();
                 Debug.Log("Attack 애니메이션 재생");
                 break;
-            case BossState.Skill:
+            case BossMovementState.Skill:
                 Debug.Log("Skill");
                 //EnemyCombet.Attack();
                 animator.Skill();
+                ChangeMovementState(BossMovementState.Move);
+                break;
+            case BossMovementState.Stop:
                 break;
             default:
                 break;
         }
     }
-    private void ChangeState(BossState state)
+    private void ChangeMovementState(BossMovementState state)
     {
         switch (state)
         {
-            case BossState.Idle:
+            case BossMovementState.Idle:
                 movement = new IdleMovement(agent, transform, 1f);
-                animator.Idle();
                 break;
-            case BossState.Move:
+            case BossMovementState.Move:
                 movement = new NomalMovement(agent, target, transform, 1f);
                 break;
-            case BossState.Skill:
-                movement = new StraightMovement(agent, target, transform, 3f);
+            case BossMovementState.Skill:
+                movement = new StraightMovement(agent, target, transform, 5f);
                 break;
-            case BossState.Dead:
+            case BossMovementState.Stop:
                 movement = new DoNotMovement();
-                animator.Dead();
                 break;
             default:
                 break;
         }
     }
+
+    IEnumerator UseSkill()
+    {
+        IsSkillActive = true;
+        //(진입할때는 싸우는중이니 타겟을 바라본 상태다)
+        //타겟을 바라보고,멈춘상태, 샤우팅 한번
+        ChangeMovementState(BossMovementState.Stop);
+        animator.Shout();
+        yield return new WaitForSeconds(2f);
+
+        //타겟이 있던 위치로 빠르게 전진
+        ChangeMovementState(BossMovementState.Skill);
+        
+        //스킬공격 재생, 멈춘상태
+        while (true)
+        {
+            yield return null;
+            //movement.CheckIsDone(out state);
+            Debug.Log(MovementState);
+            if (movement.CheckIsDone(out MovementState))
+            {
+                ChangeMovementState(BossMovementState.Stop);
+                animator.Skill();
+                break;
+            }
+        }
+        //샤우팅 한번,멈춘상태
+        yield return new WaitForSeconds(1f);
+        animator.Shout();
+        yield return new WaitForSeconds(2f);
+
+
+        ChangeMovementState(BossMovementState.Idle);
+        IsEngage = false;
+        IsSkillActive = false;
+        runtime = 0;
+        Debug.Log("스킬 끝");
+        yield return null;
+    }
+
 
     private void OnDrawGizmos()
     {
