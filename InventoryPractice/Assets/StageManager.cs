@@ -81,14 +81,14 @@ public class StageManager : MonoBehaviour
     public void MoveLobbyScene()
     {
         ClearBonusText.gameObject.SetActive(false);
-        NoticeText.gameObject.SetActive(false);
+        NoticeText.gameObject.SetActive(false);  
 
-        SceneNoticeText.text = StageName.Lobby.ToString();
-
-        EquimentManager.instance.saveInventory.SaveItemListByJson();
+        //EquimentManager.instance.saveInventory.SaveItemListByJson();
 
         LoadScene(StageName.Lobby.ToString());
-        
+
+        SceneNoticeText.text = GetCurrentSceneName();
+
         PlayerManager.instance.ResetPlayerPosition();
         PlayerManager.instance.cameraContorller.RobbyCamera(); 
     }
@@ -106,7 +106,6 @@ public class StageManager : MonoBehaviour
 
         StartCoroutine(ShowGameStartText(2.0f));
         PlayerManager.instance.cameraContorller.ActingCombat();
-
     }
 
     IEnumerator ShowGameStartText(float time)
