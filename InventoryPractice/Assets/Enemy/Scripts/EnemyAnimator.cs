@@ -50,7 +50,7 @@ public class EnemyAnimator : CharacterAnimator {
             PlayWalk(false);
         }
     }
-    public void GetHitEffect()
+    public virtual void GetHitEffect()
     {
         int j = Random.Range(0, animators.Length);
         ParticleSystem.transform.position = animators[j].transform.position;
