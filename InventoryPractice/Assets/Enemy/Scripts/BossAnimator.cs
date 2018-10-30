@@ -3,18 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class BossAnimator : MonoBehaviour {
-    [SerializeField]
-    NavMeshAgent agent;
-    [SerializeField]
-    Animator animator;
+public class BossAnimator : EnemyAnimator
+{
+    //[SerializeField]
+    //NavMeshAgent agent;
+    //[SerializeField]
+    //Animator animator;
     // Use this for initialization
-    void Start ()
+    //public new ParticleSystem ParticleSystem;
+
+    protected override void Start ()
     {
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponentInChildren<Animator>();
+        ParticleSystem.transform.position = transform.position;
     }
-    private void Update()
+    protected override void Update()
     {
         float speedPercent = agent.velocity.magnitude / agent.speed;
         //Debug.Log(speedPercent);
@@ -43,7 +47,10 @@ public class BossAnimator : MonoBehaviour {
     public void Shout()
     {
         animator.SetTrigger("Shout");
-        
-        
+    }
+    public override void GetHitEffect()
+    {
+        //animator.SetTrigger("GetHit");
+        ParticleSystem.Play();
     }
 }
