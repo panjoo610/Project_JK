@@ -44,6 +44,10 @@ public class UIController : MonoBehaviour {
 
 	public void OnChangeCombatScene()
     {
+        if(StageManager.instance.CurrentStage > 3)
+        {
+            return;
+        }
         ChangeCombatOrLobbyUI();
 
         statusUI.statusUI.gameObject.SetActive(false);
