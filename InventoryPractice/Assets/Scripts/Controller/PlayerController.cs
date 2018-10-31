@@ -7,6 +7,8 @@ using System.Diagnostics;
 [RequireComponent(typeof(PlayerMotor))]
 public class PlayerController : MonoBehaviour {
 
+    [SerializeField]
+    GameObject FakePlayer;
 
     public Interactable Focus;
 
@@ -43,6 +45,19 @@ public class PlayerController : MonoBehaviour {
 #endif
     }
 
+    private void LateUpdate()
+    {
+        if(FakePlayer.transform.position != gameObject.transform.position)
+        {
+            motor.MoveToPoint(FakePlayer.transform.position);
+        }
+        else
+        {
+            return;
+        }        
+    }
+
+
     [Conditional("UNITY_EDITOR")] //에디터 내에서만 마우스 클릭
     void InputAtEditor()
     {
@@ -63,18 +78,18 @@ public class PlayerController : MonoBehaviour {
             }
         }
 
-        if (Input.GetMouseButtonDown(0))
-        {
-            Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
+        //if (Input.GetMouseButtonDown(0))
+        //{
+        //    Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
+        //    RaycastHit hit;
 
-            if (Physics.Raycast(ray, out hit, 100, movementMask))
-            {
-                motor.MoveToPoint(hit.point);//이동
+        //    if (Physics.Raycast(ray, out hit, 100, movementMask))
+        //    {
+        //        motor.MoveToPoint(hit.point);//이동
 
-                RemoveFocus();
-            }
-        }
+        //        RemoveFocus();
+        //    }
+        //}
 
 
     }
@@ -104,21 +119,22 @@ public class PlayerController : MonoBehaviour {
                             {
                                 SetFocus(interactable); //공격
                             }
-                        }
-                    }
-
-                    if (Input.GetTouch(i).phase == TouchPhase.Began) //터치
-                    {
-                        Ray ray = playerCamera.ScreenPointToRay(theTouch);
-                        RaycastHit hit;
-
-                        if (Physics.Raycast(ray, out hit, 100, movementMask))
-                        {
-                            motor.MoveToPoint(hit.point);//이동
-
                             RemoveFocus();
                         }
                     }
+
+                    //if (Input.GetTouch(i).phase == TouchPhase.Began) //터치
+                    //{
+                    //    Ray ray = playerCamera.ScreenPointToRay(theTouch);
+                    //    RaycastHit hit;
+
+                    //    if (Physics.Raycast(ray, out hit, 100, movementMask))
+                    //    {
+                    //        motor.MoveToPoint(hit.point);//이동
+
+                    //        RemoveFocus();
+                    //    }
+                    //}
                 }            
             }
         }          

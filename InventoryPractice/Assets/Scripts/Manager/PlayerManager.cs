@@ -52,6 +52,7 @@ public class PlayerManager : MonoBehaviour {
         playerController = Player.GetComponent<PlayerController>();
        
         cameraContorller = mainCamera.GetComponent<CameraContorller>();
+
     }
 
     public void ResetPlayerPosition()
@@ -61,6 +62,12 @@ public class PlayerManager : MonoBehaviour {
         playerStats.Initialization();
         UpdateStatusUI();
         Player.transform.rotation = Quaternion.identity;
+        ActivePlayerController(false);
+    }
+
+    public void ActivePlayerController(bool isAtive)
+    {
+        playerController.enabled = isAtive;
     }
 
     public void UpdateStatusUI()

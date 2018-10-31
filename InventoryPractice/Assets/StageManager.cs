@@ -103,7 +103,6 @@ public class StageManager : MonoBehaviour
         EnemyManager.instance.GenerateEnemy(CurrentStage);
 
         LoadScene(StageName.Stage + CurrentStage.ToString());
-
         StartCoroutine(ShowGameStartText(2.0f));
         PlayerManager.instance.cameraContorller.ActingCombat();
     }
@@ -114,6 +113,7 @@ public class StageManager : MonoBehaviour
         NoticeText.text = "Game Start !";
         yield return new WaitForSeconds(time);
         NoticeText.gameObject.SetActive(false);
+        PlayerManager.instance.ActivePlayerController(true);
     }
 
     public void ClearStage()
