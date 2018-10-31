@@ -19,6 +19,7 @@ public class BossController : MonoBehaviour {
     BossAnimator animator;
     BossMovement movement;
     BossMovementState MovementState;
+    EnemyStats bossStats;
 
     public Transform target;
     public float lookRadius;
@@ -32,6 +33,8 @@ public class BossController : MonoBehaviour {
     //public float StoppingDistance;
     float runtime;
 
+
+
     void Start () {
         Initialize();
 	}
@@ -42,6 +45,7 @@ public class BossController : MonoBehaviour {
         //target = PlayerManager.instance.transform;
         target = GameObject.FindGameObjectWithTag("Player").transform;
         animator = GetComponent<BossAnimator>();
+        bossStats = GetComponent<EnemyStats>();
         ChangeMovementState(BossMovementState.Idle);
     }
 
@@ -60,13 +64,11 @@ public class BossController : MonoBehaviour {
             runtime += Time.deltaTime;
             if (runtime >= coolTime && IsSkillActive == false && IsAttacking == false)
             {
-                Debug.Log("스킬을 사용함 "+ runtime);
                 StartCoroutine(UseSkill());
             }
         }
         
         movement.Behaviour();
-        Debug.Log(MovementState + " 0");
         if (IsSkillActive == false && IsAttacking == false)
         {
             if (movement.CheckIsDone(out MovementState))
@@ -76,6 +78,14 @@ public class BossController : MonoBehaviour {
             } 
         }
 	}
+    private void LateUpdate()
+    {
+        if (bossStats.currentHealth <= 0)
+        {
+            ChangeMovementState(BossMovementState.Stop,false);
+            animator.Dead();
+        }
+    }
 
     private void ActionByState(BossMovementState state)
     {
@@ -92,7 +102,6 @@ public class BossController : MonoBehaviour {
                 {
                     StartCoroutine(NomalAttack()); 
                 }
-                Debug.Log("Attack 애니메이션 재생");
                 break;
             case BossMovementState.Skill:
                 Debug.Log("Skill");
@@ -142,7 +151,7 @@ public class BossController : MonoBehaviour {
         IsSkillActive = true;
         //(진입할때는 싸우는중이니 타겟을 바라본 상태다)
         //타겟을 바라보고,멈춘상태, 샤우팅 한번
-        ChangeMovementState(BossMovementState.Stop);
+        ChangeMovementState(BossMovementState.Stop,false);
         animator.Shout();
         yield return new WaitForSeconds(3f);
 
@@ -154,11 +163,9 @@ public class BossController : MonoBehaviour {
         {
             yield return null;
             //movement.CheckIsDone(out state);
-            Debug.Log(MovementState+"스킬공격 재생, 멈춘상태");
-            Debug.Log(movement.CheckIsDone(out MovementState));
             if (movement.CheckIsDone(out MovementState))
             {
-                ChangeMovementState(BossMovementState.Stop);
+                ChangeMovementState(BossMovementState.Stop,false);
                 animator.Skill();
                 break;
             }
@@ -173,7 +180,6 @@ public class BossController : MonoBehaviour {
         IsEngage = false;
         IsSkillActive = false;
         runtime = 0;
-        Debug.Log("스킬 끝");
         yield return null;
     }
 

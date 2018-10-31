@@ -21,7 +21,6 @@ public abstract class BossMovement {
     }
     protected virtual void ArriveAtDestination()
     {
-        Debug.Log("목적지에 도착");
         IsDone = true;
     }
 
@@ -35,10 +34,8 @@ public class NomalMovement : BossMovement
         base.myTransform = myTransform;
         base.speed = speed;
         IsDone = false;
-        base.agent.stoppingDistance = 5f;
+        base.agent.stoppingDistance = 3f;
         base.agent.speed = speed;
-
-        Debug.Log("NomalmvState");
     }
 
     public override void Behaviour()
@@ -79,7 +76,6 @@ public class StraightMovement : BossMovement
         newTransform = new Vector3(target.position.x, target.position.y, target.position.z);
         agent.stoppingDistance = 3.5f;
         base.agent.speed = speed;
-        Debug.Log("StraightmvState");
     }
 
     public override void Behaviour()
@@ -87,7 +83,6 @@ public class StraightMovement : BossMovement
         if (!IsDone)
         {
             float distance = Vector3.Distance(newTransform, myTransform.position);
-            Debug.Log(distance + "///" + agent.stoppingDistance);
             if (distance <= agent.stoppingDistance)
             {
                 
@@ -126,7 +121,6 @@ public class IdleMovement : BossMovement
         agent.stoppingDistance = 0.3f;
         base.agent.speed = speed;
         StayTime = 0f;
-        Debug.Log("IdletmvState");
     }
 
     public override void Behaviour()
@@ -166,11 +160,11 @@ public class DoNotMovement : BossMovement
         base.agent = agent;
         base.myTransform = myTransform;
         base.target = target;
-        agent.speed = 0;
+        agent.speed = 1;
+        agent.SetDestination(myTransform.position);
     }
     public override void Behaviour()
     {
-        Debug.Log("움직이지 않음");
         if (isLooking)
         {
             FaceTarget(target.position, myTransform);
