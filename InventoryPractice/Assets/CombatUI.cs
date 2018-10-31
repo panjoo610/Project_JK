@@ -6,14 +6,10 @@ using UnityEngine.UI;
 public class CombatUI : MonoBehaviour {
 
     public Image GunImgae;
-
-    void Start ()
-    {
-        ChangeGunImage();
-    }
+    InventoryManager inventory;
 
 
-    void ChangeGunImage()
+    public void ChangeGunImage()
     {
         if(EquimentManager.instance.currentEquiment[3].combatImage != null)
         {

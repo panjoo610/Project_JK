@@ -67,7 +67,7 @@ public class CameraContorller : MonoBehaviour
     public void RobbyCamera()
     {
         offset = new Vector3(-0.17f, -0.2f, -0.12f); //로비씬
-        currentZoom = 15f;
+        currentZoom = 10f;
     }
 
     IEnumerator DirectingCameraCoroutine(float x, float y, float z)
@@ -78,9 +78,7 @@ public class CameraContorller : MonoBehaviour
 
         float elapsed = .0f;
 
-        float zoom = 10.0f;
-
-        //float currentZooms = 0.0f;
+        float zoom = 5.0f;
 
         Vector3 prvePositoin = offset;
 
@@ -93,12 +91,12 @@ public class CameraContorller : MonoBehaviour
             elapsed += Time.deltaTime;
             yield return null;
         }
-        currentZoom = 10f;    
+        currentZoom = 5f;    
     }
 
     public void ActingCombat()
     {
-        StartCoroutine(DirectingCameraCoroutine(-1f, -1.5f, 0f));
+        StartCoroutine(DirectingCameraCoroutine(-1f, -2.0f, 0f));
     }
 
     IEnumerator Shake(float duration, float magnitude)

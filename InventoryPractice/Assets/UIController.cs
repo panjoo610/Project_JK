@@ -12,6 +12,7 @@ public class UIController : MonoBehaviour {
     public InventoyUI inventoyUI;
     public EquipmetInventoryUI equipmetInventoryUI;
     public StatusUI statusUI;
+    public CombatUI combatUI;
 
     private void Awake()
     {
@@ -28,6 +29,7 @@ public class UIController : MonoBehaviour {
         inventoyUI = GetComponent<InventoyUI>();
         equipmetInventoryUI = GetComponent<EquipmetInventoryUI>();
         statusUI = GetComponent<StatusUI>();
+        combatUI = CombatPanel.GetComponent<CombatUI>();
 
         StatusBtn.onClick.AddListener(() => OnStatus());
         InvenBtn.onClick.AddListener(() => OnInven());
@@ -70,9 +72,10 @@ public class UIController : MonoBehaviour {
 
         InformationPanel.SetActive(!InformationPanel.activeSelf);
 
-        StartCoroutine(ShowHidePanelCoroutine(3.0f));
+        StartCoroutine(ShowHidePanelCoroutine(3.5f));
         
         CombatPanel.SetActive(!CombatPanel.activeSelf);
+        combatUI.ChangeGunImage();
     }
 
     IEnumerator ShowHidePanelCoroutine(float time)

@@ -47,21 +47,7 @@ public class PlayerController : MonoBehaviour {
     void InputAtEditor()
     {
         if (EventSystem.current.IsPointerOverGameObject()) { return; }
-
-        if (Input.GetMouseButtonDown(0))
-        {
-            Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-
-            if (Physics.Raycast(ray, out hit, 100, movementMask))
-            {
-                motor.MoveToPoint(hit.point);//이동
-
-                RemoveFocus();
-            }
-        }
-
-        // 일단 분리함 모바일에서 어떻게 해결할지 생각해볼 것
+       
         if (Input.GetMouseButtonDown(1))
         {
             Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
@@ -76,6 +62,21 @@ public class PlayerController : MonoBehaviour {
                 }
             }
         }
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit, 100, movementMask))
+            {
+                motor.MoveToPoint(hit.point);//이동
+
+                RemoveFocus();
+            }
+        }
+
+
     }
 
     [Conditional("UNITY_ANDROID")] //안드로이드 모바일~
@@ -91,19 +92,6 @@ public class PlayerController : MonoBehaviour {
 
                     Vector3 theTouch = new Vector3(pos.x, pos.y, 0.0f);
 
-                    if (Input.GetTouch(i).phase == TouchPhase.Began) //터치
-                    {
-                        Ray ray = playerCamera.ScreenPointToRay(theTouch);
-                        RaycastHit hit;
-
-                        if (Physics.Raycast(ray, out hit, 100, movementMask))
-                        {
-                            motor.MoveToPoint(hit.point);//이동
-
-                            RemoveFocus();
-                        }
-                    }
-
                     if (Input.GetTouch(i).phase == TouchPhase.Stationary) //누르고 있음
                     {
                         Ray ray = playerCamera.ScreenPointToRay(theTouch);
@@ -116,6 +104,19 @@ public class PlayerController : MonoBehaviour {
                             {
                                 SetFocus(interactable); //공격
                             }
+                        }
+                    }
+
+                    if (Input.GetTouch(i).phase == TouchPhase.Began) //터치
+                    {
+                        Ray ray = playerCamera.ScreenPointToRay(theTouch);
+                        RaycastHit hit;
+
+                        if (Physics.Raycast(ray, out hit, 100, movementMask))
+                        {
+                            motor.MoveToPoint(hit.point);//이동
+
+                            RemoveFocus();
                         }
                     }
                 }            

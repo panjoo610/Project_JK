@@ -83,7 +83,7 @@ public class StageManager : MonoBehaviour
         ClearBonusText.gameObject.SetActive(false);
         NoticeText.gameObject.SetActive(false);  
 
-        //EquimentManager.instance.saveInventory.SaveItemListByJson();
+        EquimentManager.instance.saveInventory.SaveItemListByJson();
 
         LoadScene(StageName.Lobby.ToString());
 

@@ -47,15 +47,33 @@ public class SaveInventory : ScriptableObject
         savedItems.DamageModifiers = DamageModifiers;
 
         JasonData = JsonUtility.ToJson(savedItems);
-        
-        File.WriteAllText(Application.dataPath + "/ItemList.json", JasonData);
+
+        string path;
+#if (UNITY_EDITOR)
+        path = Application.dataPath + "/ItemList.json";
+#endif
+
+#if (UNITY_ANDROID)
+        path = Application.persistentDataPath + "/ItemList.json";
+#endif
+
+        File.WriteAllText(path, JasonData);
     }
 
     public void LoadItemListFromJson()
     {
-        if (!File.Exists(Application.dataPath + "/ItemList.json"))
+        string path;
+#if (UNITY_EDITOR)
+        path = Application.dataPath + "/ItemList.json";
+#endif
+
+#if (UNITY_ANDROID)
+        path = Application.persistentDataPath + "/ItemList.json";
+#endif
+
+        if (!File.Exists(path))
         {
-            File.CreateText(Application.dataPath + "/ItemList.json");
+            File.CreateText(path);
 
             SaveItemListByJson();        
         }
@@ -68,7 +86,16 @@ public class SaveInventory : ScriptableObject
     }
     void LoabJson()
     {
-        string load = File.ReadAllText(Application.dataPath + "/ItemList.json");
+        string path;
+#if (UNITY_EDITOR)
+        path = Application.dataPath + "/ItemList.json";
+#endif
+
+#if (UNITY_ANDROID)
+        path = Application.persistentDataPath + "/ItemList.json";
+#endif
+
+        string load = File.ReadAllText(path);
         var LoadData = JsonUtility.FromJson<SavedItems>(load);
 
         items = LoadData.items;
@@ -82,6 +109,15 @@ public class SaveInventory : ScriptableObject
     }
     public void ResetData()
     {
+        string path;
+#if (UNITY_EDITOR)
+        path = Application.dataPath + "/ItemList.json";
+#endif
+
+#if (UNITY_ANDROID)
+        path = Application.persistentDataPath + "/ItemList.json";
+#endif
+
         PlayerGold = 0;
         CurrentStage = 0;
 
@@ -104,6 +140,6 @@ public class SaveInventory : ScriptableObject
 
         JasonData = JsonUtility.ToJson(savedItems);
 
-        File.WriteAllText(Application.dataPath + "/ItemList.json", JasonData);
+        File.WriteAllText(path, JasonData);
     }
 }

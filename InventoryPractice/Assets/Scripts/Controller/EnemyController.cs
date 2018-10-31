@@ -57,7 +57,7 @@ public class EnemyController : MonoBehaviour {
         {
             float distance = Vector3.Distance(target.position, transform.position);
 
-            if (distance <= lookRadius)
+            if (distance <= lookRadius && target != null)
             {
                 agent.stoppingDistance = originalStoppingDistance;
                 isIdle = false;

@@ -14,7 +14,6 @@ public class ItemPickUp : Interactable
     }
     void PickUp()
     {
-        Debug.Log("아이템을 집었다");
         bool wasPickedUp = InventoryManager.instance.Add(item);
 
         if (wasPickedUp)
@@ -29,11 +28,12 @@ public class ItemPickUp : Interactable
     {
         StartCoroutine(DestroyItem());
     }
+
     IEnumerator DestroyItem()
     {
         particle.SetActive(true);
         Destroy(itemMesh);
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.3f);
         Destroy(gameObject);
     }
 
