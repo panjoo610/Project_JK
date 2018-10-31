@@ -19,17 +19,21 @@ public class BossController : MonoBehaviour {
     BossAnimator animator;
     BossMovement movement;
     BossMovementState MovementState;
+    EnemyStats bossStats;
 
     public Transform target;
     public float lookRadius;
     NavMeshAgent agent;
     bool IsEngage;
     bool IsSkillActive;
+    bool IsAttacking;
     public float coolTime;
     //public float NomalAttackDistance;
     //public float SkillAttackDistance;
     //public float StoppingDistance;
     float runtime;
+
+
 
     void Start () {
         Initialize();
@@ -41,6 +45,7 @@ public class BossController : MonoBehaviour {
         //target = PlayerManager.instance.transform;
         target = GameObject.FindGameObjectWithTag("Player").transform;
         animator = GetComponent<BossAnimator>();
+        bossStats = GetComponent<EnemyStats>();
         ChangeMovementState(BossMovementState.Idle);
     }
 
@@ -57,21 +62,30 @@ public class BossController : MonoBehaviour {
         else //교전시작후 스킬 쿨타임
         {
             runtime += Time.deltaTime;
-            if (runtime >= coolTime && IsSkillActive == false)
+            if (runtime >= coolTime && IsSkillActive == false && IsAttacking == false)
             {
-                Debug.Log("스킬을 사용함 "+ runtime);
                 StartCoroutine(UseSkill());
             }
         }
         
         movement.Behaviour();
-        Debug.Log(MovementState + " 0");
-        if (movement.CheckIsDone(out MovementState) && IsSkillActive == false)
+        if (IsSkillActive == false && IsAttacking == false)
         {
-            Debug.Log(MovementState);
-            ActionByState(MovementState);
+            if (movement.CheckIsDone(out MovementState))
+            {
+                Debug.Log(MovementState);
+                ActionByState(MovementState);
+            } 
         }
 	}
+    private void LateUpdate()
+    {
+        if (bossStats.currentHealth <= 0)
+        {
+            ChangeMovementState(BossMovementState.Stop,false);
+            animator.Dead();
+        }
+    }
 
     private void ActionByState(BossMovementState state)
     {
@@ -81,24 +95,28 @@ public class BossController : MonoBehaviour {
                 ChangeMovementState(state);
                 break;
             case BossMovementState.Move:
-                animator.Attack();
-                ChangeMovementState(BossMovementState.Move);
+                //animator.Attack();
+                //ChangeMovementState(state);
                 //EnemyCombet.Attack();
-                Debug.Log("Attack 애니메이션 재생");
+                if (IsAttacking == false && IsSkillActive == false)
+                {
+                    StartCoroutine(NomalAttack()); 
+                }
                 break;
             case BossMovementState.Skill:
                 Debug.Log("Skill");
                 //EnemyCombet.Attack();
                 animator.Skill();
-                ChangeMovementState(BossMovementState.Move);
+                ChangeMovementState(state);
                 break;
             case BossMovementState.Stop:
+                //ChangeMovementState(state);
                 break;
             default:
                 break;
         }
     }
-    private void ChangeMovementState(BossMovementState state)
+    private void ChangeMovementState(BossMovementState state, bool IsLooking = false)
     {
         switch (state)
         {
@@ -112,11 +130,20 @@ public class BossController : MonoBehaviour {
                 movement = new StraightMovement(agent, target, transform, 5f);
                 break;
             case BossMovementState.Stop:
-                movement = new DoNotMovement();
+                movement = new DoNotMovement(agent, IsLooking, transform,target);
                 break;
             default:
                 break;
         }
+    }
+    IEnumerator NomalAttack()
+    {
+        IsAttacking = true;
+        animator.Attack();
+        ChangeMovementState(BossMovementState.Stop,true);
+        yield return new WaitForSeconds(3f);
+        ChangeMovementState(BossMovementState.Move);
+        IsAttacking = false;
     }
 
     IEnumerator UseSkill()
@@ -124,9 +151,9 @@ public class BossController : MonoBehaviour {
         IsSkillActive = true;
         //(진입할때는 싸우는중이니 타겟을 바라본 상태다)
         //타겟을 바라보고,멈춘상태, 샤우팅 한번
-        ChangeMovementState(BossMovementState.Stop);
+        ChangeMovementState(BossMovementState.Stop,false);
         animator.Shout();
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(3f);
 
         //타겟이 있던 위치로 빠르게 전진
         ChangeMovementState(BossMovementState.Skill);
@@ -136,10 +163,9 @@ public class BossController : MonoBehaviour {
         {
             yield return null;
             //movement.CheckIsDone(out state);
-            Debug.Log(MovementState);
             if (movement.CheckIsDone(out MovementState))
             {
-                ChangeMovementState(BossMovementState.Stop);
+                ChangeMovementState(BossMovementState.Stop,false);
                 animator.Skill();
                 break;
             }
@@ -154,7 +180,6 @@ public class BossController : MonoBehaviour {
         IsEngage = false;
         IsSkillActive = false;
         runtime = 0;
-        Debug.Log("스킬 끝");
         yield return null;
     }
 

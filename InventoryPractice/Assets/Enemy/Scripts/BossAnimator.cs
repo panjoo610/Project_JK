@@ -20,7 +20,7 @@ public class BossAnimator : EnemyAnimator
     }
     protected override void Update()
     {
-        float speedPercent = agent.velocity.magnitude / agent.speed;
+        float speedPercent = agent.velocity.magnitude / 2;// / agent.speed
         //Debug.Log(speedPercent);
         animator.SetFloat("Speed", speedPercent);
     }
@@ -42,7 +42,11 @@ public class BossAnimator : EnemyAnimator
     }
     public void Dead()
     {
-        animator.SetTrigger("Dead");
+        if (isDie == false)
+        {
+            isDie = true;
+            animator.SetTrigger("Dead");
+        }
     }
     public void Shout()
     {

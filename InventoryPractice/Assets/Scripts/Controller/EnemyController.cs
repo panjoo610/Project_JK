@@ -25,12 +25,12 @@ public class EnemyController : MonoBehaviour {
     [SerializeField]
     CharacterStats targetStats;
 
-    float idleTime;
+    //float idleTime;
     private bool isCoroutine;
     float originalStoppingDistance;
 
 
-    bool isDie;
+    //bool isDie;
     // Use this for initialization
     void Start()
     {

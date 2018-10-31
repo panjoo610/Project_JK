@@ -7,7 +7,7 @@ public class EnemyAnimator : CharacterAnimator {
     public Animator[] animators;
     float idleTime;
     bool isIdle1;
-    bool isDie;
+    protected bool isDie;
 
     public IEnemyState IEnemyState;
     public ParticleSystem ParticleSystem;
@@ -116,7 +116,7 @@ public interface IEnemyState
 public class IdleState : IEnemyState
 {
     Animator[] animators;
-    float idleTime;
+    //float idleTime;
     public IdleState(Animator[] animators)
     {
         this.animators = new Animator[animators.Length];
