@@ -37,6 +37,8 @@ public class NomalMovement : BossMovement
         IsDone = false;
         base.agent.stoppingDistance = 5f;
         base.agent.speed = speed;
+
+        Debug.Log("NomalmvState");
     }
 
     public override void Behaviour()
@@ -46,7 +48,6 @@ public class NomalMovement : BossMovement
             float distance = Vector3.Distance(target.position, myTransform.position);
             if (distance <= agent.stoppingDistance+1)
             {
-                Debug.Log("test");
                 FaceTarget(target.position, myTransform);
                 ArriveAtDestination();
             }
@@ -76,8 +77,9 @@ public class StraightMovement : BossMovement
         base.speed = speed;
         IsDone = false;
         newTransform = new Vector3(target.position.x, target.position.y, target.position.z);
-        agent.stoppingDistance = 5f;
+        agent.stoppingDistance = 3.5f;
         base.agent.speed = speed;
+        Debug.Log("StraightmvState");
     }
 
     public override void Behaviour()
@@ -85,8 +87,10 @@ public class StraightMovement : BossMovement
         if (!IsDone)
         {
             float distance = Vector3.Distance(newTransform, myTransform.position);
-            if (distance <= agent.stoppingDistance-1)
+            Debug.Log(distance + "///" + agent.stoppingDistance);
+            if (distance <= agent.stoppingDistance)
             {
+                
                 ArriveAtDestination();
             }
             else
@@ -122,6 +126,7 @@ public class IdleMovement : BossMovement
         agent.stoppingDistance = 0.3f;
         base.agent.speed = speed;
         StayTime = 0f;
+        Debug.Log("IdletmvState");
     }
 
     public override void Behaviour()
@@ -154,9 +159,22 @@ public class IdleMovement : BossMovement
 
 public class DoNotMovement : BossMovement
 {
+    bool isLooking;
+    public DoNotMovement(NavMeshAgent agent, bool IsLooking, Transform myTransform = null, Transform target = null)
+    {
+        isLooking = IsLooking;
+        base.agent = agent;
+        base.myTransform = myTransform;
+        base.target = target;
+        agent.speed = 0;
+    }
     public override void Behaviour()
     {
         Debug.Log("움직이지 않음");
+        if (isLooking)
+        {
+            FaceTarget(target.position, myTransform);
+        }
         ArriveAtDestination();
     }
 
