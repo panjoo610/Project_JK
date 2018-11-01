@@ -20,6 +20,7 @@ public class PlayerManager : MonoBehaviour {
     public SaveInventory saveInventory;
 
     public GameObject Player, mainCamera;
+    public FakePlayer fakePlayer;
 
     public PlayerStats playerStats;
     public PlayerController playerController;
@@ -41,7 +42,6 @@ public class PlayerManager : MonoBehaviour {
         {
             playerStats.armor.modifiers.Add(saveInventory.AromorModifiers[i]);
         }
-
         //플레이어가 가진 점수나 골드를 이 함수로 표현할 수 있도로 함
         GoldCounter(saveInventory.PlayerGold);
     }
@@ -49,14 +49,13 @@ public class PlayerManager : MonoBehaviour {
     public void Initialization()
     {
         playerStats = Player.GetComponent<PlayerStats>();
-        playerController = Player.GetComponent<PlayerController>();
-       
+        playerController = Player.GetComponent<PlayerController>();     
         cameraContorller = mainCamera.GetComponent<CameraContorller>();
-
     }
 
     public void ResetPlayerPosition()
     {
+        fakePlayer.InitTransform();
         cameraContorller.HideHitImage();
         Player.transform.position = new Vector3(0.0f, 10.8f, -15.49f);
         playerStats.Initialization();
@@ -79,12 +78,15 @@ public class PlayerManager : MonoBehaviour {
 
     public void ShowPlayerGold(int gold)
     {
-        int temp = saveInventory.PlayerGold + gold;
-        if (temp > 0)
-        {
-            iTween.ValueTo(gameObject, iTween.Hash("from", saveInventory.PlayerGold, "to", temp, "onUpdate", "GoldCounter", "delay", 0, "time", 2));
+        int pv = saveInventory.PlayerGold;
+        int preGold = saveInventory.PlayerGold + (gold);
 
-            saveInventory.PlayerGold = temp;
+        if (preGold > 0)
+        {
+            iTween.ValueTo(gameObject, iTween.Hash("from", pv, "to", preGold, "onUpdate", "GoldCounter", "delay", 0, "time", 0.5f));
+
+            saveInventory.PlayerGold += gold;
+
             saveInventory.SaveItemListByJson();
         }
         else

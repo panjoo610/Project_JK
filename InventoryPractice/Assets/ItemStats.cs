@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class ItemStats : MonoBehaviour
 {
 
-    public Text ItemName, ItemArmor, ItemDamage ;
+    public Text ItemName, ItemArmor, ItemDamage, PriceText;
     public Image ItemImage;
     public Button EquimentButtom, ExitButton, SellButoon;
 

@@ -29,8 +29,13 @@ public class FakePlayerController : MonoBehaviour
 
         if(moveVector != Vector3.zero)
         {
+            player.IsMove = true;
             player.RunToPC(PoolInput());
-        }       
+        }
+        else
+        {
+            player.IsMove = false;
+        }
     }
 
     Vector3 PoolInput()

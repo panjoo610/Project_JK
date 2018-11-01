@@ -66,11 +66,8 @@ public class InventorySlot : MonoBehaviour {
 
     public void Sell(Transform ui)
     {
-        int temp = PlayerManager.instance.saveInventory.PlayerGold + item.itemPrice;
+        PlayerManager.instance.ShowPlayerGold(item.itemPrice);
         InventoryManager.instance.Remove(item);
-
-        PlayerManager.instance.ShowPlayerGold(temp);
-
         OnExitStatPanel(ui);
     }
 
@@ -91,7 +88,8 @@ public class InventorySlot : MonoBehaviour {
 
                     itemStats.ItemImage.sprite = item.icon;
 
-                    itemStats.ItemName.text = item.name;                   
+                    itemStats.ItemName.text = item.name;
+                    itemStats.PriceText.text = item.itemPrice.ToString();
                     itemStats.ItemArmor.text = EquipmentItem.armorModifier.ToString();
                     itemStats.ItemDamage.text = EquipmentItem.damageModifier.ToString();
 

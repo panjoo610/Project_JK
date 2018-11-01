@@ -144,7 +144,7 @@ public class StageManager : MonoBehaviour
         NoticeText.gameObject.SetActive(true);
         NoticeText.text = "GAME OVER";
 
-        prevGameOver();
+        AlreadyGameOver();
 
         Invoke("GameOverNotice", 3f);
     }
@@ -154,7 +154,7 @@ public class StageManager : MonoBehaviour
             OnMoveLobbySceneCallBack.Invoke();
     }
 
-    public void prevGameOver()
+    public void AlreadyGameOver()
     {
         if (OnGameOverCallBack != null)
             OnGameOverCallBack.Invoke();

@@ -9,7 +9,7 @@ public class PlayerMotor : MonoBehaviour {
     NavMeshAgent agent;
 
     [SerializeField]
-    Transform target;
+    public Transform target;
 
 	// Use this for initialization
 	void Start ()
@@ -22,7 +22,6 @@ public class PlayerMotor : MonoBehaviour {
         if(target != null)
         {
             FaceTarget();
-            //agent.SetDestination(target.position);
         }
     }
 

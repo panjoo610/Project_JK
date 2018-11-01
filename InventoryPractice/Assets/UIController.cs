@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class UIController : MonoBehaviour {
 
     public Button StatusBtn, InvenBtn, EquipBtn, combatStartButton, LobbyButton, GameStartButton, StopButton;
-    public GameObject InformationPanel, CombatPanel, HidePanel, NoticePanel;
+    public GameObject InformationPanel, CombatPanel, HidePanel, NoticePanel, GameTitle;
     public InventoyUI inventoyUI;
     public EquipmetInventoryUI equipmetInventoryUI;
     public StatusUI statusUI;
@@ -16,6 +16,7 @@ public class UIController : MonoBehaviour {
 
     private void Awake()
     {
+        GameTitle.SetActive(true);
         DontDestroyOnLoad(gameObject);
     }
 

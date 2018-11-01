@@ -8,7 +8,9 @@ using System.Diagnostics;
 public class PlayerController : MonoBehaviour {
 
     [SerializeField]
-    GameObject FakePlayer;
+    GameObject goalPlayer;
+
+    FakePlayer fakePlayer;
 
     public Interactable Focus;
 
@@ -24,6 +26,7 @@ public class PlayerController : MonoBehaviour {
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
+        fakePlayer = goalPlayer.GetComponent<FakePlayer>();
     }
 
     void Start ()
@@ -47,14 +50,16 @@ public class PlayerController : MonoBehaviour {
 
     private void LateUpdate()
     {
-        if(FakePlayer.transform.position != gameObject.transform.position)
+        if (fakePlayer.IsMove)
         {
-            motor.MoveToPoint(FakePlayer.transform.position);
+            Focus = null;
+            motor.target = goalPlayer.transform;
+            motor.MoveToPoint(goalPlayer.transform.position);
         }
         else
         {
             return;
-        }        
+        }       
     }
 
 
@@ -63,7 +68,7 @@ public class PlayerController : MonoBehaviour {
     {
         if (EventSystem.current.IsPointerOverGameObject()) { return; }
        
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown(0))
         {
             Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
@@ -71,27 +76,12 @@ public class PlayerController : MonoBehaviour {
             if (Physics.Raycast(ray, out hit, 100))
             {
                 Interactable interactable = hit.collider.GetComponent<Interactable>();
-                if (interactable != null)
+                if (interactable != null && fakePlayer.IsMove == false)
                 {
                     SetFocus(interactable); //공격
-                }
-            }
+                }              
+            }          
         }
-
-        //if (Input.GetMouseButtonDown(0))
-        //{
-        //    Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
-        //    RaycastHit hit;
-
-        //    if (Physics.Raycast(ray, out hit, 100, movementMask))
-        //    {
-        //        motor.MoveToPoint(hit.point);//이동
-
-        //        RemoveFocus();
-        //    }
-        //}
-
-
     }
 
     [Conditional("UNITY_ANDROID")] //안드로이드 모바일~
@@ -99,43 +89,26 @@ public class PlayerController : MonoBehaviour {
     {
         if (Input.touchCount > 0)
         {
-            for (int i = 0; i < Input.touchCount; i++)
+            if (EventSystem.current.IsPointerOverGameObject(0) == false)
             {
-                if (EventSystem.current.IsPointerOverGameObject(i) == false)
+                Vector2 pos = Input.GetTouch(0).position;
+
+                Vector3 theTouch = new Vector3(pos.x, pos.y, 0.0f);
+
+                if (Input.GetTouch(0).phase == TouchPhase.Stationary) //누르고 있음
                 {
-                    Vector2 pos = Input.GetTouch(i).position;
+                    Ray ray = playerCamera.ScreenPointToRay(theTouch);
+                    RaycastHit hit;
 
-                    Vector3 theTouch = new Vector3(pos.x, pos.y, 0.0f);
-
-                    if (Input.GetTouch(i).phase == TouchPhase.Stationary) //누르고 있음
+                    if (Physics.Raycast(ray, out hit, 100))
                     {
-                        Ray ray = playerCamera.ScreenPointToRay(theTouch);
-                        RaycastHit hit;
-
-                        if (Physics.Raycast(ray, out hit, 100))
+                        Interactable interactable = hit.collider.GetComponent<Interactable>();
+                        if (interactable != null && fakePlayer.IsMove == false)
                         {
-                            Interactable interactable = hit.collider.GetComponent<Interactable>();
-                            if (interactable != null)
-                            {
-                                SetFocus(interactable); //공격
-                            }
-                            RemoveFocus();
+                            SetFocus(interactable); //공격
                         }
                     }
-
-                    //if (Input.GetTouch(i).phase == TouchPhase.Began) //터치
-                    //{
-                    //    Ray ray = playerCamera.ScreenPointToRay(theTouch);
-                    //    RaycastHit hit;
-
-                    //    if (Physics.Raycast(ray, out hit, 100, movementMask))
-                    //    {
-                    //        motor.MoveToPoint(hit.point);//이동
-
-                    //        RemoveFocus();
-                    //    }
-                    //}
-                }            
+                }
             }
         }          
     }
