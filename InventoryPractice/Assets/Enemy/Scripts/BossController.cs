@@ -20,6 +20,11 @@ public class BossController : MonoBehaviour {
     BossMovement movement;
     BossMovementState MovementState;
     EnemyStats bossStats;
+    EnemyCombat enemyCombat;
+
+    CharacterStats targetStats;
+    [SerializeField]
+    Collider[] attackCollider;
 
     public Transform target;
     public float lookRadius;
@@ -44,9 +49,12 @@ public class BossController : MonoBehaviour {
         agent = GetComponent<NavMeshAgent>();
         //target = PlayerManager.instance.transform;
         target = GameObject.FindGameObjectWithTag("Player").transform;
+        targetStats = target.GetComponent<CharacterStats>();
         animator = GetComponent<BossAnimator>();
         bossStats = GetComponent<EnemyStats>();
+        enemyCombat = GetComponent<EnemyCombat>();
         ChangeMovementState(BossMovementState.Idle);
+        attackCollider = GetComponentsInChildren<Collider>();
     }
 
     void Update () {
@@ -95,9 +103,6 @@ public class BossController : MonoBehaviour {
                 ChangeMovementState(state);
                 break;
             case BossMovementState.Move:
-                //animator.Attack();
-                //ChangeMovementState(state);
-                //EnemyCombet.Attack();
                 if (IsAttacking == false && IsSkillActive == false)
                 {
                     StartCoroutine(NomalAttack()); 
@@ -105,12 +110,10 @@ public class BossController : MonoBehaviour {
                 break;
             case BossMovementState.Skill:
                 Debug.Log("Skill");
-                //EnemyCombet.Attack();
                 animator.Skill();
                 ChangeMovementState(state);
                 break;
             case BossMovementState.Stop:
-                //ChangeMovementState(state);
                 break;
             default:
                 break;
@@ -183,6 +186,35 @@ public class BossController : MonoBehaviour {
         yield return null;
     }
 
+    public void StartAttackEvent(int num)
+    {
+        if (num >= attackCollider.Length)
+        {
+            attackCollider[1].enabled = true;
+            attackCollider[2].enabled = true;
+        }
+        else
+        {
+            attackCollider[num].enabled = true;
+        }
+    }
+    public void EndAttackEvent(int num)
+    {
+        if (num >= attackCollider.Length)
+        {
+            attackCollider[1].enabled = false;
+            attackCollider[2].enabled = false;
+        }
+        else
+        {
+            attackCollider[num].enabled = false;
+        }
+    }
+
+    public void OnHit()
+    {
+        enemyCombat.Attack(targetStats);
+    }
 
     private void OnDrawGizmos()
     {
