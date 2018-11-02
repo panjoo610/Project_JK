@@ -83,7 +83,8 @@ public class StraightMovement : BossMovement
         if (!IsDone)
         {
             float distance = Vector3.Distance(newTransform, myTransform.position);
-            if (distance <= agent.stoppingDistance)
+            Debug.Log(distance <= agent.stoppingDistance);
+            if (distance <= agent.stoppingDistance+0.5f)
             {
                 
                 ArriveAtDestination();
@@ -98,6 +99,7 @@ public class StraightMovement : BossMovement
 
     public override bool CheckIsDone(out BossMovementState bossState)
     {
+        
         bossState = BossMovementState.Skill;
         return IsDone;
     }

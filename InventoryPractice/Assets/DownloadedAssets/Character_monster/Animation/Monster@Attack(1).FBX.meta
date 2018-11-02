@@ -172,7 +172,39 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0.22816901
+        functionName: StartAttackEvent
+        data: 
+        objectReferenceParameter: {fileID: 1846128074624634, guid: 371ee12a66d2a334eb62eae3b3a4f6d8,
+          type: 2}
+        floatParameter: 0
+        intParameter: 1
+        messageOptions: 0
+      - time: 0.42253518
+        functionName: EndAttackEvent
+        data: 
+        objectReferenceParameter: {fileID: 1846128074624634, guid: 371ee12a66d2a334eb62eae3b3a4f6d8,
+          type: 2}
+        floatParameter: 0
+        intParameter: 1
+        messageOptions: 0
+      - time: 0.49870798
+        functionName: StartAttackEvent
+        data: 
+        objectReferenceParameter: {fileID: 1846128074624634, guid: 371ee12a66d2a334eb62eae3b3a4f6d8,
+          type: 2}
+        floatParameter: 0
+        intParameter: 2
+        messageOptions: 0
+      - time: 0.7002584
+        functionName: EndAttackEvent
+        data: 
+        objectReferenceParameter: {fileID: 1846128074624634, guid: 371ee12a66d2a334eb62eae3b3a4f6d8,
+          type: 2}
+        floatParameter: 0
+        intParameter: 2
+        messageOptions: 0
       transformMask:
       - path: 
         weight: 1

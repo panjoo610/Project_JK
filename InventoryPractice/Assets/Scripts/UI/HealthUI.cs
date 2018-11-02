@@ -20,9 +20,9 @@ public class HealthUI : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
     {
-		foreach(Canvas c in FindObjectsOfType<Canvas>())
+        foreach (Canvas c in FindObjectsOfType<Canvas>())
         {
-            if(c.renderMode == RenderMode.WorldSpace)
+            if (c.renderMode == RenderMode.WorldSpace)
             {
                 ui = Instantiate(UIPrefab, c.transform).transform;
                 healthSlider = ui.GetChild(0).GetComponent<Image>();
@@ -30,7 +30,11 @@ public class HealthUI : MonoBehaviour {
                 break;
             }
         }
+        //ui = Instantiate(UIPrefab, gameObject.transform).transform;
+        //healthSlider = ui.GetChild(0).GetComponent<Image>();
+        //ui.gameObject.SetActive(false);
         GetComponent<CharacterStats>().OnHealthChanged += OnHealthChanged;
+
 
     }
 	void OnHealthChanged(int maxHealth, int currentHeath)
@@ -44,7 +48,7 @@ public class HealthUI : MonoBehaviour {
             healthSlider.fillAmount = healthPercent;
             if (currentHeath <= 0)
             {
-                Destroy(ui.gameObject);
+                ui.gameObject.SetActive(false);
             }
         }
     }
@@ -60,4 +64,5 @@ public class HealthUI : MonoBehaviour {
             }
         }
 	}
+
 }
