@@ -83,14 +83,13 @@ public class StageManager : MonoBehaviour
         ClearBonusText.gameObject.SetActive(false);
         NoticeText.gameObject.SetActive(false);  
 
-        EquimentManager.instance.saveInventory.SaveItemListByJson();
+        PlayerManager.instance.ResetPlayerPosition();
+        PlayerManager.instance.cameraContorller.RobbyCamera();
 
         LoadScene(StageName.Lobby.ToString());
+        PlayerManager.instance.cameraContorller.HideHitImage();
 
         SceneNoticeText.text = GetCurrentSceneName();
-
-        PlayerManager.instance.ResetPlayerPosition();
-        PlayerManager.instance.cameraContorller.RobbyCamera(); 
     }
 
     public void ChangeCombatStage()

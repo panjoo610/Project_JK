@@ -37,13 +37,19 @@ public class StatusSlot : MonoBehaviour {
     {
         if (PlayerManager.instance.saveInventory.PlayerGold < Price)
         {
-            Debug.Log("구매불가");
+            Debug.Log("구매 불가");
         }
         else
         {
-            playerStatusData.AddStatus(playerStatusData.kindOfStatus);
+            if(playerStatusData.GetPlayerStatusCount(playerStatusData.kindOfStatus) < 5)
+            {
+                playerStatusData.AddStatus(playerStatusData.kindOfStatus);
 
-            PlayerManager.instance.ShowPlayerGold(-Price);
+                PlayerManager.instance.ShowPlayerGold(-Price);
+            }
+            {
+                Debug.Log("레벨 초과");
+            }
         }
         UpdateUI();
     }

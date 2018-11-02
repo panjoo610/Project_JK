@@ -33,23 +33,6 @@ public class InventorySlot : MonoBehaviour {
         icon.enabled = false;
     }
 
-    //public void OnRemoveButton()
-    //{
-    //   // 
-    //}
-
-    //public void OnSwapButton()
-    //{
-      
-    //}
-
-    //private void OnMouseDrag()
-    //{
-    //    Debug.Log("드래그 중 입니다");
-    //    Vector3 mosuePosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0);
-    //    this.transform.position = Camera.main.ScreenToWorldPoint(mosuePosition);
-    //}
-
     public void OnUseItem(Transform ui)
     {
         if(item != null)
@@ -95,9 +78,7 @@ public class InventorySlot : MonoBehaviour {
 
                     itemStats.EquimentButtom.onClick.AddListener(() => OnUseItem(Ui));
                     itemStats.SellButoon.onClick.AddListener(() => Sell(Ui));
-                    itemStats.ExitButton.onClick.AddListener(() => OnExitStatPanel(Ui));
-
-                   
+                    itemStats.ExitButton.onClick.AddListener(() => OnExitStatPanel(Ui));                   
                     break;
                 }
             }
@@ -105,11 +86,8 @@ public class InventorySlot : MonoBehaviour {
     }
     IEnumerator ExitCoroutine(Transform ui)
     {
-        yield return new WaitForSeconds(2.5f);
+        yield return new WaitForSeconds(2.0f);
         if(ui != null)
         OnExitStatPanel(ui);
     }
-    
-
-    
 }

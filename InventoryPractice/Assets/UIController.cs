@@ -17,6 +17,7 @@ public class UIController : MonoBehaviour {
     private void Awake()
     {
         GameTitle.SetActive(true);
+        CombatPanel.SetActive(false);
         DontDestroyOnLoad(gameObject);
     }
 

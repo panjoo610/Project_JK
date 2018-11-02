@@ -23,7 +23,7 @@ public class PlayerStatusData : ScriptableObject
         {
             case KindOfStatus.Damage:
                 if (Damege > 0)
-                    DamageValue = Damege * GetPlayerStatusCount(KindOfStatus.Damage);
+                    DamageValue = Damege * GetPlayerStatusCount(KindOfStatus.Damage) / 4;
 
                     PlayerManager.instance.ShowPlayerStatsDamage(PlayerManager.instance.playerStats.damage.GetValue() + DamageValue);
 
@@ -33,7 +33,7 @@ public class PlayerStatusData : ScriptableObject
                 break;
             case KindOfStatus.Armor:
                 if (Armor > 0)
-                    ArmorValue = Armor * GetPlayerStatusCount(KindOfStatus.Armor);
+                    ArmorValue = Armor * GetPlayerStatusCount(KindOfStatus.Armor) / 4;
 
                     PlayerManager.instance.ShowPlayerStatsArmor(PlayerManager.instance.playerStats.armor.GetValue() + ArmorValue);
 

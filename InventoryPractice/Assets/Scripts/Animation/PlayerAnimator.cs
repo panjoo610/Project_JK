@@ -29,19 +29,19 @@ public class PlayerAnimator : CharacterAnimator {
                 currentAttackAnimSet = weaponAnimationsDic[newItem];
             }
         }
-        else if (newItem == null && oldItem != null && oldItem.equipSlot == EquipmentSlot.Weapon)
-        {
-            animator.SetLayerWeight(1, 0);
-            currentAttackAnimSet = defaultAttackAnimSet;
-        }
-        if (newItem != null && newItem.equipSlot == EquipmentSlot.Head)
-        {
-            animator.SetLayerWeight(2, 1);
-        }
-        else if (newItem == null && oldItem != null && oldItem.equipSlot == EquipmentSlot.Head)
-        {
-            animator.SetLayerWeight(2, 0);
-        }
+        //else if (newItem == null && oldItem != null && oldItem.equipSlot == EquipmentSlot.Weapon)
+        //{
+        //    animator.SetLayerWeight(1, 0);
+        //    currentAttackAnimSet = defaultAttackAnimSet;
+        //}
+        //if (newItem != null && newItem.equipSlot == EquipmentSlot.Head)
+        //{
+        //    animator.SetLayerWeight(2, 1);
+        //}
+        //else if (newItem == null && oldItem != null && oldItem.equipSlot == EquipmentSlot.Head)
+        //{
+        //    animator.SetLayerWeight(2, 0);
+        //}
     }
 
     [System.Serializable]
