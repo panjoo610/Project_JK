@@ -20,7 +20,7 @@ public class BossController : MonoBehaviour {
     BossMovement movement;
     BossMovementState MovementState;
     EnemyStats bossStats;
-    EnemyCombat enemyCombat;
+    BossCombet bossCombat;
 
     CharacterStats targetStats;
     [SerializeField]
@@ -52,7 +52,7 @@ public class BossController : MonoBehaviour {
         targetStats = target.GetComponent<CharacterStats>();
         animator = GetComponent<BossAnimator>();
         bossStats = GetComponent<EnemyStats>();
-        enemyCombat = GetComponent<EnemyCombat>();
+        bossCombat = GetComponent<BossCombet>();
         ChangeMovementState(BossMovementState.Idle);
         attackCollider = GetComponentsInChildren<Collider>();
     }
@@ -213,7 +213,8 @@ public class BossController : MonoBehaviour {
 
     public void OnHit()
     {
-        enemyCombat.Attack(targetStats);
+        Debug.Log("공격 " + targetStats);
+        bossCombat.Attack(targetStats);
     }
 
     private void OnDrawGizmos()

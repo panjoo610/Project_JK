@@ -27,7 +27,7 @@ public class CameraContorller : MonoBehaviour
     public float maxZoom = 15f;
 
     bool isShake;
-
+    IEnumerator shakeCameraEnumerator;
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
@@ -36,6 +36,7 @@ public class CameraContorller : MonoBehaviour
     private void Start()
     {   
         target = PlayerManager.instance.Player.transform;
+        shakeCameraEnumerator = Shake(.25f, .7f);
         HitImageColor = HitImage.color;
     }
 
@@ -50,8 +51,9 @@ public class CameraContorller : MonoBehaviour
 
     public void HideHitImage()
     {
-        StopCoroutine(Shake(0f,0f));
         HitImage.gameObject.SetActive(false);
+        StopCoroutine(shakeCameraEnumerator);
+        shakeCameraEnumerator = Shake(.25f, .7f);
     }
 
     public void ShakeCamera()
@@ -60,8 +62,9 @@ public class CameraContorller : MonoBehaviour
         if (!isShake)
         {
             isShake = true;
-            StartCoroutine(Shake(.25f, .7f)); 
-        }    
+            StartCoroutine(shakeCameraEnumerator);
+        }
+        shakeCameraEnumerator = Shake(.25f, .7f);
     }
 
     public void RobbyCamera()

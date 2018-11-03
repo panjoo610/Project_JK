@@ -34,7 +34,7 @@ public class NomalMovement : BossMovement
         base.myTransform = myTransform;
         base.speed = speed;
         IsDone = false;
-        base.agent.stoppingDistance = 3f;
+        base.agent.stoppingDistance = 2f;
         base.agent.speed = speed;
     }
 
@@ -74,7 +74,7 @@ public class StraightMovement : BossMovement
         base.speed = speed;
         IsDone = false;
         newTransform = new Vector3(target.position.x, target.position.y, target.position.z);
-        agent.stoppingDistance = 3.5f;
+        agent.stoppingDistance = 2f;
         base.agent.speed = speed;
     }
 
@@ -84,7 +84,7 @@ public class StraightMovement : BossMovement
         {
             float distance = Vector3.Distance(newTransform, myTransform.position);
             Debug.Log(distance <= agent.stoppingDistance);
-            if (distance <= agent.stoppingDistance+0.5f)
+            if (distance <= agent.stoppingDistance+1f)
             {
                 
                 ArriveAtDestination();

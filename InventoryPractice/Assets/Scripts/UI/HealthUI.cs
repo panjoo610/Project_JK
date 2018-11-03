@@ -10,7 +10,7 @@ public class HealthUI : MonoBehaviour {
     public GameObject UIPrefab;
     public Transform target;
     float visibleTime = 5f;
-
+    
     float lastMadeVisibleTime;
 
     Transform ui;
