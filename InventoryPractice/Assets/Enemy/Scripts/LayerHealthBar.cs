@@ -19,6 +19,9 @@ public class LayerHealthBar : MonoBehaviour {
     int healthBarCount;
     float healthValue;
 
+    /// <summary>
+    /// backSlider가 상위 오브젝트 위치
+    /// </summary>
     struct HealthBar
     {
         public Image BackSlider;
@@ -34,18 +37,31 @@ public class LayerHealthBar : MonoBehaviour {
     {
         InitializeHealthBarCount();
         SetColorOrder();
-
-        for (int i = 0; i < 2; i++)
-        {
-            HealthBar healthBar = new HealthBar();
-            healthBar.BackSlider = HealthBarPrefab.transform.GetChild(i).GetComponent<Image>();
-            healthBar.FrontSlider = healthBar.BackSlider.transform.GetChild(0).GetComponent<Image>();
-
-            queue.Enqueue(healthBar); 
-        }
-        
+        queue = new Queue<HealthBar>();
+        InstantiateHealthBar(queue);
         ActiveBar = queue.Dequeue();
-        ResetHealthBar(ActiveBar, healthBarCount);
+    }
+    void InstantiateHealthBar(Queue<HealthBar> queue)
+    {
+        foreach (Canvas c in FindObjectsOfType<Canvas>())
+        {
+            if (c.renderMode == RenderMode.ScreenSpaceOverlay)
+            {
+                baseTransfrom = Instantiate(HealthBarPrefab, c.transform).transform;
+                //ActiveBar.BackSlider.transform.SetParent(c.transform);
+                //healthSlider = ui.GetChild(0).GetComponent<Image>();
+                //ui.gameObject.SetActive(false);
+                for (int i = 0; i < 2; i++)
+                {
+                    HealthBar healthBar = new HealthBar();
+                    healthBar.BackSlider = HealthBarPrefab.transform.GetChild(i).GetComponent<Image>();
+                    healthBar.FrontSlider = healthBar.BackSlider.transform.GetChild(0).GetComponent<Image>();
+                    ResetHealthBar(healthBar, healthBarCount);
+                    queue.Enqueue(healthBar);
+                }
+                break;
+            }
+        }
     }
 
     void LateUpdate()
@@ -59,7 +75,32 @@ public class LayerHealthBar : MonoBehaviour {
         //    }
         //}
     }
+    void TestOnHealthChanged(int currntHealth)
+    {
+        int TakeDamage = enemyStats.maxHealth - currntHealth;
+        if (TakeDamage > healthValue)
+        {
+            float OverDamage = TakeDamage - healthValue;
+            float currntDamage = TakeDamage - OverDamage;
+        }
 
+        float healthPercent = (healthValue - TakeDamage) / healthValue;
+        Debug.Log("Health Percent : "+healthPercent);
+        if (healthPercent >= 0)
+        {
+            ActiveBar.FrontSlider.fillAmount = healthPercent;
+            StartCoroutine(HealthSliderChange(healthPercent, ActiveBar.BackSlider));
+        }
+        else if(healthPercent < 0)
+        {
+            ActiveBar.FrontSlider.fillAmount = 0;
+            StartCoroutine(HealthSliderChange(0, ActiveBar.BackSlider));
+            SwichingActiveBar();
+
+        }
+        //currntHealth
+
+    }
     void OnHealthChanged(int maxHealth, int currntHealth)
     {
         float healthPercent = (float)currntHealth / maxHealth;
@@ -76,19 +117,22 @@ public class LayerHealthBar : MonoBehaviour {
         }
         yield return null;
     }
-
+    /// <summary>
+    /// 활성화 HealthBar 교체(Enqueue, Transform)
+    /// </summary>
     void SwichingActiveBar()
     {
-        activeBarTransform.transform.SetAsLastSibling();
+        ActiveBar.BackSlider.transform.SetAsLastSibling();
         ResetHealthBar(ActiveBar, healthBarCount);
         queue.Enqueue(ActiveBar);
 
         ActiveBar = queue.Dequeue();
-        activeBarTransform = ActiveBar.BackSlider.transform;
+        ActiveBar.BackSlider.transform.SetAsFirstSibling();
     }
 
     void ResetHealthBar(HealthBar healthBar, int colorIndex)
     {
+        healthBarCount--;
         healthBar.FrontSlider.fillAmount = 1f;
         healthBar.BackSlider.fillAmount = 1f;
         
