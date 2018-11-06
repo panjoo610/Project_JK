@@ -14,7 +14,7 @@ public class EquipmetInventoryUI : MonoBehaviour
     [SerializeField]
     EquimentSlot[] slots;
 
-    void Start()
+    private void Awake()
     {
         slots = itemParent.GetComponentsInChildren<EquimentSlot>();
 
@@ -75,13 +75,13 @@ public class EquipmetInventoryUI : MonoBehaviour
     }
     void OnEquipmentChanged(Equipment newItem, Equipment oldItem)
     {
-        if(newItem == null)
+        if (newItem != null)
         {
-            UnEquipment(oldItem);
+            Equipment(newItem);        
         }
         else
         {
-            Equipment(newItem);
+            UnEquipment(oldItem);
         }     
     }
 }
