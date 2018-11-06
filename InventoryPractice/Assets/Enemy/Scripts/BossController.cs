@@ -81,7 +81,6 @@ public class BossController : MonoBehaviour {
         {
             if (movement.CheckIsDone(out MovementState))
             {
-                Debug.Log(MovementState);
                 ActionByState(MovementState);
             } 
         }
@@ -109,7 +108,6 @@ public class BossController : MonoBehaviour {
                 }
                 break;
             case BossMovementState.Skill:
-                Debug.Log("Skill");
                 animator.Skill();
                 ChangeMovementState(state);
                 break;
@@ -213,7 +211,6 @@ public class BossController : MonoBehaviour {
 
     public void OnHit()
     {
-        Debug.Log("공격 " + targetStats);
         bossCombat.Attack(targetStats);
     }
 
