@@ -47,6 +47,7 @@ public class StageManager : MonoBehaviour
 
     const int clearAmount = 1000;
     // Use this for initialization
+
     void Start() //초기화 함수 Initialization
     {
         NoticeText.gameObject.SetActive(false);
@@ -74,7 +75,7 @@ public class StageManager : MonoBehaviour
     public void FirstLobby()
     {
         LoadScene(StageName.Lobby.ToString());
-        SceneNoticeText.text = GetCurrentSceneName();
+        
         PlayerManager.instance.ResetPlayerPosition();
     }
 
@@ -88,8 +89,6 @@ public class StageManager : MonoBehaviour
 
         LoadScene(StageName.Lobby.ToString());
         PlayerManager.instance.cameraContorller.HideHitImage();
-
-        SceneNoticeText.text = GetCurrentSceneName();
     }
 
     public void ChangeCombatStage()
@@ -206,6 +205,7 @@ public class StageManager : MonoBehaviour
         }
         loadingPanel.SetActive(!loadingPanel.activeSelf);
         progressBar.fillAmount = 0;
+        SceneNoticeText.text = GetCurrentSceneName();
     }
 }
 public enum StageName { Lobby, InGame, Stage}

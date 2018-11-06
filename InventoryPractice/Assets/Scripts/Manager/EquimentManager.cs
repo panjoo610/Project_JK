@@ -143,7 +143,7 @@ public class EquimentManager : MonoBehaviour
             onEquipmentChanged.Invoke(newItem, null);
         }
 
-        if(currentEquiment[slotIndex] != null)
+        if (currentEquiment[slotIndex] != null)
         {
             Destroy(currentMeshes[slotIndex].gameObject);
         }
@@ -157,5 +157,8 @@ public class EquimentManager : MonoBehaviour
         newMesh.rootBone = targetMesh.rootBone;
 
         currentMeshes[slotIndex] = newMesh;
+
+
+        //Debug.Log(newItem.itemName);
     }
 }

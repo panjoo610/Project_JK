@@ -77,6 +77,7 @@ public class UIController : MonoBehaviour {
         StartCoroutine(ShowHidePanelCoroutine(3.5f));
         
         CombatPanel.SetActive(!CombatPanel.activeSelf);
+        
         combatUI.ChangeGunImage();
     }
 
@@ -105,7 +106,7 @@ public class UIController : MonoBehaviour {
         ChangeCombatOrLobbyUI();
         
         PlayerManager.instance.ShowPlayerGold(-100);
-
+        
         StageManager.instance.MoveLobbyScene();
     }
 
@@ -118,7 +119,7 @@ public class UIController : MonoBehaviour {
 
     public void OnClickStopPanel()
     {
-        HidePanel.SetActive(true);
+        HidePanel.SetActive(!HidePanel.activeInHierarchy);
         NoticePanel.SetActive(!NoticePanel.activeSelf);
     }
 
@@ -139,6 +140,7 @@ public class UIController : MonoBehaviour {
 
     public void OnChangeLobbyScene()
     {
+        HidePanel.SetActive(false);
         ChangeCombatOrLobbyUI();
 
         StageManager.instance.MoveLobbyScene();
