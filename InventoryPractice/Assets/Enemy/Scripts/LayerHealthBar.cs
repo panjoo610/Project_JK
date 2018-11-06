@@ -19,6 +19,7 @@ public class LayerHealthBar : MonoBehaviour {
     int healthBarCount;
     float healthValue;
 
+    Image backGroundImage;
     /// <summary>
     /// backSlider가 상위 오브젝트 위치
     /// </summary>
@@ -26,6 +27,8 @@ public class LayerHealthBar : MonoBehaviour {
     {
         public Image BackSlider;
         public Image FrontSlider;
+        public float HealthPoint;
+
     }
     Queue<HealthBar> queue;
     HealthBar ActiveBar;
@@ -51,14 +54,18 @@ public class LayerHealthBar : MonoBehaviour {
                 //ActiveBar.BackSlider.transform.SetParent(c.transform);
                 //healthSlider = ui.GetChild(0).GetComponent<Image>();
                 //ui.gameObject.SetActive(false);
-                for (int i = 0; i < 2; i++)
+                backGroundImage = baseTransfrom.GetChild(0).GetComponent<Image>();
+                for (int i = 1; i <= 2; i++)
                 {
                     HealthBar healthBar = new HealthBar();
-                    healthBar.BackSlider = HealthBarPrefab.transform.GetChild(i).GetComponent<Image>();
+                    healthBar.BackSlider = baseTransfrom.GetChild(i).GetComponent<Image>(); //HealthBarPrefab.transform
                     healthBar.FrontSlider = healthBar.BackSlider.transform.GetChild(0).GetComponent<Image>();
+                    healthBar.HealthPoint = healthValue;
                     ResetHealthBar(healthBar, healthBarCount);
+                    healthBar.BackSlider.transform.SetAsFirstSibling();
                     queue.Enqueue(healthBar);
                 }
+                backGroundImage.transform.SetAsFirstSibling();
                 break;
             }
         }
@@ -75,31 +82,41 @@ public class LayerHealthBar : MonoBehaviour {
         //    }
         //}
     }
-    void TestOnHealthChanged(int currntHealth)
+    int testCurrntHealth = 500;
+    public void Onclick()
     {
-        int TakeDamage = enemyStats.maxHealth - currntHealth;
-        if (TakeDamage > healthValue)
-        {
-            float OverDamage = TakeDamage - healthValue;
-            float currntDamage = TakeDamage - OverDamage;
-        }
+        testCurrntHealth -= 30;
+        Debug.Log(testCurrntHealth);
+        TestOnHealthChanged(1, testCurrntHealth);
+    }
+    int nowHealth;
+    void TestOnHealthChanged(int maxHealth, int currntHealth)
+    {
+        float TakeDamage = enemyStats.maxHealth - currntHealth;
 
-        float healthPercent = (healthValue - TakeDamage) / healthValue;
-        Debug.Log("Health Percent : "+healthPercent);
-        if (healthPercent >= 0)
+        //if (TakeDamage > healthValue)
+        //{
+        //    float OverDamage = TakeDamage - healthValue;
+        //    float currntDamage = TakeDamage - OverDamage;
+        //}
+        Debug.Log(TakeDamage);
+        if (ActiveBar.HealthPoint>TakeDamage)
         {
+            ActiveBar.HealthPoint -= TakeDamage;
+            float healthPercent = (ActiveBar.HealthPoint - TakeDamage) / ActiveBar.HealthPoint;
+            Debug.Log(ActiveBar.HealthPoint+" / "+ healthPercent);
             ActiveBar.FrontSlider.fillAmount = healthPercent;
             StartCoroutine(HealthSliderChange(healthPercent, ActiveBar.BackSlider));
+            Debug.Log("Health Percent : " + healthPercent);
         }
-        else if(healthPercent < 0)
+        else
         {
+            float OverDamage = TakeDamage - ActiveBar.HealthPoint;
+            ActiveBar.HealthPoint = 0;
             ActiveBar.FrontSlider.fillAmount = 0;
             StartCoroutine(HealthSliderChange(0, ActiveBar.BackSlider));
-            SwichingActiveBar();
-
+            //OnHealthChanged(OverDamage);
         }
-        //currntHealth
-
     }
     void OnHealthChanged(int maxHealth, int currntHealth)
     {
@@ -113,35 +130,52 @@ public class LayerHealthBar : MonoBehaviour {
         while (slider.fillAmount >= healthPercent)
         {
             slider.fillAmount = Mathf.Lerp(slider.fillAmount, healthPercent, Speed * Time.deltaTime);
-            yield return new WaitForSeconds(0.2f);
+            if (slider.fillAmount <= 0)
+            {
+                SwichingActiveBar(ActiveBar, healthBarCount);
+            }
+            yield return null;
         }
         yield return null;
     }
     /// <summary>
     /// 활성화 HealthBar 교체(Enqueue, Transform)
     /// </summary>
-    void SwichingActiveBar()
+    void SwichingActiveBar(HealthBar healthBar, int colorIndex)
     {
-        ActiveBar.BackSlider.transform.SetAsLastSibling();
-        ResetHealthBar(ActiveBar, healthBarCount);
-        queue.Enqueue(ActiveBar);
+        if (usingColors[colorIndex - 1] != null)
+        {
+            backGroundImage.color = usingColors[colorIndex - 1];
+        }
+        else
+        {
+            backGroundImage.color = Color.black;
+        }
+        healthBar.BackSlider.transform.SetAsLastSibling();
+        ResetHealthBar(healthBar, colorIndex);
+        queue.Enqueue(healthBar);
 
-        ActiveBar = queue.Dequeue();
-        ActiveBar.BackSlider.transform.SetAsFirstSibling();
+        healthBar = queue.Dequeue();
+        healthBar.BackSlider.transform.SetAsFirstSibling();
     }
 
     void ResetHealthBar(HealthBar healthBar, int colorIndex)
     {
-        healthBarCount--;
+        colorIndex--;
         healthBar.FrontSlider.fillAmount = 1f;
         healthBar.BackSlider.fillAmount = 1f;
+        healthBar.HealthPoint = healthValue;
         
         //여기서 색상 변경 - 순서대로 색상 지정하게 수정해야함
         healthBar.FrontSlider.color = usingColors[colorIndex];
-        Color backColoer = new Color(usingColors[colorIndex].r - 0.1f, usingColors[colorIndex].g - 0.1f, usingColors[colorIndex].b - 0.1f);
+        Color backColoer = new Color(usingColors[colorIndex].r - 0.1f, usingColors[colorIndex].g - 0.1f, usingColors[colorIndex].b - 0.1f, usingColors[colorIndex].a);
         healthBar.BackSlider.color = backColoer;
+        healthBarCount--;
     }
 
+    /// <summary>
+    /// HealthBar의 HealthPoint 정하기
+    /// </summary>
     void InitializeHealthBarCount()
     {
         enemyStats = GetComponent<EnemyStats>();
@@ -149,6 +183,9 @@ public class LayerHealthBar : MonoBehaviour {
         healthValue = enemyStats.maxHealth / healthBarCount;
     }
 
+    /// <summary>
+    /// 색상배열생성
+    /// </summary>
     void SetColorOrder()
     {
         usingColors = new Color[healthBarCount];
@@ -175,7 +212,7 @@ public class LayerHealthBar : MonoBehaviour {
 
 
 
-
+    
 
     //가장 마지막으로 순서 변경
     //Transform.SetAsLastSibling

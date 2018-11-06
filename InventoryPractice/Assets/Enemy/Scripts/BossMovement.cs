@@ -83,7 +83,6 @@ public class StraightMovement : BossMovement
         if (!IsDone)
         {
             float distance = Vector3.Distance(newTransform, myTransform.position);
-            Debug.Log(distance <= agent.stoppingDistance);
             if (distance <= agent.stoppingDistance+1f)
             {
                 
