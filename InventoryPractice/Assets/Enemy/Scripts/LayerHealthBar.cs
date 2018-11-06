@@ -10,12 +10,14 @@ public class LayerHealthBar : MonoBehaviour {
     public float Speed;
     public float VisibleTime;
     float visibleRunTime;
-
+    float nowHealth;
     [Header("HealthBar Color"),Tooltip("0번이 가장 마지막에 나옴, 나머지는 순차(베이스컬러 제외 2개이상 추천)")]
     public Color[] colors;
     Color[] usingColors;
 
     EnemyStats enemyStats;
+
+    [SerializeField]
     int healthBarCount;
     float healthValue;
 
@@ -31,18 +33,22 @@ public class LayerHealthBar : MonoBehaviour {
 
     }
     Queue<HealthBar> queue;
+    [SerializeField]
     HealthBar ActiveBar;
 
     Transform baseTransfrom;
-    Transform activeBarTransform;
 
     private void Start()
     {
+        enemyStats = GetComponent<EnemyStats>();
+        nowHealth = enemyStats.maxHealth;
         InitializeHealthBarCount();
         SetColorOrder();
         queue = new Queue<HealthBar>();
         InstantiateHealthBar(queue);
         ActiveBar = queue.Dequeue();
+        baseTransfrom.gameObject.SetActive(false);
+        GetComponent<CharacterStats>().OnHealthChanged += OnHealthChanged;
     }
     void InstantiateHealthBar(Queue<HealthBar> queue)
     {
@@ -73,104 +79,108 @@ public class LayerHealthBar : MonoBehaviour {
 
     void LateUpdate()
     {
-        //if (ui != null)
-        //{
-        //    ui.position = target.position;
-        //    if (Time.time - visibleRunTime > VisibleTime)
-        //    {
-        //        ui.gameObject.SetActive(false);
-        //    }
-        //}
+        if (baseTransfrom != null)
+        {
+            //baseTransfrom.position = target.position;
+            if (Time.time - visibleRunTime > VisibleTime)
+            {
+                baseTransfrom.gameObject.SetActive(false);
+            }
+        }
     }
-    int testCurrntHealth = 500;
-    public void Onclick()
+    
+    void OnHealthChanged(int maxHealth, int currntHealth)
     {
-        testCurrntHealth -= 30;
-        Debug.Log(testCurrntHealth);
-        TestOnHealthChanged(1, testCurrntHealth);
-    }
-    int nowHealth;
-    void TestOnHealthChanged(int maxHealth, int currntHealth)
-    {
-        float TakeDamage = enemyStats.maxHealth - currntHealth;
+        baseTransfrom.gameObject.SetActive(true);
+        visibleRunTime = Time.time;
 
-        //if (TakeDamage > healthValue)
-        //{
-        //    float OverDamage = TakeDamage - healthValue;
-        //    float currntDamage = TakeDamage - OverDamage;
-        //}
-        Debug.Log(TakeDamage);
+        if (nowHealth <= 0)
+        {
+            baseTransfrom.gameObject.SetActive(false);
+        }
+
+        float TakeDamage = nowHealth - currntHealth;
+        nowHealth -= TakeDamage;
+
         if (ActiveBar.HealthPoint>TakeDamage)
         {
+            float healthPercent = ((ActiveBar.HealthPoint - TakeDamage) / healthValue);
             ActiveBar.HealthPoint -= TakeDamage;
-            float healthPercent = (ActiveBar.HealthPoint - TakeDamage) / ActiveBar.HealthPoint;
-            Debug.Log(ActiveBar.HealthPoint+" / "+ healthPercent);
             ActiveBar.FrontSlider.fillAmount = healthPercent;
-            StartCoroutine(HealthSliderChange(healthPercent, ActiveBar.BackSlider));
-            Debug.Log("Health Percent : " + healthPercent);
+            StartCoroutine(HealthSliderChange(healthPercent, ActiveBar.BackSlider,false,0));
         }
         else
         {
             float OverDamage = TakeDamage - ActiveBar.HealthPoint;
+            Debug.Log("OverDamage" + OverDamage);
             ActiveBar.HealthPoint = 0;
             ActiveBar.FrontSlider.fillAmount = 0;
-            StartCoroutine(HealthSliderChange(0, ActiveBar.BackSlider));
-            //OnHealthChanged(OverDamage);
+            StartCoroutine(HealthSliderChange(0, ActiveBar.BackSlider,true, OverDamage));
+            nowHealth += OverDamage;
         }
     }
-    void OnHealthChanged(int maxHealth, int currntHealth)
-    {
-        float healthPercent = (float)currntHealth / maxHealth;
-        ActiveBar.FrontSlider.fillAmount = healthPercent;
-        StartCoroutine(HealthSliderChange(healthPercent, ActiveBar.BackSlider));
-    }
 
-    IEnumerator HealthSliderChange(float healthPercent, Image slider)
+    IEnumerator HealthSliderChange(float healthPercent, Image slider ,bool DamageIsOver, float OverDamage)
     {
         while (slider.fillAmount >= healthPercent)
         {
             slider.fillAmount = Mathf.Lerp(slider.fillAmount, healthPercent, Speed * Time.deltaTime);
-            if (slider.fillAmount <= 0)
+            if (slider.fillAmount <= 0.005)
             {
                 SwichingActiveBar(ActiveBar, healthBarCount);
+                break;
             }
             yield return null;
         }
         yield return null;
+        if (DamageIsOver == true)
+        {
+            OnHealthChanged(1, (int)(nowHealth - OverDamage));
+        }
     }
     /// <summary>
     /// 활성화 HealthBar 교체(Enqueue, Transform)
     /// </summary>
     void SwichingActiveBar(HealthBar healthBar, int colorIndex)
     {
-        if (usingColors[colorIndex - 1] != null)
-        {
-            backGroundImage.color = usingColors[colorIndex - 1];
-        }
-        else
-        {
-            backGroundImage.color = Color.black;
-        }
+        ActiveBar = queue.Dequeue();
         healthBar.BackSlider.transform.SetAsLastSibling();
-        ResetHealthBar(healthBar, colorIndex);
-        queue.Enqueue(healthBar);
+        queue.Enqueue(ResetHealthBar(healthBar, colorIndex));
 
-        healthBar = queue.Dequeue();
-        healthBar.BackSlider.transform.SetAsFirstSibling();
+        
+        ActiveBar.BackSlider.transform.SetAsLastSibling();
+        backGroundImage.transform.SetAsFirstSibling();
     }
 
-    void ResetHealthBar(HealthBar healthBar, int colorIndex)
+    HealthBar ResetHealthBar(HealthBar healthBar, int colorIndex)
     {
         colorIndex--;
+
         healthBar.FrontSlider.fillAmount = 1f;
         healthBar.BackSlider.fillAmount = 1f;
         healthBar.HealthPoint = healthValue;
-        
-        //여기서 색상 변경 - 순서대로 색상 지정하게 수정해야함
-        healthBar.FrontSlider.color = usingColors[colorIndex];
-        Color backColoer = new Color(usingColors[colorIndex].r - 0.1f, usingColors[colorIndex].g - 0.1f, usingColors[colorIndex].b - 0.1f, usingColors[colorIndex].a);
-        healthBar.BackSlider.color = backColoer;
-        healthBarCount--;
+
+        if (colorIndex >=0)
+        {
+            healthBar.FrontSlider.color = usingColors[colorIndex];
+            Color backColoer = new Color(usingColors[colorIndex].r - 0.1f, usingColors[colorIndex].g - 0.1f, usingColors[colorIndex].b - 0.1f, usingColors[colorIndex].a);
+            healthBar.BackSlider.color = backColoer;
+
+            if (colorIndex > 1)
+            {
+                backGroundImage.color = usingColors[colorIndex - 1];
+            }
+            else
+            {
+                backGroundImage.color = Color.black;
+            }
+            healthBarCount--;
+        }
+        else
+        {
+            healthBar.BackSlider.gameObject.SetActive(false);
+        }
+        return healthBar;
     }
 
     /// <summary>
