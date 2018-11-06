@@ -52,8 +52,8 @@ public class EquimentManager : MonoBehaviour
             saveInventory.ResetData();
         }
 
-        if (saveInventory.items != null)
-            testText.text = "장착창 : " + saveInventory.equipmentItems.Count.ToString() + "  인벤토리 : " + saveInventory.items.Count.ToString();//테스트
+        //if (saveInventory.items != null)
+        //    testText.text = "장착창 : " + saveInventory.equipmentItems.Count.ToString() + "  인벤토리 : " + saveInventory.items.Count.ToString();//테스트
     }
 
     public void Equip(Equipment newItem)
@@ -142,6 +142,7 @@ public class EquimentManager : MonoBehaviour
         {
             onEquipmentChanged.Invoke(newItem, null);
         }
+
         if(currentEquiment[slotIndex] != null)
         {
             Destroy(currentMeshes[slotIndex].gameObject);

@@ -384,12 +384,12 @@ public class PrEnemyAI : MonoBehaviour
         //this.enabled = false;
         GetComponent<Animator>().enabled = false;
 
-        if (transform.FindChild("Root").GetComponent<SphereCollider>())
-            transform.FindChild("Root").GetComponent<SphereCollider>().enabled = true;
-        if (transform.FindChild("Root").GetComponent<Rigidbody>())
+        if (transform.Find("Root").GetComponent<SphereCollider>())
+            transform.Find("Root").GetComponent<SphereCollider>().enabled = true;
+        if (transform.Find("Root").GetComponent<Rigidbody>())
         {
-            transform.FindChild("Root").GetComponent<Rigidbody>().isKinematic = false;
-            transform.FindChild("Root").GetComponent<Rigidbody>().AddForce(hitDir * -10, ForceMode.Impulse);
+            transform.Find("Root").GetComponent<Rigidbody>().isKinematic = false;
+            transform.Find("Root").GetComponent<Rigidbody>().AddForce(hitDir * -10, ForceMode.Impulse);
 
         }
 
@@ -464,8 +464,8 @@ public class PrEnemyAI : MonoBehaviour
 
         if (explosionFX)
         {
-            GameObject DieFXInstance = Instantiate(explosionFX, transform.FindChild("Root").transform.position, Quaternion.identity) as GameObject;
-            DieFXInstance.transform.parent = transform.FindChild("Root").transform;
+            GameObject DieFXInstance = Instantiate(explosionFX, transform.Find("Root").transform.position, Quaternion.identity) as GameObject;
+            DieFXInstance.transform.parent = transform.Find("Root").transform;
         }
 
         if (type == enemyType.Pod)

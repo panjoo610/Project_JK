@@ -47,6 +47,7 @@ public class StatusSlot : MonoBehaviour {
 
                 PlayerManager.instance.ShowPlayerGold(-Price);
             }
+            else
             {
                 Debug.Log("레벨 초과");
             }

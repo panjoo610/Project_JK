@@ -118,6 +118,7 @@ public class UIController : MonoBehaviour {
 
     public void OnClickStopPanel()
     {
+        HidePanel.SetActive(true);
         NoticePanel.SetActive(!NoticePanel.activeSelf);
     }
 
@@ -147,6 +148,7 @@ public class UIController : MonoBehaviour {
 
     public void ShowLobbyBtn()
     {
+        HidePanel.SetActive(true);
         StopButton.interactable = false;
         LobbyButton.gameObject.SetActive(true);
 
