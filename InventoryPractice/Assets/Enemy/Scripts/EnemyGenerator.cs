@@ -35,10 +35,11 @@ public class EnemyGenerator : MonoBehaviour {
 
     public void Initialize(int generatorCount, int waveCount, List<Vector3> positions)
     {
-        
         GenerateParticle = EnemyManager.instance.GenerateParticle;
         enemyPool = EnemyManager.instance.enemyPool;
         //coolTime = EnemyManager.instance.CoolTime;
+        IsStageClear = false;
+        IsChecking = false;
         IsGenerating = false;
         generatePositions = positions;
         this.waveCount = waveCount;
@@ -48,12 +49,17 @@ public class EnemyGenerator : MonoBehaviour {
 
         
 
-        nomalWaveGenerate = GenerateObject(nomalWaveGenerateCount);
-        finalWaveGenerate = GenerateObject(finalWaveGenerateCount);
+        nomalWaveGenerate = GenerateObject(nomalWaveGenerateCount,false);
+        finalWaveGenerate = GenerateObject(finalWaveGenerateCount,true);
         StartCoroutine(nomalWaveGenerate);
         EnemyGenerate = Generating();
 
         StartCoroutine(EnemyGenerate);
+    }
+    public void Initialize(int generatorCount, int waveCount, List<Vector3> positions, bool isBossStage)
+    {
+        Initialize(generatorCount, waveCount, positions);
+        this.IsBossStage = isBossStage;
     }
 
     IEnumerator Generating()
@@ -70,7 +76,7 @@ public class EnemyGenerator : MonoBehaviour {
                     if (waveCount > 1 && IsGenerating == false)
                     {
                         Debug.Log(waveCount + " 제네레이팅");
-                        nomalWaveGenerate = GenerateObject(nomalWaveGenerateCount);
+                        nomalWaveGenerate = GenerateObject(nomalWaveGenerateCount, IsBossStage);
                         StartCoroutine(nomalWaveGenerate);
                     }
                     else if (waveCount == 1 && IsGenerating == false)
@@ -78,7 +84,7 @@ public class EnemyGenerator : MonoBehaviour {
                         Debug.Log(waveCount + " 제네레이팅");
                         //StartCoroutine(GenerateObject(finalWaveGenerateCount));
                         StartCoroutine(finalWaveGenerate);
-                        finalWaveGenerate = GenerateObject(finalWaveGenerateCount);
+                        finalWaveGenerate = GenerateObject(finalWaveGenerateCount, IsBossStage);
                     }
                     else if (waveCount <= 0 && !IsStageClear)
                     {
@@ -142,11 +148,14 @@ public class EnemyGenerator : MonoBehaviour {
     /// </summary>
     /// <param name="Count"></param>
     /// <returns></returns>
-    IEnumerator GenerateObject(int Count)
+    IEnumerator GenerateObject(int Count, bool isBossGenerate)
     {
+        Debug.Log(IsGenerating);
         IsGenerating = true;
+        Debug.Log(IsGenerating);
         for (int i = 0; i < Count; i++)
         {
+            yield return new WaitForSeconds(2f);
             if (EnemyManager.instance.IsWorking)
             {
                 Vector3 newTransform = generatePositions[UnityEngine.Random.Range(0, generatePositions.Count)];
@@ -159,15 +168,21 @@ public class EnemyGenerator : MonoBehaviour {
                 yield return new WaitForSeconds(.7f);
                 if (EnemyManager.instance.IsWorking)
                 {
-                    activeObjects.Add(GetObjectFromPool(newTransform));
-                    yield return new WaitForSeconds(2f);  
+                    Debug.Log(Count);
+                    if (isBossGenerate == true && i == Count - 1)
+                    {
+                        activeObjects.Add(GetObjectFromPool(newTransform, EnemyType.Boss));
+                    }
+                    else
+                    {
+                        activeObjects.Add(GetObjectFromPool(newTransform, EnemyType.Nomal));
+                    }
                 }
             }
         }
         waveCount -= 1;
         yield return null;
         IsGenerating = false;
-        StopCoroutine(GenerateObject(Count));
         //StopCoroutine(finalWaveGenerate);
     }
 
@@ -177,9 +192,9 @@ public class EnemyGenerator : MonoBehaviour {
     /// </summary>
     /// <param name="newTransform"></param>
     /// <returns></returns>
-    GameObject GetObjectFromPool(Vector3 newTransform)
+    GameObject GetObjectFromPool(Vector3 newTransform, EnemyType enemyType)
     {
-        GameObject tempObject = enemyPool.Pop(EnemyType.Nomal);
+        GameObject tempObject = enemyPool.Pop(enemyType);
         tempObject.transform.position = newTransform;
         tempObject.SetActive(true);
         return tempObject;
@@ -201,8 +216,8 @@ public class EnemyGenerator : MonoBehaviour {
             EnemyManager.instance.enemyPool.Push(activeObjects[i]);
         }
         EnemyGenerate = Generating();
-        nomalWaveGenerate = GenerateObject(nomalWaveGenerateCount);
-        finalWaveGenerate = GenerateObject(finalWaveGenerateCount);
+        nomalWaveGenerate = GenerateObject(nomalWaveGenerateCount,false);
+        finalWaveGenerate = GenerateObject(finalWaveGenerateCount,true);
     }
 
 }

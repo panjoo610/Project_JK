@@ -20,7 +20,8 @@ public class EnemyPool : MonoBehaviour {
     /// <summary>
     /// Pool
     /// </summary>
-    public GameObject EnemyPrefab;
+    GameObject enemyPrefab;
+    GameObject bossPrefab;
     public List<GameObject> PoolList;
     public List<GameObject> BossPoolList;
 
@@ -28,20 +29,23 @@ public class EnemyPool : MonoBehaviour {
 
     int nomalWaveGenerateCount;
     int finalWaveGenerateCount;
-
+    
     public void Initialize(int generatorCount, int waveCount, GameObject enemyPrefab)
     {
         PoolList = new List<GameObject>();
-        EnemyPrefab = enemyPrefab;
+        BossPoolList = new List<GameObject>();
+        this.enemyPrefab = enemyPrefab;
         nomalWaveGenerateCount = generatorCount / waveCount;
         finalWaveGenerateCount = nomalWaveGenerateCount + (generatorCount % waveCount);
         for (int i = 0; i < finalWaveGenerateCount; i++)
         {
-            PoolList.Add(CreateObject(EnemyPrefab));
+            PoolList.Add(CreateObject(this.enemyPrefab));
         }
     }
-    public void PoolingBoss(GameObject bossPrefab)
+    public void Initialize(int generatorCount, int waveCount, GameObject enemyPrefab, GameObject bossPrefab)
     {
+        Initialize(generatorCount, waveCount, enemyPrefab);
+        this.bossPrefab = bossPrefab;
         BossPoolList.Add(CreateObject(bossPrefab));
     }
 
@@ -57,20 +61,46 @@ public class EnemyPool : MonoBehaviour {
         tempObject.SetActive(false);
         return tempObject;
     }
-    public void Push(GameObject enemyObject)
+    public void Push(GameObject pushObject)
     {
-        enemyObject.transform.SetParent(gameObject.transform);
-        enemyObject.SetActive(false);
-        PoolList.Add(enemyObject);
+        if (pushObject == enemyPrefab)
+        {
+            pushObject.transform.SetParent(gameObject.transform);
+            pushObject.SetActive(false);
+            PoolList.Add(pushObject);
+        }
+        else
+        {
+            pushObject.transform.SetParent(gameObject.transform);
+            pushObject.SetActive(false);
+            BossPoolList.Add(pushObject);
+        }
     }
     public GameObject Pop(EnemyType enemyType)
     {
-        if(PoolList.Count == 0)
+        List<GameObject> useList;
+        GameObject usePrefab;
+        switch (enemyType)
         {
-            PoolList.Add(CreateObject(EnemyPrefab));
+            case EnemyType.Nomal:
+                useList = PoolList;
+                usePrefab = enemyPrefab;
+                break;
+            case EnemyType.Boss:
+                useList = BossPoolList;
+                usePrefab = bossPrefab;
+                break;
+            default:
+                useList = PoolList;
+                usePrefab = enemyPrefab;
+                break;
         }
-        GameObject gameObject = PoolList[0];
-        PoolList.RemoveAt(0);
-        return gameObject;
+        if(useList.Count == 0)
+        {
+            useList.Add(CreateObject(usePrefab));
+        }
+        GameObject PopObject = useList[0];
+        useList.RemoveAt(0);
+        return PopObject;
     }
 }

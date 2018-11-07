@@ -103,10 +103,7 @@ public class EnemyController : MonoBehaviour {
         }
         else
         {
-            //agent.SetDestination(transform.position);
-
             agent.enabled = false;
-            //gameObject.GetComponent<Collider>().enabled = false;
         }
     }
 
