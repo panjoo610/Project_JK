@@ -34,8 +34,9 @@ public class LayerHealthBar : MonoBehaviour {
     }
     Queue<HealthBar> queue;
     HealthBar ActiveBar;
-
     Transform baseTransfrom;
+
+    bool IsChangeing;
 
     private void Start()
     {
@@ -81,7 +82,7 @@ public class LayerHealthBar : MonoBehaviour {
         if (baseTransfrom != null)
         {
             //baseTransfrom.position = target.position;
-            if (Time.time - visibleRunTime > VisibleTime)
+            if (Time.time - visibleRunTime > VisibleTime && IsChangeing == false)
             {
                 baseTransfrom.gameObject.SetActive(false);
             }
@@ -90,42 +91,47 @@ public class LayerHealthBar : MonoBehaviour {
     
     void OnHealthChanged(int maxHealth, int currntHealth)
     {
-        baseTransfrom.gameObject.SetActive(true);
-        visibleRunTime = Time.time;
-
-        if (nowHealth <= 0)
+        if (healthBarCount>=0)
         {
-            baseTransfrom.gameObject.SetActive(false);
-        }
+            baseTransfrom.gameObject.SetActive(true);
+            visibleRunTime = Time.time;
 
-        float TakeDamage = nowHealth - currntHealth;
-        nowHealth -= TakeDamage;
+            if (nowHealth <= 0)
+            {
+                baseTransfrom.gameObject.SetActive(false);
+            }
 
-        if (ActiveBar.HealthPoint>TakeDamage)
-        {
-            float healthPercent = ((ActiveBar.HealthPoint - TakeDamage) / healthValue);
-            ActiveBar.HealthPoint -= TakeDamage;
-            ActiveBar.FrontSlider.fillAmount = healthPercent;
-            StartCoroutine(HealthSliderChange(healthPercent, ActiveBar.BackSlider,false,0));
-        }
-        else
-        {
-            float OverDamage = TakeDamage - ActiveBar.HealthPoint;
-            Debug.Log("OverDamage" + OverDamage);
-            ActiveBar.HealthPoint = 0;
-            ActiveBar.FrontSlider.fillAmount = 0;
-            StartCoroutine(HealthSliderChange(0, ActiveBar.BackSlider,true, OverDamage));
-            nowHealth += OverDamage;
+            float TakeDamage = nowHealth - currntHealth;
+            nowHealth -= TakeDamage;
+
+            if (ActiveBar.HealthPoint > TakeDamage)
+            {
+                float healthPercent = ((ActiveBar.HealthPoint - TakeDamage) / healthValue);
+                ActiveBar.HealthPoint -= TakeDamage;
+                ActiveBar.FrontSlider.fillAmount = healthPercent;
+                StartCoroutine(HealthSliderChange(healthPercent, ActiveBar.BackSlider, false, 0));
+            }
+            else
+            {
+                float OverDamage = TakeDamage - ActiveBar.HealthPoint;
+                Debug.Log("OverDamage" + OverDamage);
+                ActiveBar.HealthPoint = 0;
+                ActiveBar.FrontSlider.fillAmount = 0;
+                StartCoroutine(HealthSliderChange(0, ActiveBar.BackSlider, true, OverDamage));
+                nowHealth += OverDamage;
+            } 
         }
     }
 
     IEnumerator HealthSliderChange(float healthPercent, Image slider ,bool DamageIsOver, float OverDamage)
     {
+        IsChangeing = true;
         while (slider.fillAmount >= healthPercent)
         {
             slider.fillAmount = Mathf.Lerp(slider.fillAmount, healthPercent, Speed * Time.deltaTime);
             if (slider.fillAmount <= 0.005)
             {
+                Debug.Log(healthBarCount);
                 SwichingActiveBar(ActiveBar, healthBarCount);
                 break;
             }
@@ -136,19 +142,23 @@ public class LayerHealthBar : MonoBehaviour {
         {
             OnHealthChanged(1, (int)(nowHealth - OverDamage));
         }
+        IsChangeing = false;
     }
     /// <summary>
     /// 활성화 HealthBar 교체(Enqueue, Transform)
     /// </summary>
     void SwichingActiveBar(HealthBar healthBar, int colorIndex)
     {
-        ActiveBar = queue.Dequeue();
-        healthBar.BackSlider.transform.SetAsLastSibling();
-        queue.Enqueue(ResetHealthBar(healthBar, colorIndex));
+        if (true)
+        {
+            ActiveBar = queue.Dequeue();
+            healthBar.BackSlider.transform.SetAsLastSibling();
+            queue.Enqueue(ResetHealthBar(healthBar, colorIndex));
 
-        
-        ActiveBar.BackSlider.transform.SetAsLastSibling();
-        backGroundImage.transform.SetAsFirstSibling();
+
+            ActiveBar.BackSlider.transform.SetAsLastSibling();
+            backGroundImage.transform.SetAsFirstSibling(); 
+        }
     }
 
     HealthBar ResetHealthBar(HealthBar healthBar, int colorIndex)
@@ -174,6 +184,11 @@ public class LayerHealthBar : MonoBehaviour {
                 backGroundImage.color = Color.black;
             }
             healthBarCount--;
+            Debug.Log(healthBarCount);
+            if (healthBarCount<0)
+            {
+                Debug.Log(healthBarCount + " BossIsDead");
+            }
         }
         else
         {

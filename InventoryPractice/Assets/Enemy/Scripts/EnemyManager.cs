@@ -13,6 +13,7 @@ public class EnemyManager : MonoBehaviour {
     public float CoolTime;
     public int GenerateCount;
     public int WaveCount;
+    public bool IsBossStage;
     //public MeshRenderer meshRenderer;
 
     GameObject EnemyPoolObj;
@@ -20,6 +21,7 @@ public class EnemyManager : MonoBehaviour {
 
     public ParticleSystem GenerateParticle;
     public GameObject enemyPrefab;
+    public GameObject bossPrefab;
 
     public bool IsWorking;
 
@@ -58,8 +60,12 @@ public class EnemyManager : MonoBehaviour {
         IsWorking = true;
         GenerateCount = GenerateDatas[currentStage-1].EnemyCount;
         WaveCount = GenerateDatas[currentStage-1].WaveCount;
-        enemyPool.Initialize(GenerateCount, WaveCount, enemyPrefab);
-        enemyGenerator.Initialize(GenerateCount, WaveCount, GenerateDatas[currentStage-1].GeneratePosition);
+        IsBossStage = GenerateDatas[currentStage - 1].IsBossStage;
+        if (IsBossStage == false)
+        {
+            enemyPool.Initialize(GenerateCount, WaveCount, enemyPrefab);
+            enemyGenerator.Initialize(GenerateCount, WaveCount, GenerateDatas[currentStage - 1].GeneratePosition); 
+        }
     }
 
     public void Initialize()

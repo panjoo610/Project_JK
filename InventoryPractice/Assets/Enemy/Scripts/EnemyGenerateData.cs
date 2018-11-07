@@ -6,6 +6,6 @@ using UnityEngine;
 public class EnemyGenerateData : ScriptableObject {
     public int EnemyCount;
     public int WaveCount;
-    public MeshRenderer mesh;
+    public bool IsBossStage;
     public List<Vector3> GeneratePosition;
 }
