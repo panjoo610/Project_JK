@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum EnemyType
+{
+    Nomal, Elite, Boss
+}
 public class EnemyPool : MonoBehaviour {
     #region Singleton
     public static EnemyPool instance;
@@ -12,11 +16,15 @@ public class EnemyPool : MonoBehaviour {
     }
     #endregion
     
+
     /// <summary>
     /// Pool
     /// </summary>
     public GameObject EnemyPrefab;
     public List<GameObject> PoolList;
+    public List<GameObject> BossPoolList;
+
+    EnemyType enemyType;
 
     int nomalWaveGenerateCount;
     int finalWaveGenerateCount;
@@ -31,6 +39,10 @@ public class EnemyPool : MonoBehaviour {
         {
             PoolList.Add(CreateObject(EnemyPrefab));
         }
+    }
+    public void PoolingBoss(GameObject bossPrefab)
+    {
+        BossPoolList.Add(CreateObject(bossPrefab));
     }
 
     /// <summary>
@@ -51,7 +63,7 @@ public class EnemyPool : MonoBehaviour {
         enemyObject.SetActive(false);
         PoolList.Add(enemyObject);
     }
-    public GameObject Pop()
+    public GameObject Pop(EnemyType enemyType)
     {
         if(PoolList.Count == 0)
         {

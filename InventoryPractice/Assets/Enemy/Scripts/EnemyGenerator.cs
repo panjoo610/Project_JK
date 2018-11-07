@@ -23,6 +23,7 @@ public class EnemyGenerator : MonoBehaviour {
     int waveCount;
     int nomalWaveGenerateCount;
     int finalWaveGenerateCount;
+    bool IsBossStage;
     bool IsGenerating;
     bool IsChecking;
     bool IsStageClear;
@@ -178,7 +179,7 @@ public class EnemyGenerator : MonoBehaviour {
     /// <returns></returns>
     GameObject GetObjectFromPool(Vector3 newTransform)
     {
-        GameObject tempObject = enemyPool.Pop();
+        GameObject tempObject = enemyPool.Pop(EnemyType.Nomal);
         tempObject.transform.position = newTransform;
         tempObject.SetActive(true);
         return tempObject;
