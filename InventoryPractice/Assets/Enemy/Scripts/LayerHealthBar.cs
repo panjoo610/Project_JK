@@ -25,7 +25,7 @@ public class LayerHealthBar : MonoBehaviour {
     /// <summary>
     /// backSlider가 상위 오브젝트 위치
     /// </summary>
-    struct HealthBar
+    private struct HealthBar
     {
         public Image BackSlider;
         public Image FrontSlider;
@@ -33,7 +33,6 @@ public class LayerHealthBar : MonoBehaviour {
 
     }
     Queue<HealthBar> queue;
-    [SerializeField]
     HealthBar ActiveBar;
 
     Transform baseTransfrom;
