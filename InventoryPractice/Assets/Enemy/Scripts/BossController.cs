@@ -38,7 +38,8 @@ public class BossController : MonoBehaviour {
     //public float StoppingDistance;
     float runtime;
 
-
+    IEnumerator attackCoroutine;
+    IEnumerator skillCoroutine;
 
     void Start () {
         Initialize();
@@ -55,6 +56,8 @@ public class BossController : MonoBehaviour {
         bossCombat = GetComponent<BossCombet>();
         ChangeMovementState(BossMovementState.Idle);
         attackCollider = GetComponentsInChildren<Collider>();
+        attackCoroutine = NomalAttack();
+        skillCoroutine = UseSkill();
     }
 
     void Update () {
@@ -72,7 +75,7 @@ public class BossController : MonoBehaviour {
             runtime += Time.deltaTime;
             if (runtime >= coolTime && IsSkillActive == false && IsAttacking == false)
             {
-                StartCoroutine(UseSkill());
+                StartCoroutine(skillCoroutine);
             }
         }
         
@@ -91,6 +94,10 @@ public class BossController : MonoBehaviour {
         {
             ChangeMovementState(BossMovementState.Stop,false);
             animator.Dead();
+            StopCoroutine(attackCoroutine);
+            StopCoroutine(skillCoroutine);
+            attackCoroutine = NomalAttack();
+            skillCoroutine = UseSkill();
         }
     }
 
@@ -104,7 +111,7 @@ public class BossController : MonoBehaviour {
             case BossMovementState.Move:
                 if (IsAttacking == false && IsSkillActive == false)
                 {
-                    StartCoroutine(NomalAttack()); 
+                    StartCoroutine(attackCoroutine); 
                 }
                 break;
             case BossMovementState.Skill:

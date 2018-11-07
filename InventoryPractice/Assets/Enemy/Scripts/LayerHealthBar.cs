@@ -36,6 +36,7 @@ public class LayerHealthBar : MonoBehaviour {
     HealthBar ActiveBar;
     Transform baseTransfrom;
 
+
     bool IsChangeing;
 
     private void Start()
@@ -49,6 +50,9 @@ public class LayerHealthBar : MonoBehaviour {
         ActiveBar = queue.Dequeue();
         baseTransfrom.gameObject.SetActive(false);
         GetComponent<CharacterStats>().OnHealthChanged += OnHealthChanged;
+        StageManager.instance.OnGameClearCallBack += HideHealthBar;
+        StageManager.instance.OnGameOverCallBack += HideHealthBar;
+        StageManager.instance.OnMoveLobbySceneCallBack += HideHealthBar;
     }
     void InstantiateHealthBar(Queue<HealthBar> queue)
     {
@@ -188,6 +192,7 @@ public class LayerHealthBar : MonoBehaviour {
             if (healthBarCount<0)
             {
                 Debug.Log(healthBarCount + " BossIsDead");
+                //baseTransfrom.gameObject.SetActive(false);
             }
         }
         else
@@ -231,12 +236,16 @@ public class LayerHealthBar : MonoBehaviour {
             }
         }
     }
+    void HideHealthBar()
+    {
+        baseTransfrom.gameObject.SetActive(false);
+    }
 
 
 
 
 
-    
+
 
     //가장 마지막으로 순서 변경
     //Transform.SetAsLastSibling
