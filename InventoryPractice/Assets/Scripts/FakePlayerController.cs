@@ -23,7 +23,7 @@ public class FakePlayerController : MonoBehaviour
     {
         moveVector = PoolInput();
 
-        if(moveVector != Vector3.zero)
+        if(moveVector != Vector3.zero && PlayerManager.instance.playerStats.characterCombat.IsAttack == false)
         {
             player.IsMove = true;
             player.RunToPC(PoolInput());

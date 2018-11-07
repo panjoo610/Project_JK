@@ -34,14 +34,4 @@ public class Interactable : MonoBehaviour {
         isFocus = false;
         hasInteracted = false;
     }
-
-    public void OnDrawGizomosSelected()
-    {
-        if(interactionTransform == null)
-        {
-            interactionTransform = transform;
-        }
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(interactionTransform.transform.position, radius);
-    }
 }

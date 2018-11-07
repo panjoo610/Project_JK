@@ -19,7 +19,7 @@ public class PlayerMotor : MonoBehaviour {
 
     private void Update()
     {
-        if(target != null)
+        if(target != null && target.tag != "Item")
         {
             FaceTarget();
         }

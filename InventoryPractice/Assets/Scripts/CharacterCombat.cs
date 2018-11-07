@@ -8,17 +8,17 @@ public class CharacterCombat : MonoBehaviour {
 
     public CharacterStats myStats;
 
-    public float attackSpeed = 2f;
+    public float attackSpeed = 1f;
     public float attackCoolDown = 0f;
     public float lastAttackTime;
 
-    public const float combatCoolDown = 2.0f;
+    public const float combatCoolDown = 1.0f;
 
     public float attackDelay = 0.2f;
 
     public event System.Action OnAttack;
 
-    public bool InCombat, Die;
+    public bool InCombat, Die, IsAttack;
 
     public CharacterStats oppoenentStats;
 
@@ -67,10 +67,22 @@ public class CharacterCombat : MonoBehaviour {
     public virtual void AttackHit_AnimationEvent() 
     {
         oppoenentStats.TakeDamage(myStats.damage.GetValue());
-        
+
+        if (!IsAttack)
+        {
+            StartCoroutine(AttackCoroutine());
+        }
+      
         if (oppoenentStats.currentHealth <= 0)
         {
             InCombat = false;        
         }
+    }
+
+    IEnumerator AttackCoroutine()
+    {
+        IsAttack = true;
+        yield return new WaitForSeconds(0.3f);
+        IsAttack = false;
     }
 }

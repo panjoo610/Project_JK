@@ -143,9 +143,7 @@ public class EnemyGenerator : MonoBehaviour {
     /// <returns></returns>
     IEnumerator GenerateObject(int Count)
     {
-        Debug.Log(IsGenerating);
         IsGenerating = true;
-        Debug.Log(IsGenerating);
         for (int i = 0; i < Count; i++)
         {
             if (EnemyManager.instance.IsWorking)

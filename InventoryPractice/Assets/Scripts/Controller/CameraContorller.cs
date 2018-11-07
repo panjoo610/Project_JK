@@ -69,8 +69,8 @@ public class CameraContorller : MonoBehaviour
 
     public void RobbyCamera()
     {
-        offset = new Vector3(-0.17f, -0.2f, -0.12f); //로비씬
-        currentZoom = 10f;
+        offset = new Vector3(-0.48f, -0.28f, -0.58f); //로비씬
+        currentZoom = 5f;
     }
 
     IEnumerator DirectingCameraCoroutine(float x, float y, float z)

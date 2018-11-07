@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 
 
@@ -52,17 +53,17 @@ public class UIController : MonoBehaviour {
         {
             return;
         }
-        ChangeCombatOrLobbyUI();
 
         statusUI.statusUI.gameObject.SetActive(false);
         inventoyUI.inventotyUI.gameObject.SetActive(false);
         equipmetInventoryUI.inventotyUI.gameObject.SetActive(false);
 
-        StageManager.instance.ChangeCombatStage();       
+        StageManager.instance.ChangeCombatStage();
+        ChangeCombatOrLobbyUI();
     }
 
     public void ChangeCombatOrLobbyUI()
-    {
+    {      
         StopButton.interactable = true;
         StatusBtn.gameObject.SetActive(!StatusBtn.gameObject.activeSelf);
         StopButton.gameObject.SetActive(!StopButton.gameObject.activeSelf);
@@ -73,19 +74,19 @@ public class UIController : MonoBehaviour {
         combatStartButton.gameObject.SetActive(!combatStartButton.gameObject.activeSelf);
 
         InformationPanel.SetActive(!InformationPanel.activeSelf);
-
-        StartCoroutine(ShowHidePanelCoroutine(3.5f));
         
         CombatPanel.SetActive(!CombatPanel.activeSelf);
         
         combatUI.ChangeGunImage();
+
+        StartCoroutine(ShowHidePanelCoroutine(3.0f));
     }
 
     IEnumerator ShowHidePanelCoroutine(float time)
     {
-        if (!HidePanel.activeInHierarchy)
+        if (HidePanel.activeSelf)
         {
-            HidePanel.SetActive(true);
+            HidePanel.SetActive(false);
             yield return null;
         }
         else
@@ -95,6 +96,7 @@ public class UIController : MonoBehaviour {
             HidePanel.SetActive(false);
         }
     }
+
     public void ShowHidePaenl()
     {
         EnemyManager.instance.StageExit();
@@ -103,6 +105,7 @@ public class UIController : MonoBehaviour {
 
     public void MoveLobbyWhenGameOver()
     {
+        HidePanel.SetActive(false);
         ChangeCombatOrLobbyUI();
         
         PlayerManager.instance.ShowPlayerGold(-100);
@@ -129,6 +132,7 @@ public class UIController : MonoBehaviour {
         PlayerManager.instance.playerController.RemoveFocus();
         EnemyManager.instance.StageExit();
 
+        HidePanel.SetActive(false);
         ChangeCombatOrLobbyUI();
         OnClickStopPanel();
 
@@ -140,7 +144,6 @@ public class UIController : MonoBehaviour {
 
     public void OnChangeLobbyScene()
     {
-        HidePanel.SetActive(false);
         ChangeCombatOrLobbyUI();
 
         StageManager.instance.MoveLobbyScene();
@@ -151,6 +154,7 @@ public class UIController : MonoBehaviour {
     public void ShowLobbyBtn()
     {
         HidePanel.SetActive(true);
+
         StopButton.interactable = false;
         LobbyButton.gameObject.SetActive(true);
 
