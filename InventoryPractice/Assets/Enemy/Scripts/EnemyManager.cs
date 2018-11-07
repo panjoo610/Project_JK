@@ -64,7 +64,12 @@ public class EnemyManager : MonoBehaviour {
         if (IsBossStage == false)
         {
             enemyPool.Initialize(GenerateCount, WaveCount, enemyPrefab);
-            enemyGenerator.Initialize(GenerateCount, WaveCount, GenerateDatas[currentStage - 1].GeneratePosition); 
+            enemyGenerator.Initialize(GenerateCount, WaveCount, GenerateDatas[currentStage - 1].GeneratePosition);
+        }
+        else
+        {
+            enemyPool.Initialize(GenerateCount, WaveCount, enemyPrefab, bossPrefab);
+            enemyGenerator.Initialize(GenerateCount, WaveCount, GenerateDatas[currentStage - 1].GeneratePosition, true);
         }
     }
 
