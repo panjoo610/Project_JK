@@ -17,7 +17,10 @@ public class EquipmetInventoryUI : MonoBehaviour
     private void Awake()
     {
         slots = itemParent.GetComponentsInChildren<EquimentSlot>();
+    }
 
+    private void Start()
+    {
         equimentManager = EquimentManager.instance;
         equimentManager.onEquipmentChanged += OnEquipmentChanged;
     }
