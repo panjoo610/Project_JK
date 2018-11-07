@@ -79,7 +79,7 @@ public class PlayerController : MonoBehaviour {
                 if (interactable != null && fakePlayer.IsMove == false)
                 {
                     SetFocus(interactable); //공격
-                }              
+                }
             }          
         }
     }

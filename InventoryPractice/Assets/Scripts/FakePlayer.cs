@@ -23,8 +23,9 @@ public class FakePlayer : MonoBehaviour
 
     public void RunToPC(Vector3 moveVector)
     {
-        PCrigidbody.velocity = moveVector * 250 * Time.deltaTime;
-        transform.rotation = Quaternion.LookRotation(moveVector);
+        PCrigidbody.velocity = moveVector * 200 * Time.deltaTime;
+        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(moveVector.x, 0f, moveVector.z));
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 10f);
     }
 
     public void InitTransform()

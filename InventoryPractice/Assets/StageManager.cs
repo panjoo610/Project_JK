@@ -82,13 +82,11 @@ public class StageManager : MonoBehaviour
     public void MoveLobbyScene()
     {
         ClearBonusText.gameObject.SetActive(false);
-        NoticeText.gameObject.SetActive(false);  
-
-        PlayerManager.instance.ResetPlayerPosition();
-        PlayerManager.instance.cameraContorller.RobbyCamera();
-
-        LoadScene(StageName.Lobby.ToString());
+        NoticeText.gameObject.SetActive(false);
         PlayerManager.instance.cameraContorller.HideHitImage();
+        PlayerManager.instance.cameraContorller.RobbyCamera();
+        LoadScene(StageName.Lobby.ToString());
+        PlayerManager.instance.ResetPlayerPosition();
     }
 
     public void ChangeCombatStage()
