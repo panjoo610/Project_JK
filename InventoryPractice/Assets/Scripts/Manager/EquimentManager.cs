@@ -32,6 +32,9 @@ public class EquimentManager : MonoBehaviour
 
     public Text testText;
 
+    [SerializeField]
+    EquipmetInventoryUI equipmetInventoryUI;
+
     private void Start()
     {
         inventory = InventoryManager.instance;
@@ -39,6 +42,8 @@ public class EquimentManager : MonoBehaviour
         int numSlots = System.Enum.GetNames(typeof(EquipmentSlot)).Length;
         currentEquiment = new Equipment[numSlots];
         currentMeshes = new SkinnedMeshRenderer[numSlots];
+
+        equipmetInventoryUI.RegistManager();
 
         EquipDefalutItems();
 
