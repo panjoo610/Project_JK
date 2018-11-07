@@ -20,7 +20,6 @@ public class Unit : Interactable {
 
     public override void Interact()
     {
-        Debug.Log(gameObject+" interact");
         base.Interact();
 
         CharacterCombat playerCombat = playerManager.Player.GetComponent<CharacterCombat>();

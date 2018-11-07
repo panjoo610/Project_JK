@@ -105,6 +105,7 @@ public class UIController : MonoBehaviour {
 
     public void MoveLobbyWhenGameOver()
     {
+        NoticePanel.SetActive(false);
         HidePanel.SetActive(false);
         ChangeCombatOrLobbyUI();
         

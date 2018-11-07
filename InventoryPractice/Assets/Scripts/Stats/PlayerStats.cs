@@ -38,6 +38,9 @@ public class PlayerStats : CharacterStats {
     public override void TakeDamage(int damage)
     {
         base.TakeDamage(damage);
+#if UNITY_ANDROID
+        Handheld.Vibrate();
+#endif
         SoundManager.instance.PlaySFX("PlayerHit", false);
         PlayerManager.instance.cameraContorller.ShakeCamera(); //플레이어매니저로 이동할 것
     }
