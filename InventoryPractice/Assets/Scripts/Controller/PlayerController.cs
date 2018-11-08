@@ -2,7 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Diagnostics;
+using UnityEngine.UI;
+
 
 [RequireComponent(typeof(PlayerMotor))]
 public class PlayerController : MonoBehaviour {
@@ -18,9 +19,13 @@ public class PlayerController : MonoBehaviour {
 
     public LayerMask movementMask;
 
-    public GameObject Muzzle, Bullet, BulletPoint;
+    public GameObject Muzzle, Bullet, BulletPosition;
 
     PlayerMotor motor;
+
+    [SerializeField]
+    Button fireButton;
+
 
     // Use this for initialization
     private void Awake()
@@ -31,22 +36,23 @@ public class PlayerController : MonoBehaviour {
 
     void Start ()
     {
+        fireButton.onClick.AddListener(() => Fire());
         playerCamera = Camera.main;
         motor = GetComponent<PlayerMotor>();
         StageManager.instance.OnGameClearCallBack += RemoveFocus;
     }
 	
-	// Update is called once per frame
-	void Update ()
-    {
-#if(UNITY_EDITOR)
-        InputAtEditor(); //에디터 인풋
-#endif
+//	// Update is called once per frame
+//	void Update ()
+//    {
+//#if(UNITY_EDITOR)
+//        InputAtEditor(); //에디터 인풋
+//#endif
 
-#if (UNITY_ANDROID)
-        InputAtAndroid(); // 모바일 인풋
-#endif
-    }
+//#if (UNITY_ANDROID)
+//        InputAtAndroid(); // 모바일 인풋
+//#endif
+//    }
 
     private void LateUpdate()
     {
@@ -63,7 +69,7 @@ public class PlayerController : MonoBehaviour {
     }
 
 
-    [Conditional("UNITY_EDITOR")] //에디터 내에서만 마우스 클릭
+    //[Conditional("UNITY_EDITOR")] //에디터 내에서만 마우스 클릭
     void InputAtEditor()
     {
         if (EventSystem.current.IsPointerOverGameObject()) { return; }
@@ -84,7 +90,7 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    [Conditional("UNITY_ANDROID")] //안드로이드 모바일~
+    //[Conditional("UNITY_ANDROID")] //안드로이드 모바일~
     void InputAtAndroid()
     {
         if (Input.touchCount > 0)
@@ -111,6 +117,37 @@ public class PlayerController : MonoBehaviour {
                 }
             }
         }          
+    }
+
+    public void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Item"))
+        {
+            Interactable interactable = other.GetComponent<Interactable>();
+            if (interactable != null)
+            {
+                SetFocus(interactable);
+            }
+        }
+    }
+
+    void Fire()
+    {
+        RaycastHit hit;
+
+        Vector3 playerPosition = new Vector3(transform.position.x, transform.position.y + 1.5f, transform.position.z);
+
+        Debug.DrawRay(playerPosition, transform.forward * 10.0f);
+
+        if(Physics.Raycast(playerPosition, transform.forward, out hit, 10.0f))
+        {
+            Debug.Log(hit.transform.name);
+            Interactable interactable = hit.collider.GetComponent<Interactable>();
+            if (interactable != null && fakePlayer.IsMove == false)
+            {
+                SetFocus(interactable); 
+            }
+        }
     }
 
     void SetFocus(Interactable newFocus)
@@ -154,7 +191,7 @@ public class PlayerController : MonoBehaviour {
     public void HideBullet()
     {
         Bullet.SetActive(false);
-        Bullet.transform.position = BulletPoint.transform.position;       
+        Bullet.transform.position = BulletPosition.transform.position;       
     }
 
     IEnumerator ActiveMuzzle()

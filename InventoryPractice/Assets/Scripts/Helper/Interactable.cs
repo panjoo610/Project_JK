@@ -23,6 +23,7 @@ public class Interactable : MonoBehaviour {
             Interact();
         }
     }
+
     public void OnFocused(Transform playerTransform)
     {
         isFocus = true;
