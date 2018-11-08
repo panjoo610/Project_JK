@@ -28,9 +28,11 @@ public class FakePlayerController : MonoBehaviour
             player.IsMove = true;
             player.RunToPC(PoolInput());
             OnJoystick(moveVector);
+            player.ActiveSelfPartice(true);
         }
         else
         {
+            player.ActiveSelfPartice(false);
             OnJoystick(moveVector);
             player.IsMove = false;
         }
@@ -50,47 +52,38 @@ public class FakePlayerController : MonoBehaviour
     {          
         if(inputVector != Vector3.zero)
         {
-            if (inputVector.x < 0 && inputVector.z < 0)
-            {
-                Virtualonclick.joyStick[1].gameObject.SetActive(false);
-                Virtualonclick.joyStick[2].gameObject.SetActive(false);
-                Virtualonclick.joyStick[3].gameObject.SetActive(false);
+            if (inputVector.x < 0 && inputVector.z < 0)  {ActiveJoystick(0); } // 0은 11시 방향
 
-                Virtualonclick.joyStick[0].gameObject.SetActive(true);
-            }
-            else if (inputVector.x < 0 && inputVector.z > 0)
-            {
-                Virtualonclick.joyStick[0].gameObject.SetActive(false);
-                Virtualonclick.joyStick[2].gameObject.SetActive(false);
-                Virtualonclick.joyStick[3].gameObject.SetActive(false);
+            else if (inputVector.x < 0 && inputVector.z > 0) {ActiveJoystick(1);} // 1은 1시 방향
 
-                Virtualonclick.joyStick[1].gameObject.SetActive(true);
-            }
-            else if (inputVector.x > 0 && inputVector.z < 0)
-            {
-                Virtualonclick.joyStick[0].gameObject.SetActive(false);
-                Virtualonclick.joyStick[1].gameObject.SetActive(false);
-                Virtualonclick.joyStick[3].gameObject.SetActive(false);
+            else if (inputVector.x > 0 && inputVector.z < 0) {ActiveJoystick(2);} // 2는 7시 방향
 
-                Virtualonclick.joyStick[2].gameObject.SetActive(true);
-            }
-            else if (inputVector.x > 0 && inputVector.z > 0)
-            {
-                Virtualonclick.joyStick[0].gameObject.SetActive(false);
-                Virtualonclick.joyStick[1].gameObject.SetActive(false);
-                Virtualonclick.joyStick[2].gameObject.SetActive(false);
-
-                Virtualonclick.joyStick[3].gameObject.SetActive(true);
-            }
+            else if (inputVector.x > 0 && inputVector.z > 0) {ActiveJoystick(3);} //3은 5시 방향
         }
-        else
+        else { ActiveJoystick(-1); }
+    }
+
+    void ActiveJoystick(int ActiveNum)
+    {
+        if(ActiveNum < 0)
         {
-            Virtualonclick.joyStick[0].gameObject.SetActive(false);
-            Virtualonclick.joyStick[1].gameObject.SetActive(false);
-            Virtualonclick.joyStick[2].gameObject.SetActive(false);
-            Virtualonclick.joyStick[3].gameObject.SetActive(false);
+            for (int i = 0; i < 4; i++)
+            {
+                Virtualonclick.joyStick[i].gameObject.SetActive(false);
+            }
+            return;
         }
-        //0은 11시, 1은 1시, 
-        //2는 7시, 3은 5시
+
+        for (int i = 0; i < 4; i++)
+        {
+            if(ActiveNum == i)
+            {
+                Virtualonclick.joyStick[i].gameObject.SetActive(true);
+            }
+            else
+            {
+                Virtualonclick.joyStick[i].gameObject.SetActive(false);
+            }
+        }
     }
 }
