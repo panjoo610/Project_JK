@@ -75,6 +75,7 @@ public class BossController : MonoBehaviour {
             runtime += Time.deltaTime;
             if (runtime >= coolTime && IsSkillActive == false && IsAttacking == false)
             {
+                skillCoroutine = UseSkill();
                 StartCoroutine(skillCoroutine);
             }
         }
@@ -111,6 +112,7 @@ public class BossController : MonoBehaviour {
             case BossMovementState.Move:
                 if (IsAttacking == false && IsSkillActive == false)
                 {
+                    attackCoroutine = NomalAttack();
                     StartCoroutine(attackCoroutine); 
                 }
                 break;

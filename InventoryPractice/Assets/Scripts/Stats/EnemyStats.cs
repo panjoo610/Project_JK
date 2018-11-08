@@ -25,7 +25,7 @@ public class EnemyStats : CharacterStats {
         enemy.enabled = false;
         //add ragdooll effect death animation
 
-        Invoke("PushToPool", 2f);       
+        Invoke("PushToPool", 1.3f);       
     }
 
     void PushToPool()
