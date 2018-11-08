@@ -17,9 +17,11 @@ public class ItemPickUp : Interactable
         bool wasPickedUp = InventoryManager.instance.Add(item);
 
         if (wasPickedUp)
-        {        
-            Vector3 playerPosition = new Vector3(PlayerManager.instance.Player.transform.position.x, PlayerManager.instance.Player.transform.position.y + 1.0f, PlayerManager.instance.Player.transform.position.z);
-            iTween.MoveTo(gameObject, iTween.Hash("position", playerPosition, "easeType", iTween.EaseType.linear, "oncomplete", "Destroy", "time", 0.1f));
+        {
+            //Vector3 playerPosition = new Vector3(PlayerManager.instance.Player.transform.position.x, PlayerManager.instance.Player.transform.position.y + 1.0f, PlayerManager.instance.Player.transform.position.z);
+            //iTween.MoveTo(gameObject, iTween.Hash("position", playerPosition, "easeType", iTween.EaseType.linear, "oncomplete", "Destroy", "time", 0.1f));
+
+            StartCoroutine(DestroyItem());
         }
             
     }
