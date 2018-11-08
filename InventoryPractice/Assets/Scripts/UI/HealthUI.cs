@@ -26,10 +26,11 @@ public class HealthUI : MonoBehaviour {
             {
                 ui = Instantiate(UIPrefab, c.transform).transform;
                 healthSlider = ui.GetChild(0).GetComponent<Image>();
-                ui.gameObject.SetActive(false);
+                ui.gameObject.SetActive(true);
                 break;
             }
         }
+        target = gameObject.transform;
         //ui = Instantiate(UIPrefab, gameObject.transform).transform;
         //healthSlider = ui.GetChild(0).GetComponent<Image>();
         //ui.gameObject.SetActive(false);
@@ -53,16 +54,16 @@ public class HealthUI : MonoBehaviour {
         }
     }
     // Update is called once per frame
-    void LateUpdate ()
+    void LateUpdate()
     {
-        if(ui != null)
+        if (ui != null)
         {
             ui.position = target.position;
-            if (Time.time - lastMadeVisibleTime > visibleTime)
-            {
-                ui.gameObject.SetActive(false);
-            }
+            //if (Time.time - lastMadeVisibleTime > visibleTime)
+            //{
+            //    ui.gameObject.SetActive(false);
+            //}
         }
-	}
+    }
 
 }
