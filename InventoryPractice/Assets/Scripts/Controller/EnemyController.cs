@@ -107,14 +107,7 @@ public class EnemyController : MonoBehaviour {
         }
     }
 
-
-
-    //public void RandomMove()//안쓰는중
-    //{
-    //    SetRandomPosition();
-    //    enemyAnimator.PlayWalk(true);
-    //    StartCoroutine(EnemyObjectMove());
-    //}
+    
     IEnumerator EnemyObjectMove()
     {
         isCoroutine = true;
