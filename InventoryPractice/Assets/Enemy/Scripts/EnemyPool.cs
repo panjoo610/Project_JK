@@ -103,4 +103,17 @@ public class EnemyPool : MonoBehaviour {
         useList.RemoveAt(0);
         return PopObject;
     }
+    public void ClearPool()
+    {
+        foreach (GameObject item in PoolList)
+        {
+            Destroy(item);
+        }
+        foreach (GameObject item in BossPoolList)
+        {
+            Destroy(item);
+        }
+        PoolList.Clear();
+        BossPoolList.Clear();
+    }
 }

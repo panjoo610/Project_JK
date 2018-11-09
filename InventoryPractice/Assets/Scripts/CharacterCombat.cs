@@ -68,7 +68,7 @@ public class CharacterCombat : MonoBehaviour {
     {
         oppoenentStats.TakeDamage(myStats.damage.GetValue());
 
-        if (!IsAttack)
+        if (!IsAttack && gameObject.activeSelf == true)
         {
             StartCoroutine(AttackCoroutine());
         }

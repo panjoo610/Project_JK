@@ -12,7 +12,7 @@ public class HealthUI : MonoBehaviour {
     float visibleTime = 5f;
     
     float lastMadeVisibleTime;
-
+    EnemyStats enemyStats;
     Transform ui;
     Image healthSlider;
     Transform cam;
@@ -34,9 +34,8 @@ public class HealthUI : MonoBehaviour {
         //ui = Instantiate(UIPrefab, gameObject.transform).transform;
         //healthSlider = ui.GetChild(0).GetComponent<Image>();
         //ui.gameObject.SetActive(false);
+        enemyStats = GetComponent<EnemyStats>();
         GetComponent<CharacterStats>().OnHealthChanged += OnHealthChanged;
-
-
     }
 	void OnHealthChanged(int maxHealth, int currentHeath)
     {
@@ -59,10 +58,21 @@ public class HealthUI : MonoBehaviour {
         if (ui != null)
         {
             ui.position = target.position;
-            //if (Time.time - lastMadeVisibleTime > visibleTime)
-            //{
-            //    ui.gameObject.SetActive(false);
-            //}
+        }
+    }
+    private void OnEnable()
+    {
+        if (ui != null && healthSlider.fillAmount < 1f)
+        {
+            healthSlider.fillAmount = 1f;
+            ui.gameObject.SetActive(true); 
+        }
+    }
+    private void OnDestroy()
+    {
+        if (ui != null)
+        {
+            Destroy(ui.gameObject); 
         }
     }
 

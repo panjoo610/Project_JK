@@ -7,9 +7,10 @@ public class EnemyGenerator : MonoBehaviour {
     /// <summary>
     /// Generator
     /// </summary>
-    
+
     //float coolTime;
-    
+    int currentEnemyCount;
+    int goalCount;
     EnemyPool enemyPool;
 
     ParticleSystem GenerateParticle;
@@ -31,10 +32,12 @@ public class EnemyGenerator : MonoBehaviour {
     IEnumerator EnemyGenerate;
     IEnumerator nomalWaveGenerate;
     IEnumerator finalWaveGenerate;
-    
+    IEnumerator CheckEnemy;
+    public event System.Action<int, int> OnCurrentCountChanged;
 
     public void Initialize(int generatorCount, int waveCount, List<Vector3> positions)
     {
+        
         GenerateParticle = EnemyManager.instance.GenerateParticle;
         enemyPool = EnemyManager.instance.enemyPool;
         //coolTime = EnemyManager.instance.CoolTime;
@@ -46,13 +49,19 @@ public class EnemyGenerator : MonoBehaviour {
         nomalWaveGenerateCount = generatorCount / waveCount;
         finalWaveGenerateCount = nomalWaveGenerateCount + (generatorCount % waveCount);
         activeObjects = new List<GameObject>();
+        currentEnemyCount = generatorCount;
+        goalCount = generatorCount;
 
-        
-
+        CheckEnemy = CheckAliveEnemy();
         nomalWaveGenerate = GenerateObject(nomalWaveGenerateCount,false);
         finalWaveGenerate = GenerateObject(finalWaveGenerateCount,true);
         StartCoroutine(nomalWaveGenerate);
         EnemyGenerate = Generating();
+
+        if (OnCurrentCountChanged != null)
+        {
+            OnCurrentCountChanged(currentEnemyCount, generatorCount); 
+        }
 
         StartCoroutine(EnemyGenerate);
     }
@@ -69,7 +78,7 @@ public class EnemyGenerator : MonoBehaviour {
             if (enemyPool != null)
             {
                 yield return null;
-                StartCoroutine(CheckAliveEnemy());
+                StartCoroutine(CheckEnemy);
                 if (activeObjects != null && activeObjects.Count <= 0)//하나의 웨이브끝
                 {
                     Debug.Log("웨이브 시작 "+waveCount + " 제네레이팅");
@@ -107,8 +116,7 @@ public class EnemyGenerator : MonoBehaviour {
         if (check)
         {
             IsStageClear = true;
-            EnemyManager.instance.ClearStage(); 
-        }
+            EnemyManager.instance.ClearStage();        }
     }
 
     //public static void Invoke(this MonoBehaviour m, Action method, float time)
@@ -132,6 +140,11 @@ public class EnemyGenerator : MonoBehaviour {
                 {
                     if (activeObjects[i].activeSelf == false)
                     {
+                        currentEnemyCount--;
+                        if (OnCurrentCountChanged != null)
+                        {
+                            OnCurrentCountChanged(currentEnemyCount, goalCount);
+                        }
                         activeObjects.Remove(activeObjects[i].gameObject);
                         yield return new WaitForSeconds(0.3f);
                     }
@@ -208,6 +221,7 @@ public class EnemyGenerator : MonoBehaviour {
         StopCoroutine(EnemyGenerate);
         StopCoroutine(nomalWaveGenerate);
         StopCoroutine(finalWaveGenerate);
+        StopCoroutine(CheckEnemy);
         enemyPool = null;
         waveCount = 0;
         for (int i = 0; i < activeObjects.Count; i++)
@@ -215,6 +229,7 @@ public class EnemyGenerator : MonoBehaviour {
             activeObjects[i].SetActive(false);
             EnemyManager.instance.enemyPool.Push(activeObjects[i]);
         }
+        CheckEnemy = CheckAliveEnemy();
         EnemyGenerate = Generating();
         nomalWaveGenerate = GenerateObject(nomalWaveGenerateCount,false);
         finalWaveGenerate = GenerateObject(finalWaveGenerateCount,true);
