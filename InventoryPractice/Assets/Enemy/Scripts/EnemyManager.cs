@@ -54,6 +54,8 @@ public class EnemyManager : MonoBehaviour {
     public void ClearStage()
     {
         StageManager.instance.ClearStage();
+
+        enemyPool.ClearPool();
     }
     public void GenerateEnemy(int currentStage)
     {
@@ -83,6 +85,7 @@ public class EnemyManager : MonoBehaviour {
         IsWorking = false;
         Debug.Log("강제종료");
         enemyGenerator.StoppingGenerating();
+        enemyPool.ClearPool();
     }
 
 
