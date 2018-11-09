@@ -7,7 +7,14 @@ public class CombatUI : MonoBehaviour {
 
     public Image GunImgae;
     InventoryManager inventory;
+    Text currntCount;
+    Text goalCount;
 
+    private void Start()
+    {
+        currntCount = transform.GetChild(5).GetComponent<Text>();
+        currntCount.text = "남은 제거 대상 : " + EnemyManager.instance.GenerateDatas[EnemyManager.instance.currentStage].currentCount.ToString();
+    }
 
     public void ChangeGunImage()
     {
@@ -19,6 +26,10 @@ public class CombatUI : MonoBehaviour {
         {
             return;
         }   
+    }
+    public void UpdateEnemyCountUI()
+    {
+        
     }
 
 }

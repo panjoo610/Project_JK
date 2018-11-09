@@ -10,7 +10,6 @@ public class EnemyGenerator : MonoBehaviour {
 
     //float coolTime;
     int currentEnemyCount;
-    int goalCount;
     EnemyPool enemyPool;
 
     ParticleSystem GenerateParticle;
@@ -33,11 +32,9 @@ public class EnemyGenerator : MonoBehaviour {
     IEnumerator nomalWaveGenerate;
     IEnumerator finalWaveGenerate;
     IEnumerator CheckEnemy;
-    public event System.Action<int, int> OnCurrentCountChanged;
 
     public void Initialize(int generatorCount, int waveCount, List<Vector3> positions)
     {
-        
         GenerateParticle = EnemyManager.instance.GenerateParticle;
         enemyPool = EnemyManager.instance.enemyPool;
         //coolTime = EnemyManager.instance.CoolTime;
@@ -49,19 +46,15 @@ public class EnemyGenerator : MonoBehaviour {
         nomalWaveGenerateCount = generatorCount / waveCount;
         finalWaveGenerateCount = nomalWaveGenerateCount + (generatorCount % waveCount);
         activeObjects = new List<GameObject>();
+
         currentEnemyCount = generatorCount;
-        goalCount = generatorCount;
 
         CheckEnemy = CheckAliveEnemy();
         nomalWaveGenerate = GenerateObject(nomalWaveGenerateCount,false);
         finalWaveGenerate = GenerateObject(finalWaveGenerateCount,true);
         StartCoroutine(nomalWaveGenerate);
         EnemyGenerate = Generating();
-
-        if (OnCurrentCountChanged != null)
-        {
-            OnCurrentCountChanged(currentEnemyCount, generatorCount); 
-        }
+        
 
         StartCoroutine(EnemyGenerate);
     }
@@ -141,10 +134,8 @@ public class EnemyGenerator : MonoBehaviour {
                     if (activeObjects[i].activeSelf == false)
                     {
                         currentEnemyCount--;
-                        if (OnCurrentCountChanged != null)
-                        {
-                            OnCurrentCountChanged(currentEnemyCount, goalCount);
-                        }
+                        EnemyManager.instance.GenerateDatas[EnemyManager.instance.currentStage].currentCount = currentEnemyCount;
+                        Debug.Log(EnemyManager.instance.GenerateDatas[EnemyManager.instance.currentStage].currentCount);
                         activeObjects.Remove(activeObjects[i].gameObject);
                         yield return new WaitForSeconds(0.3f);
                     }

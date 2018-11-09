@@ -25,6 +25,7 @@ public class EnemyManager : MonoBehaviour {
 
     public bool IsWorking;
 
+    public int currentStage;
     #region Singleton
     public static EnemyManager instance;
 
@@ -51,27 +52,24 @@ public class EnemyManager : MonoBehaviour {
         enemyGenerator = EnemyGeneratorObj.GetComponent<EnemyGenerator>();
         
     }
-    public void ClearStage()
-    {
-        StageManager.instance.ClearStage();
-
-        enemyPool.ClearPool();
-    }
     public void GenerateEnemy(int currentStage)
     {
+        this.currentStage = currentStage - 1;
+        GenerateDatas[this.currentStage].Initialize();
+        
         IsWorking = true;
-        GenerateCount = GenerateDatas[currentStage-1].EnemyCount;
-        WaveCount = GenerateDatas[currentStage-1].WaveCount;
-        IsBossStage = GenerateDatas[currentStage - 1].IsBossStage;
+        GenerateCount = GenerateDatas[this.currentStage].EnemyCount;
+        WaveCount = GenerateDatas[this.currentStage].WaveCount;
+        IsBossStage = GenerateDatas[this.currentStage].IsBossStage;
         if (IsBossStage == false)
         {
             enemyPool.Initialize(GenerateCount, WaveCount, enemyPrefab);
-            enemyGenerator.Initialize(GenerateCount, WaveCount, GenerateDatas[currentStage - 1].GeneratePosition);
+            enemyGenerator.Initialize(GenerateCount, WaveCount, GenerateDatas[this.currentStage].GeneratePosition);
         }
         else
         {
             enemyPool.Initialize(GenerateCount, WaveCount, enemyPrefab, bossPrefab);
-            enemyGenerator.Initialize(GenerateCount, WaveCount, GenerateDatas[currentStage - 1].GeneratePosition, true);
+            enemyGenerator.Initialize(GenerateCount, WaveCount, GenerateDatas[this.currentStage].GeneratePosition, true);
         }
     }
 
@@ -80,8 +78,16 @@ public class EnemyManager : MonoBehaviour {
         IsWorking = false;
     }
 
+    public void ClearStage()
+    {
+        StageManager.instance.ClearStage();
+        GenerateDatas[currentStage].Initialize();
+        enemyPool.ClearPool();
+    }
+
     public void StageExit()
     {
+        GenerateDatas[currentStage].Initialize();
         IsWorking = false;
         Debug.Log("강제종료");
         enemyGenerator.StoppingGenerating();

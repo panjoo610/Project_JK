@@ -8,4 +8,10 @@ public class EnemyGenerateData : ScriptableObject {
     public int WaveCount;
     public bool IsBossStage;
     public List<Vector3> GeneratePosition;
+
+    public int currentCount;
+    public void Initialize()
+    {
+        currentCount = EnemyCount;
+    }
 }
