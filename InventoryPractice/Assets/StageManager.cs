@@ -29,14 +29,17 @@ public class StageManager : MonoBehaviour
 
     public int CurrentStage = 1;
 
+    public delegate void OnGameStart();
+    public OnGameStart OnGameStartCallBack;
+
     public delegate void OnGameClear();
     public OnGameClear OnGameClearCallBack;
 
-    public delegate void OnMoveLobbyScene();
-    public OnMoveLobbyScene OnMoveLobbySceneCallBack;
-
     public delegate void OnGameOver();
     public OnGameOver OnGameOverCallBack;
+
+    public delegate void OnMoveLobbyScene();
+    public OnMoveLobbyScene OnMoveLobbySceneCallBack;
 
     public string nextScene;
 
@@ -83,9 +86,13 @@ public class StageManager : MonoBehaviour
     {
         ClearBonusText.gameObject.SetActive(false);
         NoticeText.gameObject.SetActive(false);
+
+        PlayerManager.instance.ResetPlayerPosition();
+
         PlayerManager.instance.cameraContorller.HideHitImage();
         PlayerManager.instance.cameraContorller.RobbyCamera();
         LoadScene(StageName.Lobby.ToString());
+
         PlayerManager.instance.ResetPlayerPosition();
     }
 
@@ -100,6 +107,10 @@ public class StageManager : MonoBehaviour
 
         LoadScene(StageName.Stage + CurrentStage.ToString());
         StartCoroutine(ShowGameStartText(2.0f));
+
+        if (OnGameStartCallBack != null)
+            OnGameStartCallBack.Invoke();
+
         PlayerManager.instance.cameraContorller.ActingCombat();
     }
 
@@ -109,6 +120,7 @@ public class StageManager : MonoBehaviour
         NoticeText.text = "Game Start !";
         yield return new WaitForSeconds(time);
         NoticeText.gameObject.SetActive(false);
+
         PlayerManager.instance.ActivePlayerController(true);
     }
 

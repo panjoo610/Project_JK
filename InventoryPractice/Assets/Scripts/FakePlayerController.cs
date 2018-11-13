@@ -9,7 +9,6 @@ public class FakePlayerController : MonoBehaviour
     FakePlayer player;
 
     [SerializeField]
-
     IOnclick Virtualonclick;
 
     [SerializeField]
@@ -19,9 +18,30 @@ public class FakePlayerController : MonoBehaviour
 
     Vector3 moverDir;
 
+    StageManager stageManager;
+
+    [SerializeField]
+    bool isGameState;
+
+    private void Start()
+    {
+        isGameState = false;
+
+        stageManager = StageManager.instance;
+
+        stageManager.OnGameClearCallBack += TurnOffJoystick;
+
+        stageManager.OnGameOverCallBack += TurnOffJoystick;
+
+        stageManager.OnGameStartCallBack += TurnOnJoystick;
+    }
+
     void FixedUpdate()
     {
-        moveVector = PoolInput();
+        if (isGameState)
+        {
+            moveVector = PoolInput();
+        }
 
         if(moveVector != Vector3.zero && PlayerManager.instance.playerStats.characterCombat.IsAttack == false)
         {
@@ -85,5 +105,14 @@ public class FakePlayerController : MonoBehaviour
                 Virtualonclick.joyStick[i].gameObject.SetActive(false);
             }
         }
+    }
+
+    void TurnOffJoystick()
+    {
+        isGameState = false;
+    }
+    void TurnOnJoystick()
+    {
+        isGameState = true;
     }
 }

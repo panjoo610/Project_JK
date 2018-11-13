@@ -37,6 +37,7 @@ public class HealthUI : MonoBehaviour {
         enemyStats = GetComponent<EnemyStats>();
         GetComponent<CharacterStats>().OnHealthChanged += OnHealthChanged;
     }
+
 	void OnHealthChanged(int maxHealth, int currentHeath)
     {
         if(ui != null)
@@ -52,6 +53,7 @@ public class HealthUI : MonoBehaviour {
             }
         }
     }
+
     // Update is called once per frame
     void LateUpdate()
     {
@@ -60,6 +62,7 @@ public class HealthUI : MonoBehaviour {
             ui.position = target.position;
         }
     }
+
     private void OnEnable()
     {
         if (ui != null && healthSlider.fillAmount < 1f)
@@ -68,6 +71,7 @@ public class HealthUI : MonoBehaviour {
             ui.gameObject.SetActive(true); 
         }
     }
+
     private void OnDestroy()
     {
         if (ui != null)
