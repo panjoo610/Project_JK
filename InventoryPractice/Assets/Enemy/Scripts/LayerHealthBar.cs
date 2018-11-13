@@ -51,7 +51,7 @@ public class LayerHealthBar : MonoBehaviour {
         baseTransfrom.gameObject.SetActive(false);
         GetComponent<CharacterStats>().OnHealthChanged += OnHealthChanged;
         StageManager.instance.OnGameClearCallBack += HideHealthBar;
-        StageManager.instance.OnGameOverCallBack += HideHealthBar;
+        //StageManager.instance.OnGameOverCallBack += HideHealthBar;
         StageManager.instance.OnMoveLobbySceneCallBack += HideHealthBar;
     }
     void InstantiateHealthBar(Queue<HealthBar> queue)
