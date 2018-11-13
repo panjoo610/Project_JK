@@ -36,7 +36,7 @@ public class PlayerController : MonoBehaviour {
 
     void Start ()
     {
-        fireButton.onClick.AddListener(() => Fire());
+        fireButton.onClick.AddListener(() => OnFire());
         playerCamera = Camera.main;
         motor = GetComponent<PlayerMotor>();
         StageManager.instance.OnGameClearCallBack += RemoveFocus;
@@ -69,15 +69,15 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    void Fire()
+    void OnFire()
     {
         RaycastHit hit;
 
-        Vector3 playerPosition = new Vector3(transform.position.x, transform.position.y + 1.5f, transform.position.z);
+        Vector3 playerPosition = new Vector3(transform.position.x, transform.position.y + 1.7f, transform.position.z);
 
-        Debug.DrawRay(playerPosition, transform.forward * 10.0f);
+        Debug.DrawRay(playerPosition, transform.forward * 20.0f);
 
-        if(Physics.Raycast(playerPosition, transform.forward, out hit, 10.0f))
+        if(Physics.Raycast(playerPosition, transform.forward, out hit, 20.0f))
         {
             Debug.Log(hit.transform.name);
             Interactable interactable = hit.collider.GetComponent<Interactable>();
