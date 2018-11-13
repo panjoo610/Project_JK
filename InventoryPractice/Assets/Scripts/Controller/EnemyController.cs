@@ -28,6 +28,7 @@ public class EnemyController : MonoBehaviour {
     //float idleTime;
     private bool isCoroutine;
     float originalStoppingDistance;
+    Collider collider;
 
 
     //bool isDie;
@@ -47,6 +48,7 @@ public class EnemyController : MonoBehaviour {
         enemyAnimator = GetComponent<EnemyAnimator>();
         targetStats = target.GetComponent<CharacterStats>();
         agent = GetComponent<NavMeshAgent>();
+        collider = GetComponent<Collider>();
         originalStoppingDistance = agent.stoppingDistance;
     }
 
@@ -103,6 +105,7 @@ public class EnemyController : MonoBehaviour {
         }
         else
         {
+            collider.enabled = false;
             agent.enabled = false;
         }
     }
@@ -183,7 +186,11 @@ public class EnemyController : MonoBehaviour {
             Initialize();
         }
         if (agent.enabled != true)
+        {
             agent.enabled = true;
+            collider.enabled = true;
+        }
+            
 
        
     }

@@ -49,7 +49,7 @@ public class UIController : MonoBehaviour {
 
 	public void OnChangeCombatScene()
     {
-        if(StageManager.instance.CurrentStage > 3)
+        if(StageManager.instance.CurrentStage > 4)
         {
             return;
         }

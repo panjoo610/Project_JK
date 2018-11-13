@@ -91,7 +91,7 @@ public class StageManager : MonoBehaviour
 
     public void ChangeCombatStage()
     {
-        if(CurrentStage > 3)
+        if(CurrentStage > 4)
         {
             return;
         }

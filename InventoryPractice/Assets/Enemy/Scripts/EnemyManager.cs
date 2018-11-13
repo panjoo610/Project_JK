@@ -44,6 +44,9 @@ public class EnemyManager : MonoBehaviour {
     }
     #endregion
 
+    public delegate void OnChangeCount();
+    public OnChangeCount OnChangeCountCallBack;
+
     // Use this for initialization
     void Start () {
         EnemyPoolObj.AddComponent<EnemyPool>();
@@ -71,6 +74,14 @@ public class EnemyManager : MonoBehaviour {
             enemyPool.Initialize(GenerateCount, WaveCount, enemyPrefab, bossPrefab);
             enemyGenerator.Initialize(GenerateCount, WaveCount, GenerateDatas[this.currentStage].GeneratePosition, true);
         }
+        ChangeEnemyleftCount(0);
+    }
+    public void ChangeEnemyleftCount(int count)
+    {
+        GenerateDatas[currentStage].currentCount -= count;
+        if (OnChangeCountCallBack != null)
+            OnChangeCountCallBack.Invoke();
+
     }
 
     public void Initialize()

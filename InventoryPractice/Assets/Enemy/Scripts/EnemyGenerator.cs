@@ -109,7 +109,8 @@ public class EnemyGenerator : MonoBehaviour {
         if (check)
         {
             IsStageClear = true;
-            EnemyManager.instance.ClearStage();        }
+            EnemyManager.instance.ClearStage();
+        }
     }
 
     //public static void Invoke(this MonoBehaviour m, Action method, float time)
@@ -134,8 +135,7 @@ public class EnemyGenerator : MonoBehaviour {
                     if (activeObjects[i].activeSelf == false)
                     {
                         currentEnemyCount--;
-                        EnemyManager.instance.GenerateDatas[EnemyManager.instance.currentStage].currentCount = currentEnemyCount;
-                        Debug.Log(EnemyManager.instance.GenerateDatas[EnemyManager.instance.currentStage].currentCount);
+                        EnemyManager.instance.ChangeEnemyleftCount(1);
                         activeObjects.Remove(activeObjects[i].gameObject);
                         yield return new WaitForSeconds(0.3f);
                     }
