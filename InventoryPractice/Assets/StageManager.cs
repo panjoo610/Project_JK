@@ -43,6 +43,8 @@ public class StageManager : MonoBehaviour
 
     public string nextScene;
 
+    const int LimitStageCount = 4;
+
     [SerializeField]
     Image progressBar;
     [SerializeField]
@@ -98,10 +100,11 @@ public class StageManager : MonoBehaviour
 
     public void ChangeCombatStage()
     {
-        if(CurrentStage > 4)
+        if(CurrentStage > LimitStageCount)
         {
             return;
         }
+
         SceneNoticeText.text = " Stage - " + CurrentStage.ToString();
         EnemyManager.instance.GenerateEnemy(CurrentStage);
 
