@@ -113,7 +113,7 @@ public class LayerHealthBar : MonoBehaviour {
                 float healthPercent = ((ActiveBar.HealthPoint - TakeDamage) / healthValue);
                 ActiveBar.HealthPoint -= TakeDamage;
                 ActiveBar.FrontSlider.fillAmount = healthPercent;
-                StartCoroutine(HealthSliderChange(healthPercent, ActiveBar, false, 0,Speed));
+                StartCoroutine(HealthSliderChange(healthPercent, ActiveBar, false, 0,Speed,false));
             }
             else
             {
@@ -121,20 +121,25 @@ public class LayerHealthBar : MonoBehaviour {
                 Debug.Log("OverDamage" + OverDamage);
                 ActiveBar.HealthPoint = 0;
                 ActiveBar.FrontSlider.fillAmount = 0;
-                StartCoroutine(HealthSliderChange(0, ActiveBar, true, OverDamage,Speed*3));
+                StartCoroutine(HealthSliderChange(0, ActiveBar, true, OverDamage,Speed*3,true));
                 SwichingActiveBar(ActiveBar);
                 nowHealth += OverDamage;
             } 
         }
     }
 
-    IEnumerator HealthSliderChange(float healthPercent, HealthBar healthBar ,bool DamageIsOver, float OverDamage, float Speed)
+    IEnumerator HealthSliderChange(float healthPercent, HealthBar healthBar ,bool DamageIsOver, float OverDamage, float Speed, bool quick)
     {
+        float margin = 0.005f;
         IsChangeing = true;
+        if (quick)
+        {
+            margin = 0.05f;
+        }
         while (healthBar.BackSlider.fillAmount >= healthPercent)
         {
             healthBar.BackSlider.fillAmount = Mathf.Lerp(healthBar.BackSlider.fillAmount, healthPercent, Speed * Time.deltaTime);
-            if (healthBar.BackSlider.fillAmount <= 0.005)
+            if (healthBar.BackSlider.fillAmount <= margin)
             {
                 Debug.Log(healthBarCount);
                 HealthBarSorting(healthBar, healthBarCount);
