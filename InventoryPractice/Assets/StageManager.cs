@@ -53,8 +53,11 @@ public class StageManager : MonoBehaviour
     const int clearAmount = 1000;
     // Use this for initialization
 
+    AdsHelper adsHelper;
+
     void Start() //초기화 함수 Initialization
     {
+        adsHelper = GetComponent<AdsHelper>();
         NoticeText.gameObject.SetActive(false);
         SceneNoticeText.text = GetCurrentSceneName();
 
@@ -142,9 +145,10 @@ public class StageManager : MonoBehaviour
             OnGameClearCallBack.Invoke();
 
         CurrentStage += 1;
-        
+
         //게임을 완전히 클리어했다면 걸린 시간과 비교해서 골드를 줄 것과 획득 결과창만들 것
-        
+        adsHelper.ShowRewardedAd();
+
         saveInventory.CurrentStage = CurrentStage;
         saveInventory.SaveItemListByJson();   
     }
@@ -160,7 +164,7 @@ public class StageManager : MonoBehaviour
         Invoke("GameOverNotice", 3f);
     }
     public void GameOverNotice()
-    {
+    {      
         if (OnMoveLobbySceneCallBack != null)
             OnMoveLobbySceneCallBack.Invoke();
     }
