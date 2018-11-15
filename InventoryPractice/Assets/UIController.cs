@@ -49,17 +49,20 @@ public class UIController : MonoBehaviour {
 
 	public void OnChangeCombatScene()
     {
-        if(StageManager.instance.CurrentStage > 4)
+        if(StageManager.instance.CurrentStage >= 4)
         {
+            StageManager.instance.ChangeCombatStage();
             return;
         }
+        else
+        {
+            statusUI.statusUI.gameObject.SetActive(false);
+            inventoyUI.inventotyUI.gameObject.SetActive(false);
+            equipmetInventoryUI.inventotyUI.gameObject.SetActive(false);
 
-        statusUI.statusUI.gameObject.SetActive(false);
-        inventoyUI.inventotyUI.gameObject.SetActive(false);
-        equipmetInventoryUI.inventotyUI.gameObject.SetActive(false);
-
-        StageManager.instance.ChangeCombatStage();
-        ChangeCombatOrLobbyUI();
+            StageManager.instance.ChangeCombatStage();
+            ChangeCombatOrLobbyUI();
+        }
     }
 
     public void ChangeCombatOrLobbyUI()

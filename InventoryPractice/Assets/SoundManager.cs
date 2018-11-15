@@ -48,6 +48,7 @@ public class SoundManager : MonoBehaviour
     {
         ChangeBGM("Lobby", false);
     }
+
     void Initialization()
     {
         ////클립수 초기화
