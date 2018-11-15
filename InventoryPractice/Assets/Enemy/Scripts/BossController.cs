@@ -25,6 +25,7 @@ public class BossController : MonoBehaviour {
     CharacterStats targetStats;
     [SerializeField]
     Collider[] attackCollider;
+    ParticleSystem[] attackEffect;
 
     public Transform target;
     public float lookRadius;
@@ -56,6 +57,7 @@ public class BossController : MonoBehaviour {
         bossCombat = GetComponent<BossCombet>();
         ChangeMovementState(BossMovementState.Idle);
         attackCollider = GetComponentsInChildren<Collider>();
+        attackEffect = GetComponentsInChildren<ParticleSystem>();
         attackCoroutine = NomalAttack();
         skillCoroutine = UseSkill();
     }
@@ -199,9 +201,12 @@ public class BossController : MonoBehaviour {
         {
             attackCollider[1].enabled = true;
             attackCollider[2].enabled = true;
+            attackEffect[1+3].Play();
+            attackEffect[2+3].Play();
         }
         else
         {
+            attackEffect[num+3].Play();
             attackCollider[num].enabled = true;
         }
     }

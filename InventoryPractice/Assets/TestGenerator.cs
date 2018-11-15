@@ -2,11 +2,32 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
+public struct GenerateData
+{
+    public bool StartAwake;
+    public ParticleSystem GenerateParticle;
+
+    public EnemyType enemyType;
+    public float DelayTime;
+    public int MaxCount;
+
+    public bool IsSpread;
+    public float SpreadRange;
+
+    public bool IsLoop;
+    public float CoolTime;
+    public bool IsUnlimited;
+}
+
 public class TestGenerator : MonoBehaviour {
 
-    public ParticleSystem GenerateParticle;
+    public bool UsingInspectorData;
+    public GenerateData generateData;
+
+    ParticleSystem GenerateParticle;
+
     EnemyType enemyType;
-    GameObject generateObject;
     float DelayTime;
     int MaxCount;
 
@@ -17,14 +38,47 @@ public class TestGenerator : MonoBehaviour {
     float CoolTime;
     bool IsUnlimited;
 
+    GameObject generateObject;
+
     IEnumerator Coroutine;
     bool IsOver;
 
     List<GameObject> activeObjects;
     int AliveCount;
 
+    public delegate void OnGenerateOver();
+    public OnGenerateOver OnGenerateOverCallBack;
+
+    private void Start()
+    {
+        if (UsingInspectorData == true)
+        {
+            GenerateParticle = generateData.GenerateParticle;
+            enemyType = generateData.enemyType;
+            DelayTime = generateData.DelayTime;
+            MaxCount = generateData.MaxCount;
+
+            IsSpread = generateData.IsSpread;
+            SpreadRange = generateData.SpreadRange;
+
+            IsLoop = generateData.IsLoop;
+            CoolTime = generateData.CoolTime;
+            IsUnlimited = generateData.IsUnlimited;
+            if (IsUnlimited == true)
+            {
+                activeObjects = new List<GameObject>();
+            }
+            if (generateData.StartAwake == true)
+            {
+                StartGenerating();
+            }
+        }
+    }
+
+
     public void Initialize(EnemyType enemyType, float DelayTime, int MaxCount)
     {
+        GenerateParticle = GetComponentInChildren<ParticleSystem>();
         IsOver = false;
         IsSpread = false;
         IsLoop = false;
@@ -44,6 +98,10 @@ public class TestGenerator : MonoBehaviour {
         IsLoop = true;
         this.CoolTime = CoolTime;
         this.IsUnlimited = IsUnlimited;
+        if (IsUnlimited == true)
+        {
+            activeObjects = new List<GameObject>();
+        }
     }
 
     public void StartGenerating()
@@ -67,7 +125,7 @@ public class TestGenerator : MonoBehaviour {
     {
         int GenerateCount = 0;
         AliveCount = 0;
-        while (GenerateCount <= MaxCount)
+        while (GenerateCount < MaxCount)
         {
             GenerateCount++;
 
@@ -75,29 +133,30 @@ public class TestGenerator : MonoBehaviour {
             if (IsSpread == true)
             {
                 Vector3 newVector = Spread(SpreadRange);
-                GenerateParticle.gameObject.transform.position = newVector;
+                GenerateParticle.transform.position = newVector;
                 GenerateParticle.Play();
                 generateObject.transform.position = newVector;
             }
             else
             {
-                GenerateParticle.gameObject.transform.position = gameObject.transform.position;
+                GenerateParticle.transform.position = gameObject.transform.position;
                 GenerateParticle.Play();
                 generateObject.transform.position = gameObject.transform.position;
             }
-            yield return new WaitForSeconds(0.3f);
+            yield return new WaitForSeconds(1f);
             generateObject.SetActive(true);
 
-            if (IsUnlimited == true)
+            if (IsLoop == true && IsUnlimited == false)
             {
                 activeObjects.Add(generateObject);
                 AliveCount++;
             }
             yield return new WaitForSeconds(DelayTime);
         }
+
         if (IsLoop == true)
         {
-            if (IsUnlimited == true)
+            if (IsUnlimited == false)
             {
                 StartCoroutine(CheckAliveObject(activeObjects));
                 while (AliveCount > 0)
@@ -113,23 +172,24 @@ public class TestGenerator : MonoBehaviour {
         yield return null;
     }
 
-    IEnumerator CheckAliveObject(List<GameObject> activeObjects)
+    IEnumerator CheckAliveObject(List<GameObject> aliveObjects)
     {
         Debug.Log("CheckAliveEnemy");
-        while (activeObjects != null)
+        while (aliveObjects != null)
         {
-            for (int i = 0; i < activeObjects.Count; i++)
+            for (int i = 0; i < aliveObjects.Count; i++)
             {
-                if (activeObjects[i].activeSelf == false)
+                if (aliveObjects[i].activeSelf == false)
                 {
                     AliveCount--;
                     //EnemyManager.instance.ChangeEnemyleftCount(1);
-                    activeObjects.Remove(activeObjects[i].gameObject);
+                    aliveObjects.Remove(aliveObjects[i].gameObject);
                     yield return new WaitForSeconds(0.3f);
                 }
             }
             yield return new WaitForSeconds(0.3f);
         }
+        GenerateOver();
     }
 
     Vector3 Spread(float SpreadRange)
@@ -147,6 +207,11 @@ public class TestGenerator : MonoBehaviour {
         //tempObject.SetActive(true);
         return tempObject;
     }
-    
 
+
+    public void GenerateOver()
+    {
+        if (OnGenerateOverCallBack != null)
+            OnGenerateOverCallBack.Invoke();
+    }
 }

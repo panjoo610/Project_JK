@@ -1,0 +1,500 @@
+fileFormatVersion: 2
+guid: b56c45637bcb19444a669aae69958be7
+timeCreated: 1542245364
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: slash-Type01_0
+    21300002: slash-Type01_1
+    21300004: slash-Type01_2
+    21300006: slash-Type01_3
+    21300008: slash-Type01_4
+    21300010: slash-Type01_5
+    21300012: slash-Type01_6
+    21300014: slash-Type01_7
+    21300016: slash-Type01_8
+    21300018: slash-Type01_9
+    21300020: slash-Type01_10
+    21300022: slash-Type01_11
+    21300024: slash-Type01_12
+    21300026: slash-Type01_13
+    21300028: slash-Type01_14
+    21300030: slash-Type01_15
+    21300032: slash-Type01_16
+    21300034: slash-Type01_17
+  serializedVersion: 4
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: -1
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 1
+  spritePivot: {x: 0, y: 1}
+  spriteBorder: {x: 0, y: 566, z: 778, w: 0}
+  spritePixelsToUnits: 100
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - buildTarget: DefaultTexturePlatform
+    maxTextureSize: 512
+    textureFormat: -1
+    textureCompression: 3
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: Standalone
+    maxTextureSize: 512
+    textureFormat: -1
+    textureCompression: 3
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: Android
+    maxTextureSize: 512
+    textureFormat: -1
+    textureCompression: 3
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: WebGL
+    maxTextureSize: 512
+    textureFormat: -1
+    textureCompression: 3
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: slash-Type01_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 576
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: slash-Type01_1
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 576
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: slash-Type01_2
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 576
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: slash-Type01_3
+      rect:
+        serializedVersion: 2
+        x: 576
+        y: 576
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: slash-Type01_4
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 576
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: slash-Type01_5
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 384
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: slash-Type01_6
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 384
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: slash-Type01_7
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 384
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: slash-Type01_8
+      rect:
+        serializedVersion: 2
+        x: 576
+        y: 384
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: slash-Type01_9
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 384
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: slash-Type01_10
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 192
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: slash-Type01_11
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 192
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: slash-Type01_12
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 192
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: slash-Type01_13
+      rect:
+        serializedVersion: 2
+        x: 576
+        y: 192
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: slash-Type01_14
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 192
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: slash-Type01_15
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: slash-Type01_16
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 0
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: slash-Type01_17
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 0
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    outline:
+    - - {x: -361.87497, y: -230.4}
+      - {x: -440.62497, y: -329.67804}
+      - {x: -440.62497, y: -342.79022}
+      - {x: -414.37497, y: -361.52194}
+      - {x: -329.99997, y: -361.52194}
+      - {x: -292.5, y: -318.43903}
+      - {x: -292.5, y: -256.6244}
+      - {x: -318.74997, y: -230.4}
+    - - {x: -110.62499, y: -232.27316}
+      - {x: -140.625, y: -232.27316}
+      - {x: -144.375, y: -234.14633}
+      - {x: -241.87498, y: -322.18536}
+      - {x: -241.87498, y: -352.1561}
+      - {x: -224.99998, y: -357.7756}
+      - {x: -148.12498, y: -357.7756}
+      - {x: -125.62499, y: -342.79022}
+      - {x: -103.12499, y: -325.9317}
+      - {x: -103.12499, y: -262.2439}
+    - - {x: 58.124996, y: -237.89267}
+      - {x: 52.499996, y: -239.76584}
+      - {x: 54.374996, y: -245.38536}
+      - {x: -28.124998, y: -340.91705}
+      - {x: -29.999998, y: -344.6634}
+      - {x: -29.999998, y: -354.02927}
+      - {x: -28.124998, y: -357.7756}
+      - {x: 28.124998, y: -357.7756}
+      - {x: 59.999996, y: -352.1561}
+      - {x: 84.37499, y: -327.80487}
+      - {x: 84.37499, y: -249.1317}
+      - {x: 67.5, y: -237.89267}
+    - - {x: -307.49997, y: -48.70244}
+      - {x: -322.49997, y: -39.336582}
+      - {x: -348.74997, y: -39.336582}
+      - {x: -461.24997, y: -101.151215}
+      - {x: -463.12497, y: -108.6439}
+      - {x: -463.12497, y: -142.36098}
+      - {x: -459.37497, y: -162.96585}
+      - {x: -431.24997, y: -172.3317}
+      - {x: -322.49997, y: -172.3317}
+      - {x: -288.75, y: -121.756096}
+      - {x: -288.75, y: -71.18049}
+    - - {x: -187.49998, y: -37.463413}
+      - {x: -266.25, y: -114.26341}
+      - {x: -266.25, y: -172.3317}
+      - {x: -114.37499, y: -172.3317}
+      - {x: -97.49999, y: -159.21951}
+      - {x: -97.49999, y: -39.336582}
+      - {x: -108.74999, y: -37.463413}
+    - - {x: 37.499996, y: -37.463413}
+      - {x: -69.375, y: -121.756096}
+      - {x: -69.375, y: -159.21951}
+      - {x: -28.124998, y: -172.3317}
+      - {x: 59.999996, y: -172.3317}
+      - {x: 91.87499, y: -136.74146}
+      - {x: 91.87499, y: -46.829266}
+      - {x: 61.874996, y: -37.463413}
+    - - {x: 125.62499, y: -170.45853}
+      - {x: 239.99998, y: -170.45853}
+      - {x: 285, y: -127.3756}
+      - {x: 285, y: -37.463413}
+      - {x: 204.37498, y: -37.463413}
+      - {x: 125.62499, y: -46.829266}
+    - - {x: 444.37497, y: -37.463413}
+      - {x: 429.37497, y: -37.463413}
+      - {x: 429.37497, y: -43.082924}
+      - {x: 320.62497, y: -123.629265}
+      - {x: 320.62497, y: -149.85365}
+      - {x: 328.12497, y: -170.45853}
+      - {x: 438.74997, y: -170.45853}
+      - {x: 476.24997, y: -123.629265}
+      - {x: 476.24997, y: -61.814632}
+      - {x: 474.37497, y: -56.19512}
+    - - {x: -468.74997, y: 159.21951}
+      - {x: -474.37497, y: 144.23415}
+      - {x: -474.37497, y: 59.94146}
+      - {x: -423.74997, y: 16.858536}
+      - {x: -333.74997, y: 16.858536}
+      - {x: -294.37497, y: 35.590244}
+      - {x: -294.37497, y: 125.50243}
+      - {x: -335.62497, y: 159.21951}
+    - - {x: -144.375, y: 144.23415}
+      - {x: -256.875, y: 144.23415}
+      - {x: -279.375, y: 129.24878}
+      - {x: -281.25, y: 108.6439}
+      - {x: -281.25, y: 69.30731}
+      - {x: -258.75, y: 24.35122}
+      - {x: -239.99998, y: 16.858536}
+      - {x: -127.49999, y: 16.858536}
+      - {x: -97.49999, y: 58.06829}
+      - {x: -97.49999, y: 125.50243}
+      - {x: -119.99999, y: 142.36098}
+    - - {x: 84.37499, y: 140.4878}
+      - {x: -84.37499, y: 140.4878}
+      - {x: -84.37499, y: 35.590244}
+      - {x: -48.749996, y: 16.858536}
+      - {x: 61.874996, y: 16.858536}
+      - {x: 89.99999, y: 48.70244}
+      - {x: 95.62499, y: 69.30731}
+      - {x: 95.62499, y: 123.629265}
+    - - {x: 108.74999, y: 50.575607}
+      - {x: 118.12499, y: 16.858536}
+      - {x: 275.625, y: 16.858536}
+      - {x: 286.875, y: 43.082924}
+      - {x: 286.875, y: 146.10732}
+      - {x: 161.24998, y: 146.10732}
+      - {x: 108.74999, y: 131.12195}
+    - - {x: 303.74997, y: 149.85365}
+      - {x: 303.74997, y: 37.463413}
+      - {x: 344.99997, y: 18.731707}
+      - {x: 448.12497, y: 18.731707}
+      - {x: 476.24997, y: 43.082924}
+      - {x: 479.99997, y: 52.44878}
+      - {x: 479.99997, y: 149.85365}
+    - - {x: 290.625, y: 254.7512}
+      - {x: 294.37497, y: 247.25853}
+      - {x: 348.74997, y: 207.92194}
+      - {x: 463.12497, y: 207.92194}
+      - {x: 463.12497, y: 329.67804}
+      - {x: 448.12497, y: 359.64877}
+      - {x: 322.49997, y: 359.64877}
+      - {x: 290.625, y: 324.05853}
+    - - {x: 140.625, y: 363.3951}
+      - {x: 97.49999, y: 339.04388}
+      - {x: 97.49999, y: 254.7512}
+      - {x: 136.875, y: 209.79512}
+      - {x: 228.74998, y: 209.79512}
+      - {x: 253.12498, y: 221.03413}
+      - {x: 253.12498, y: 286.59512}
+      - {x: 200.62498, y: 363.3951}
+    - - {x: -93.74999, y: 318.43903}
+      - {x: -93.74999, y: 262.2439}
+      - {x: -82.49999, y: 245.38536}
+      - {x: -44.999996, y: 215.41463}
+      - {x: 0, y: 215.41463}
+      - {x: 18.749998, y: 221.03413}
+      - {x: 18.749998, y: 310.94632}
+      - {x: 11.249999, y: 361.52194}
+      - {x: 0, y: 365.26828}
+      - {x: -65.625, y: 365.26828}
+      - {x: -69.375, y: 363.3951}
+    - - {x: -270, y: 367.14145}
+      - {x: -285, y: 325.9317}
+      - {x: -285, y: 245.38536}
+      - {x: -268.125, y: 236.0195}
+      - {x: -226.87498, y: 236.0195}
+      - {x: -208.12498, y: 269.73657}
+      - {x: -183.74998, y: 342.79022}
+      - {x: -183.74998, y: 361.52194}
+      - {x: -189.37498, y: 367.14145}
+    - - {x: -418.12497, y: 367.14145}
+      - {x: -446.24997, y: 363.3951}
+      - {x: -470.62497, y: 327.80487}
+      - {x: -470.62497, y: 279.10242}
+      - {x: -421.87497, y: 279.10242}
+      - {x: -374.99997, y: 339.04388}
+      - {x: -374.99997, y: 367.14145}
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

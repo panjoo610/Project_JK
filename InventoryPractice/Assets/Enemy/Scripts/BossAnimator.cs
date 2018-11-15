@@ -26,6 +26,7 @@ public class BossAnimator : EnemyAnimator
     }
     public void Attack()
     {
+        SoundManager.instance.PlaySFX("Hit_Monster_Shot", false);
         animator.SetTrigger("Attack01");
     }
     public void Attack2()
@@ -34,6 +35,7 @@ public class BossAnimator : EnemyAnimator
     }
     public void Skill()
     {
+        SoundManager.instance.PlaySFX("Hit_Monster_Shot", false);
         animator.SetTrigger("Attack03");
     }
     public void Idle()
@@ -45,12 +47,14 @@ public class BossAnimator : EnemyAnimator
         if (isDie == false)
         {
             isDie = true;
+            SoundManager.instance.PlaySFX("Death_Monster01", false);
             animator.SetTrigger("Dead");
         }
     }
     public void Shout()
     {
         animator.SetTrigger("Shout");
+        SoundManager.instance.PlaySFX("Death_Monster02", false);
     }
     public override void GetHitEffect()
     {
