@@ -37,6 +37,11 @@ public class StatusSlot : MonoBehaviour {
     {
         if (PlayerManager.instance.saveInventory.PlayerGold < Price)
         {
+#if UNITY_ANDROID
+            Handheld.Vibrate();
+#endif
+            SoundManager.instance.PlaySFX("Beep", false);
+
             Debug.Log("구매 불가");
         }
         else
@@ -49,6 +54,11 @@ public class StatusSlot : MonoBehaviour {
             }
             else
             {
+#if UNITY_ANDROID
+                Handheld.Vibrate();
+#endif
+                SoundManager.instance.PlaySFX("Beep", false);
+
                 Debug.Log("레벨 초과");
             }
         }

@@ -20,8 +20,7 @@ public class FakePlayerController : MonoBehaviour
 
     StageManager stageManager;
 
-    [SerializeField]
-    bool isGameState;
+    public bool isGameState;
 
     private void Start()
     {
@@ -42,6 +41,10 @@ public class FakePlayerController : MonoBehaviour
         {
             moveVector = PoolInput();
         }
+        else
+        {
+            moveVector = Vector3.zero;
+        }
 
         if(moveVector != Vector3.zero && PlayerManager.instance.playerStats.characterCombat.IsAttack == false)
         {
@@ -52,9 +55,9 @@ public class FakePlayerController : MonoBehaviour
         }
         else
         {
-            player.ActiveSelfPartice(false);
-            OnJoystick(moveVector);
             player.IsMove = false;
+            player.ActiveSelfPartice(false);
+            OnJoystick(moveVector);        
         }
     }
 

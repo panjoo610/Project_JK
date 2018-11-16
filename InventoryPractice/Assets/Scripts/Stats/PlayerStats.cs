@@ -53,13 +53,10 @@ public class PlayerStats : CharacterStats {
     public override void Die()
     {
         base.Die();
+        StageManager.instance.GameOver();
         PlayerManager.instance.playerController.RemoveFocus();
         characterCombat.Die = true;
-        //KILL THE PLAYER
-        //게임오버스크린 , 패널티 , 리스폰
-        //리스타트 씬
-        PlayerManager.instance.ShowPlayerGold(-100);
 
-        StageManager.instance.GameOver();
+        PlayerManager.instance.ShowPlayerGold(-100);   
     }
 }

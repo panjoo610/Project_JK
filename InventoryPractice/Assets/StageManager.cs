@@ -43,7 +43,7 @@ public class StageManager : MonoBehaviour
 
     public string nextScene;
 
-    const int LimitStageCount = 3;
+    const int LimitStageCount = 4;
 
     [SerializeField]
     Image progressBar;
@@ -92,10 +92,9 @@ public class StageManager : MonoBehaviour
         ClearBonusText.gameObject.SetActive(false);
         NoticeText.gameObject.SetActive(false);
 
-        PlayerManager.instance.ResetPlayerPosition();
-
         PlayerManager.instance.cameraContorller.HideHitImage();
         PlayerManager.instance.cameraContorller.RobbyCamera();
+
         LoadScene(StageName.Lobby.ToString());
 
         PlayerManager.instance.ResetPlayerPosition();
@@ -124,6 +123,7 @@ public class StageManager : MonoBehaviour
                 OnGameStartCallBack.Invoke();
 
             PlayerManager.instance.cameraContorller.ActingCombat();
+            PlayerManager.instance.ResetPlayerPosition();
         }
     }
 
@@ -243,6 +243,7 @@ public class StageManager : MonoBehaviour
         loadingPanel.SetActive(!loadingPanel.activeSelf);
         progressBar.fillAmount = 0;
         SceneNoticeText.text = GetCurrentSceneName();
+        PlayerManager.instance.RestPosition();
     }
 }
 public enum StageName { Lobby, InGame, Stage}

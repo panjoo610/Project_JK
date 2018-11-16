@@ -34,6 +34,10 @@ public class PlayerManager : MonoBehaviour {
     {
         Initialization();
 
+        //StageManager.instance.OnGameStartCallBack += RestPosition;
+        //StageManager.instance.OnGameOverCallBack += RestPosition;
+        //StageManager.instance.OnGameClearCallBack += RestPosition;
+
         for (int i = 0; i < saveInventory.DamageModifiers.Count; i++)
         {
             playerStats.damage.modifiers.Add(saveInventory.DamageModifiers[i]);
@@ -56,12 +60,21 @@ public class PlayerManager : MonoBehaviour {
     public void ResetPlayerPosition()
     {
         fakePlayer.InitTransform();
-        cameraContorller.HideHitImage();
-        Player.transform.position = new Vector3(0.0f, 10.8f, -15.49f);
-        playerStats.Initialization();
-        UpdateStatusUI();
         Player.transform.rotation = Quaternion.identity;
+        Player.transform.position = new Vector3(0.0f, 10.8f, -15.49f);
+
+        cameraContorller.HideHitImage();
+
+        playerStats.Initialization();
+        UpdateStatusUI();      
         ActivePlayerController(false);
+    }
+
+    public void RestPosition()
+    {
+        fakePlayer.InitTransform();
+        Player.transform.rotation = Quaternion.identity;
+        Player.transform.position = new Vector3(0.0f, 10.8f, -15.49f);
     }
 
     public void ActivePlayerController(bool isAtive)

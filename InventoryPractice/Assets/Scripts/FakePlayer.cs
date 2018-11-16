@@ -28,18 +28,26 @@ public class FakePlayer : MonoBehaviour
 
     public void RunToPC(Vector3 moveVector)
     {
-        PCrigidbody.velocity = moveVector * 250 * Time.deltaTime;
-        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(moveVector.x, 0f, moveVector.z));
-        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 10f);
+        if (IsMove)
+        {
+            PCrigidbody.velocity = moveVector * 250 * Time.deltaTime;
+            Quaternion lookRotation = Quaternion.LookRotation(new Vector3(moveVector.x, 0f, moveVector.z));
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 10f);
+        }
+        else
+        {
+            return;
+        }
     }
 
     public void ActiveSelfPartice(bool isActive)
     {
         naviParticle.SetActive(isActive);
     }
+
     public void InitTransform()
     {
-        transform.position = new Vector3(0.0f, 10.8f, -14.75f);
+        transform.position = new Vector3(0f, 10.86f, -14.607f);
         transform.rotation = Quaternion.identity;
     }
 }
