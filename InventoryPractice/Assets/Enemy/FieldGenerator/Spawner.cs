@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public struct GenerateData
+public struct SpawnData
 {
     public bool StartAwake;
     public ParticleSystem GenerateParticle;
@@ -20,11 +20,10 @@ public struct GenerateData
     public bool IsUnlimited;
 }
 
-public class Generator : GeneratorController
+public class Spawner : AbstractMapController
 {
-
     public bool UsingInspectorData;
-    public GenerateData generateData;
+    public SpawnData generateData;
 
     ParticleSystem GenerateParticle;
 
@@ -41,14 +40,12 @@ public class Generator : GeneratorController
 
     GameObject generateObject;
 
-    IEnumerator Coroutine;
+    IEnumerator generateEnumerator;
+    Coroutine co;
     bool IsOver;
 
     List<GameObject> activeObjects;
     int AliveCount;
-
-    public delegate void OnGenerateOver();
-    public OnGenerateOver OnGenerateOverCallBack;
 
     protected override void Start()
     {
@@ -107,13 +104,14 @@ public class Generator : GeneratorController
 
     public void StartGenerating()
     {
-        Coroutine = Generate();
-        StartCoroutine(Coroutine);
+        generateEnumerator = Generate();
+        co = StartCoroutine(generateEnumerator);
     }
     public void StopGenerating()
     {
-        StopCoroutine(Coroutine);
-        Coroutine = Generate();
+        StopCoroutine(co);
+        //StopCoroutine(Coroutine);
+        //generateEnumerator = Generate();
         IsOver = true;
     }
 
@@ -128,8 +126,6 @@ public class Generator : GeneratorController
         AliveCount = 0;
         while (GenerateCount < MaxCount)
         {
-            GenerateCount++;
-
             generateObject = GetObjectFromPool(enemyType);
             if (IsSpread == true)
             {
@@ -153,6 +149,7 @@ public class Generator : GeneratorController
                 AliveCount++;
             }
             yield return new WaitForSeconds(DelayTime);
+            GenerateCount++;
         }
 
         if (IsLoop == true)
@@ -169,7 +166,11 @@ public class Generator : GeneratorController
             StartGenerating();
         }
         else
+        {
             IsOver = true;
+            SendReport();
+        }
+            
         yield return null;
     }
 
@@ -190,7 +191,6 @@ public class Generator : GeneratorController
             }
             yield return new WaitForSeconds(0.3f);
         }
-        GenerateOver();
     }
 
     Vector3 Spread(float SpreadRange)
@@ -205,14 +205,17 @@ public class Generator : GeneratorController
     GameObject GetObjectFromPool(EnemyType enemyType)
     {
         GameObject tempObject = EnemyManager.instance.enemyPool.Pop(enemyType);
-        //tempObject.SetActive(true);
         return tempObject;
     }
 
-
-    public void GenerateOver()
+    protected override void SendReport()
     {
-        if (OnGenerateOverCallBack != null)
-            OnGenerateOverCallBack.Invoke();
+        Debug.Log(this + "에서 SendReport");
+        base.SendReport();
+    }
+
+    protected override void TakeReport()
+    {
+        return;
     }
 }

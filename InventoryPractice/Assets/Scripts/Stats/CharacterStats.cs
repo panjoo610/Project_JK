@@ -22,7 +22,7 @@ public class CharacterStats : MonoBehaviour {
         damage -= armor.GetValue();
         damage = Mathf.Clamp(damage, 0, int.MaxValue);
         currentHealth -= damage;
-        Debug.Log(transform.name + "takes " + damage + " damage.");
+        //Debug.Log(transform.name + "takes " + damage + " damage.");
 
         if(OnHealthChanged != null)
         {
@@ -37,7 +37,7 @@ public class CharacterStats : MonoBehaviour {
 
     public virtual void Die()
     {
-        Debug.Log(transform.name + "died.");
+        //Debug.Log(transform.name + "died.");
     }
 
     public virtual void Initialization()

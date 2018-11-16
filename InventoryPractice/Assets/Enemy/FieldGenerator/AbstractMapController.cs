@@ -4,11 +4,14 @@ using UnityEngine;
 
 public abstract class AbstractMapController : MonoBehaviour {
     
+    [SerializeField]
     protected AbstractMapController childMapContoller;
 
     [SerializeField]
-    protected AbstractMapController[] childMapContollers;
+    protected List<AbstractMapController> childrenMapContollers;
 
+    public delegate void OnSendReport();
+    public OnSendReport OnSendReportEvent;
 
     protected virtual void Start()
     {
@@ -16,35 +19,37 @@ public abstract class AbstractMapController : MonoBehaviour {
     }
     void Initialize()
     {
-        childMapContollers = FindChildeComponents();
-    }
-    protected AbstractMapController FindChildeComponent()
-    {
-        childMapContoller = transform.GetChild(0).GetComponent<AbstractMapController>();
-        return childMapContoller;
-    }
-    
-    protected AbstractMapController[] FindChildeComponents()
-    {
-        int i = 0;
-        while (transform.GetChild(i) == null)
+        childrenMapContollers = FindChildeComponents();
+        for (int i = 0; i < childrenMapContollers.Count; i++)
         {
-            i++;
-            childMapContollers[i] = transform.GetChild(i).GetComponent<AbstractMapController>();
+            childMapContoller = childrenMapContollers[i];
+            childMapContoller.OnSendReportEvent += TakeReport;
         }
+    }
+    //protected AbstractMapController FindChildeComponent()
+    //{
+    //    childMapContoller = transform.GetChild(0).GetComponent<AbstractMapController>();
+    //    return childMapContoller;
+    //}
+    
+    protected List<AbstractMapController> FindChildeComponents()
+    {
+        List<AbstractMapController>  childMapContollers = new List<AbstractMapController>();
         
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            AbstractMapController s = transform.GetChild(i).GetComponent<AbstractMapController>();
+            if (s != null)
+            {
+                childMapContollers.Add(s);
+            }
+        }
         return childMapContollers;
     }
-
-
-
+    protected abstract void TakeReport();
     protected virtual void SendReport()
     {
-
-    }
-
-    protected virtual void TakeReport()
-    {
-
+        if (OnSendReportEvent != null)
+            OnSendReportEvent.Invoke();
     }
 }

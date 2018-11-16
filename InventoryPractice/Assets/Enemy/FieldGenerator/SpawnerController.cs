@@ -2,28 +2,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GeneratorController : SectorController
+public class SpawnerController : AbstractMapController
 {
     [SerializeField]
-    Generator[] generators;
-    Generator Generator;
+    Spawner[] generators;
+    Spawner Generator;
     int generatorCount;
     int clearCount;
     bool isWorked;
 
-    public delegate void OnGenerateClear();
-    public OnGenerateClear OnGenerateClearCallBack;
-
     // Use this for initialization
     protected override void Start() {
-        //base.Start();
+        base.Start();
         Initialize();
     }
 	void Initialize()
     {
-        Generator = GetComponentInChildren<Generator>();
-        Generator.OnGenerateOverCallBack += CheckCount;
-        generators = GetComponentsInChildren<Generator>();
+        Generator = GetComponentInChildren<Spawner>();
+        Generator.OnSendReportEvent += TakeReport;
+        generators = GetComponentsInChildren<Spawner>();
         generatorCount = generators.Length;
         clearCount = 0;
         isWorked = false;
@@ -36,6 +33,7 @@ public class GeneratorController : SectorController
         if (clearCount>=generatorCount)
         {
             Debug.Log(this+"클리어");
+            SendReport();
         }
     }
 
@@ -50,5 +48,16 @@ public class GeneratorController : SectorController
                 generators[i].StartGenerating();
             }
         }
+    }
+
+
+    protected override void TakeReport()
+    {
+        CheckCount();
+    }
+    protected override void SendReport()
+    {
+        base.SendReport();
+        Debug.Log(this + "에서 SendReport");
     }
 }

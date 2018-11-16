@@ -74,23 +74,19 @@ public class EnemyGenerator : MonoBehaviour {
                 StartCoroutine(CheckEnemy);
                 if (activeObjects != null && activeObjects.Count <= 0)//하나의 웨이브끝
                 {
-                    Debug.Log("웨이브 시작 "+waveCount + " 제네레이팅");
                     if (waveCount > 1 && IsGenerating == false)
                     {
-                        Debug.Log(waveCount + " 제네레이팅");
                         nomalWaveGenerate = GenerateObject(nomalWaveGenerateCount, IsBossStage);
                         StartCoroutine(nomalWaveGenerate);
                     }
                     else if (waveCount == 1 && IsGenerating == false)
                     {
-                        Debug.Log(waveCount + " 제네레이팅");
                         //StartCoroutine(GenerateObject(finalWaveGenerateCount));
                         StartCoroutine(finalWaveGenerate);
                         finalWaveGenerate = GenerateObject(finalWaveGenerateCount, IsBossStage);
                     }
                     else if (waveCount <= 0 && !IsStageClear)
                     {
-                        Debug.Log(waveCount + " 제네레이팅");
                         ClearStage(true);
                     }
                 }
@@ -172,7 +168,7 @@ public class EnemyGenerator : MonoBehaviour {
                 yield return new WaitForSeconds(.7f);
                 if (EnemyManager.instance.IsWorking)
                 {
-                    Debug.Log(Count);
+                    //Debug.Log(Count);
                     if (isBossGenerate == true && i == Count - 1)
                     {
                         activeObjects.Add(GetObjectFromPool(newTransform, EnemyType.Boss));

@@ -2,11 +2,46 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SectorController : FieldContoller
+public class SectorController : AbstractMapController
 {
-
+    public GameObject WallObject;
+    int GeneratorControllerCount;
+    int clearCount;
     protected override void Start()
     {
         base.Start();
+        GeneratorControllerCount = childrenMapContollers.Count;
+        clearCount = 0;
+
+        WallObject = transform.Find(WallObject.name).gameObject;
     }
+
+    void CheckCount()
+    {
+        clearCount++;
+        if (clearCount >= GeneratorControllerCount)
+        {
+            Debug.Log(this + "클리어");
+            SendReport();
+        }
+    }
+
+    protected override void TakeReport()
+    {
+        CheckCount();
+    }
+    protected override void SendReport()
+    {
+        base.SendReport();
+        Debug.Log(this + "에서 SendReport");
+        OpenTheWay();
+    }
+
+    void OpenTheWay()
+    {
+        WallObject.SetActive(false);
+        Debug.Log("길을 열어줌");
+    }
+
+
 }

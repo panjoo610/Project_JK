@@ -79,7 +79,7 @@ public class PlayerController : MonoBehaviour {
 
         if(Physics.Raycast(playerPosition, transform.forward, out hit, 20.0f))
         {
-            Debug.Log(hit.transform.name);
+            //Debug.Log(hit.transform.name);
             Interactable interactable = hit.collider.GetComponent<Interactable>();
             if (interactable != null && fakePlayer.IsMove == false)
             {

@@ -43,7 +43,7 @@ public class StageManager : MonoBehaviour
 
     public string nextScene;
 
-    const int LimitStageCount = 4;
+    const int LimitStageCount = 5;
 
     [SerializeField]
     Image progressBar;

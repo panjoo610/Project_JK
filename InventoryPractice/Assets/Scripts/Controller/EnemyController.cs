@@ -81,7 +81,7 @@ public class EnemyController : MonoBehaviour {
             else if (distance > lookRadius && isIdle == false)
             {
                 agent.stoppingDistance = 0f;
-                Debug.Log("오리지널포지션으로");
+                
                 agent.SetDestination(originalPos);
                 for (int i = 0; i < enemyObjects.Length; i++)
                 {
