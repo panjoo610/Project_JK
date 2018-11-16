@@ -20,7 +20,8 @@ public struct GenerateData
     public bool IsUnlimited;
 }
 
-public class TestGenerator : MonoBehaviour {
+public class Generator : GeneratorController
+{
 
     public bool UsingInspectorData;
     public GenerateData generateData;
@@ -49,7 +50,7 @@ public class TestGenerator : MonoBehaviour {
     public delegate void OnGenerateOver();
     public OnGenerateOver OnGenerateOverCallBack;
 
-    private void Start()
+    protected override void Start()
     {
         if (UsingInspectorData == true)
         {

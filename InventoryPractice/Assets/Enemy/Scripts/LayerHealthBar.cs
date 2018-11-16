@@ -118,7 +118,7 @@ public class LayerHealthBar : MonoBehaviour {
             else
             {
                 float OverDamage = TakeDamage - ActiveBar.HealthPoint;
-                Debug.Log("OverDamage" + OverDamage);
+                //Debug.Log("OverDamage" + OverDamage);
                 ActiveBar.HealthPoint = 0;
                 ActiveBar.FrontSlider.fillAmount = 0;
                 StartCoroutine(HealthSliderChange(0, ActiveBar, true, OverDamage,Speed*3,true));
@@ -141,7 +141,7 @@ public class LayerHealthBar : MonoBehaviour {
             healthBar.BackSlider.fillAmount = Mathf.Lerp(healthBar.BackSlider.fillAmount, healthPercent, Speed * Time.deltaTime);
             if (healthBar.BackSlider.fillAmount <= margin)
             {
-                Debug.Log(healthBarCount);
+                //Debug.Log(healthBarCount);
                 HealthBarSorting(healthBar, healthBarCount);
                 break;
             }

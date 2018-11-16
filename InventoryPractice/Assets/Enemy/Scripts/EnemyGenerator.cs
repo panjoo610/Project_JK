@@ -154,9 +154,9 @@ public class EnemyGenerator : MonoBehaviour {
     /// <returns></returns>
     IEnumerator GenerateObject(int Count, bool isBossGenerate)
     {
-        Debug.Log(IsGenerating);
+        //Debug.Log(IsGenerating);
         IsGenerating = true;
-        Debug.Log(IsGenerating);
+        //Debug.Log(IsGenerating);
         for (int i = 0; i < Count; i++)
         {
             yield return new WaitForSeconds(2f);
