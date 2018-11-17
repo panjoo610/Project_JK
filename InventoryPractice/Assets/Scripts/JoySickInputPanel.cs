@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class FakePlayerController : MonoBehaviour
+public class JoySickInputPanel : MonoBehaviour
 {
     [SerializeField]
-    FakePlayer player;
+    //FakePlayer player;
+    PlayerController playerController;
 
     [SerializeField]
     IOnclick Virtualonclick;
@@ -33,10 +34,15 @@ public class FakePlayerController : MonoBehaviour
         stageManager.OnGameOverCallBack += TurnOffJoystick;
 
         stageManager.OnGameStartCallBack += TurnOnJoystick;
+        playerController = PlayerManager.instance.playerController;
     }
 
     void FixedUpdate()
     {
+        if (playerController == null)
+        {
+            playerController = PlayerManager.instance.playerController;
+        }
         if (isGameState)
         {
             moveVector = PoolInput();
@@ -48,15 +54,19 @@ public class FakePlayerController : MonoBehaviour
 
         if(moveVector != Vector3.zero && PlayerManager.instance.playerStats.characterCombat.IsAttack == false)
         {
-            player.IsMove = true;
-            player.RunToPC(PoolInput());
+            //player.IsMove = true;
+            //player.RunToPC(PoolInput());
+            playerController.MoveVirtualPosition(PoolInput(), true);
+            //playerController.MoveVirtualPlayer(PoolInput(), true);
             OnJoystick(moveVector);
-            player.ActiveSelfPartice(true);
+            //player.ActiveSelfPartice(true);
         }
         else
         {
-            player.IsMove = false;
-            player.ActiveSelfPartice(false);
+            //player.IsMove = false;
+            //player.ActiveSelfPartice(false);
+            //playerController.MoveVirtualPlayer(PoolInput(), false);
+            playerController.MoveVirtualPosition(PoolInput(), false);
             OnJoystick(moveVector);        
         }
     }
@@ -109,7 +119,6 @@ public class FakePlayerController : MonoBehaviour
             }
         }
     }
-
     void TurnOffJoystick()
     {
         isGameState = false;

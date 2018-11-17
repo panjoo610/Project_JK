@@ -26,12 +26,6 @@ public abstract class AbstractMapController : MonoBehaviour {
             childMapContoller.OnSendReportEvent += TakeReport;
         }
     }
-    //protected AbstractMapController FindChildeComponent()
-    //{
-    //    childMapContoller = transform.GetChild(0).GetComponent<AbstractMapController>();
-    //    return childMapContoller;
-    //}
-    
     protected List<AbstractMapController> FindChildeComponents()
     {
         List<AbstractMapController>  childMapContollers = new List<AbstractMapController>();
@@ -46,6 +40,13 @@ public abstract class AbstractMapController : MonoBehaviour {
         }
         return childMapContollers;
     }
+
+    //protected AbstractMapController FindChildeComponent()
+    //{
+    //    childMapContoller = transform.GetChild(0).GetComponent<AbstractMapController>();
+    //    return childMapContoller;
+    //}
+    
     protected abstract void TakeReport();
     protected virtual void SendReport()
     {

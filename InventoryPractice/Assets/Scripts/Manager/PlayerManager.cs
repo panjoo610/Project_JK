@@ -20,7 +20,7 @@ public class PlayerManager : MonoBehaviour {
     public SaveInventory saveInventory;
 
     public GameObject Player, mainCamera;
-    public FakePlayer fakePlayer;
+    //public FakePlayer fakePlayer;
 
     public PlayerStats playerStats;
     public PlayerController playerController;
@@ -59,7 +59,7 @@ public class PlayerManager : MonoBehaviour {
 
     public void ResetPlayerPosition()
     {
-        fakePlayer.InitTransform();
+        //fakePlayer.InitTransform();
         Player.transform.rotation = Quaternion.identity;
         Player.transform.position = new Vector3(0.0f, 10.8f, -15.49f);
 
@@ -72,7 +72,7 @@ public class PlayerManager : MonoBehaviour {
 
     public void RestPosition()
     {
-        fakePlayer.InitTransform();
+        //fakePlayer.InitTransform();
         Player.transform.rotation = Quaternion.identity;
         Player.transform.position = new Vector3(0.0f, 10.8f, -15.49f);
     }

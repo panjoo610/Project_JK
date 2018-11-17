@@ -14,7 +14,7 @@ public class UIController : MonoBehaviour {
     public EquipmetInventoryUI equipmetInventoryUI;
     public StatusUI statusUI;
     public CombatUI combatUI;
-    FakePlayerController fakePlayerController;
+    JoySickInputPanel joySickInputPanel;
 
 
     private void Awake()
@@ -35,7 +35,7 @@ public class UIController : MonoBehaviour {
         equipmetInventoryUI = GetComponent<EquipmetInventoryUI>();
         statusUI = GetComponent<StatusUI>();
         combatUI = CombatPanel.GetComponent<CombatUI>();
-        fakePlayerController = GetComponent<FakePlayerController>();
+        joySickInputPanel = GetComponent<JoySickInputPanel>();
 
         StatusBtn.onClick.AddListener(() => OnStatus());
         InvenBtn.onClick.AddListener(() => OnInven());
@@ -144,7 +144,7 @@ public class UIController : MonoBehaviour {
         OnClickStopPanel();
 
         PlayerManager.instance.ShowPlayerGold(-100);
-        fakePlayerController.isGameState = false;
+        joySickInputPanel.isGameState = false;
 
 
         StageManager.instance.MoveLobbyScene();

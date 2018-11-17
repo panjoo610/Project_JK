@@ -8,8 +8,14 @@ using UnityEngine.UI;
 [RequireComponent(typeof(PlayerMotor))]
 public class PlayerController : MonoBehaviour {
 
+    
     [SerializeField]
-    GameObject goalPlayer;
+    Vector3 VirtualPosition;
+    float maxDistance = 2f;
+    bool IsMoving;
+
+    [SerializeField]
+    GameObject naviParticle;
 
     FakePlayer fakePlayer;
 
@@ -27,11 +33,14 @@ public class PlayerController : MonoBehaviour {
     Button fireButton;
 
 
+    
     // Use this for initialization
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
-        fakePlayer = goalPlayer.GetComponent<FakePlayer>();
+        //fakePlayer = goalPlayer.GetComponent<FakePlayer>();
+        //VirtualRigidbody = VirtualPlayer.GetComponent<Rigidbody>();
+        VirtualPosition = gameObject.transform.position;
     }
 
     void Start ()
@@ -41,22 +50,64 @@ public class PlayerController : MonoBehaviour {
         motor = GetComponent<PlayerMotor>();
         StageManager.instance.OnGameClearCallBack += RemoveFocus;
     }
-	
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.magenta;
+        Gizmos.DrawWireSphere(VirtualPosition, 1f);
+    }
     private void LateUpdate()
     {
-        if (fakePlayer.IsMove)
+        if (IsMoving)
         {
             Focus = null;
-            motor.target = goalPlayer.transform;
-            motor.MoveToPoint(goalPlayer.transform.position);
+            //motor.target = goalPlayer.transform;
+            //motor.MoveToPoint(goalPlayer.transform.position);
+            //motor.target = VirtualPlayer.transform.position;
+            //motor.MoveToPoint(VirtualPlayer.transform.position);
+            motor.target = VirtualPosition;
+            motor.MoveToPoint(VirtualPosition);
+
         }
         else
         {
+            Focus = null;
             return;
-        }       
+        }
+        
+    }
+    
+    public void MoveVirtualPosition(Vector3 moveVector, bool isMove)
+    {
+        IsMoving = isMove;
+        if (isMove)
+        {
+            float distance = Vector3.Distance(VirtualPosition, gameObject.transform.position);
+            if (distance <= maxDistance)
+            {
+                motor.agent.isStopped=false;
+                VirtualPosition += moveVector * motor.agent.speed * Time.deltaTime;
+            }
+            else if (maxDistance < motor.agent.remainingDistance)
+            {
+                VirtualPosition = Vector3.Lerp(VirtualPosition, gameObject.transform.position, motor.agent.speed * Time.deltaTime);
+                motor.MoveToPoint(VirtualPosition);
+                motor.agent.isStopped = true;
+            }
+            else
+            {
+                VirtualPosition = Vector3.Lerp(VirtualPosition, gameObject.transform.position, motor.agent.speed * Time.deltaTime);
+                motor.MoveToPoint(VirtualPosition);
+                motor.agent.isStopped = false;
+            }
+            naviParticle.SetActive(isMove);
+        }
+        else
+        {
+            VirtualPosition = Vector3.Lerp(VirtualPosition, gameObject.transform.position+(moveVector*0.1f), motor.agent.speed * Time.deltaTime);
+            naviParticle.SetActive(isMove);
+        }
     }
 
-    
     public void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Item"))
@@ -81,7 +132,7 @@ public class PlayerController : MonoBehaviour {
         {
             //Debug.Log(hit.transform.name);
             Interactable interactable = hit.collider.GetComponent<Interactable>();
-            if (interactable != null && fakePlayer.IsMove == false)
+            if (interactable != null && IsMoving == false)
             {
                 if (interactable.tag == "Enemy")
                     SetFocus(interactable); 

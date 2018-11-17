@@ -6,10 +6,10 @@ using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshAgent))]
 public class PlayerMotor : MonoBehaviour {
 
-    NavMeshAgent agent;
+    public NavMeshAgent agent;
 
     [SerializeField]
-    public Transform target;
+    public Vector3 target;
 
 	// Use this for initialization
 	void Start ()
@@ -19,7 +19,7 @@ public class PlayerMotor : MonoBehaviour {
 
     private void Update()
     {
-        if(target != null && target.tag != "Item")
+        if(target != null && target != Vector3.zero)//
         {
             FaceTarget();
         }
@@ -35,20 +35,25 @@ public class PlayerMotor : MonoBehaviour {
         agent.stoppingDistance = 0.5f;
         agent.updateRotation = false;
         
-        target = newTarget.transform;
+        target = newTarget.transform.position;
     }
 
     public void StopFollowTarget()
     {
         agent.stoppingDistance = 0f;
-        agent.updateRotation = true;
+        agent.updateRotation = false;
 
-        target = null;
+        //target = null;
     }
     public void FaceTarget()
     {
-        Vector3 direction = (target.position - transform.position).normalized;
-        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0f, direction.z));
-        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 10f);
+        Vector3 direction = (target - transform.position).normalized;
+        Debug.Log(target+" /// "+transform.position+" /// "+(target - transform.position));
+        if (direction != Vector3.zero)
+        {
+            Debug.Log(direction);
+            Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 10f); 
+        }
     }
 }
