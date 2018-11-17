@@ -9,7 +9,7 @@ public class PlayerMotor : MonoBehaviour {
     public NavMeshAgent agent;
 
     [SerializeField]
-    public Vector3 target;
+    public Transform target;
 
 	// Use this for initialization
 	void Start ()
@@ -19,7 +19,7 @@ public class PlayerMotor : MonoBehaviour {
 
     private void Update()
     {
-        if(target != null && target != Vector3.zero)//
+        if (target != null && target.tag != "Item")//
         {
             FaceTarget();
         }
@@ -32,26 +32,27 @@ public class PlayerMotor : MonoBehaviour {
 
     public void FollowTarget(Interactable newTarget)
     {
-        agent.stoppingDistance = 0.5f;
-        agent.updateRotation = false;
+        agent.stoppingDistance = 1f;
+        agent.updateRotation = true;
         
-        target = newTarget.transform.position;
+        target = newTarget.transform;
     }
 
     public void StopFollowTarget()
     {
-        agent.stoppingDistance = 0f;
+        agent.stoppingDistance = 1f;
         agent.updateRotation = false;
 
-        //target = null;
+        target = null;
     }
     public void FaceTarget()
     {
-        Vector3 direction = (target - transform.position).normalized;
-        Debug.Log(target+" /// "+transform.position+" /// "+(target - transform.position));
+        Vector3 direction = (target.position - transform.position).normalized;
+        //Debug.Log(target+" /// "+transform.position+" /// "+(target - transform.position));
+        
         if (direction != Vector3.zero)
         {
-            Debug.Log(direction);
+            //Debug.Log(direction);
             Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
             transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 10f); 
         }

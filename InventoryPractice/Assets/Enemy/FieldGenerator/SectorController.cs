@@ -21,7 +21,6 @@ public class SectorController : AbstractMapController
         clearCount++;
         if (clearCount >= GeneratorControllerCount)
         {
-            Debug.Log(this + "클리어");
             SendReport();
         }
     }
@@ -33,14 +32,12 @@ public class SectorController : AbstractMapController
     protected override void SendReport()
     {
         base.SendReport();
-        Debug.Log(this + "에서 SendReport");
         OpenTheWay();
     }
 
     void OpenTheWay()
     {
         WallObject.SetActive(false);
-        Debug.Log("길을 열어줌");
     }
 
 

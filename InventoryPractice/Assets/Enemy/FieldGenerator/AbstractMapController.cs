@@ -22,8 +22,7 @@ public abstract class AbstractMapController : MonoBehaviour {
         childrenMapContollers = FindChildeComponents();
         for (int i = 0; i < childrenMapContollers.Count; i++)
         {
-            childMapContoller = childrenMapContollers[i];
-            childMapContoller.OnSendReportEvent += TakeReport;
+            childrenMapContollers[i].OnSendReportEvent += TakeReport;
         }
     }
     protected List<AbstractMapController> FindChildeComponents()

@@ -6,7 +6,6 @@ public class SpawnerController : AbstractMapController
 {
     [SerializeField]
     Spawner[] generators;
-    Spawner Generator;
     int generatorCount;
     int clearCount;
     bool isWorked;
@@ -18,10 +17,8 @@ public class SpawnerController : AbstractMapController
     }
 	void Initialize()
     {
-        Generator = GetComponentInChildren<Spawner>();
-        Generator.OnSendReportEvent += TakeReport;
         generators = GetComponentsInChildren<Spawner>();
-        generatorCount = generators.Length;
+        generatorCount = childrenMapContollers.Count;
         clearCount = 0;
         isWorked = false;
     }
@@ -32,7 +29,6 @@ public class SpawnerController : AbstractMapController
         clearCount++;
         if (clearCount>=generatorCount)
         {
-            Debug.Log(this+"클리어");
             SendReport();
         }
     }
@@ -41,7 +37,6 @@ public class SpawnerController : AbstractMapController
     {
         if (other.tag == "Player" && isWorked == false)
         {
-            Debug.Log(this+"들어옴");
             isWorked = true;
             for (int i = 0; i < generators.Length; i++)
             {
@@ -58,6 +53,5 @@ public class SpawnerController : AbstractMapController
     protected override void SendReport()
     {
         base.SendReport();
-        Debug.Log(this + "에서 SendReport");
     }
 }

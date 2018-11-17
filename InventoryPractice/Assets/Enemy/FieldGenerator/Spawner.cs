@@ -106,11 +106,12 @@ public class Spawner : AbstractMapController
     {
         generateEnumerator = Generate();
         co = StartCoroutine(generateEnumerator);
+        //StartCoroutine(generateEnumerator);
     }
     public void StopGenerating()
     {
         StopCoroutine(co);
-        //StopCoroutine(Coroutine);
+        //StopCoroutine(generateEnumerator);
         //generateEnumerator = Generate();
         IsOver = true;
     }

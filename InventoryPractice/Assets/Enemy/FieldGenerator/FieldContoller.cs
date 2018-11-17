@@ -18,7 +18,6 @@ public class FieldContoller : AbstractMapController
         clearCount++;
         if (clearCount >= SectorControllerCount)
         {
-            Debug.Log(this + "클리어");
             SendReport();
         }
     }
@@ -30,8 +29,7 @@ public class FieldContoller : AbstractMapController
     protected override void SendReport()
     {
         base.SendReport();
-        Debug.Log("게임을 클리어함");
-        //EnemyManager.instance.ClearStage();
+        EnemyManager.instance.ClearStage();
     }
 
 }

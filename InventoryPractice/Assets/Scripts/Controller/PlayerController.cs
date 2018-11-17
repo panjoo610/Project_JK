@@ -8,7 +8,8 @@ using UnityEngine.UI;
 [RequireComponent(typeof(PlayerMotor))]
 public class PlayerController : MonoBehaviour {
 
-    
+    [SerializeField]
+    Transform VirtualTransform;
     [SerializeField]
     Vector3 VirtualPosition;
     float maxDistance = 2f;
@@ -57,6 +58,7 @@ public class PlayerController : MonoBehaviour {
     }
     private void LateUpdate()
     {
+        VirtualTransform.position = VirtualPosition;
         if (IsMoving)
         {
             Focus = null;
@@ -64,9 +66,9 @@ public class PlayerController : MonoBehaviour {
             //motor.MoveToPoint(goalPlayer.transform.position);
             //motor.target = VirtualPlayer.transform.position;
             //motor.MoveToPoint(VirtualPlayer.transform.position);
-            motor.target = VirtualPosition;
+            motor.target = VirtualTransform;
             motor.MoveToPoint(VirtualPosition);
-
+            
         }
         else
         {
@@ -89,13 +91,13 @@ public class PlayerController : MonoBehaviour {
             }
             else if (maxDistance < motor.agent.remainingDistance)
             {
-                VirtualPosition = Vector3.Lerp(VirtualPosition, gameObject.transform.position, motor.agent.speed * Time.deltaTime);
+                VirtualPosition = Vector3.Lerp(VirtualPosition, gameObject.transform.position + (moveVector * 0.9f), motor.agent.speed * Time.deltaTime);
                 motor.MoveToPoint(VirtualPosition);
                 motor.agent.isStopped = true;
             }
             else
             {
-                VirtualPosition = Vector3.Lerp(VirtualPosition, gameObject.transform.position, motor.agent.speed * Time.deltaTime);
+                VirtualPosition = Vector3.Lerp(VirtualPosition, gameObject.transform.position + (moveVector * 0.9f), motor.agent.speed * Time.deltaTime);
                 motor.MoveToPoint(VirtualPosition);
                 motor.agent.isStopped = false;
             }
@@ -103,7 +105,7 @@ public class PlayerController : MonoBehaviour {
         }
         else
         {
-            VirtualPosition = Vector3.Lerp(VirtualPosition, gameObject.transform.position+(moveVector*0.1f), motor.agent.speed * Time.deltaTime);
+            VirtualPosition = Vector3.Lerp(VirtualPosition, gameObject.transform.position+(moveVector*0.9f), motor.agent.speed/ (motor.agent.speed+1) * Time.deltaTime);
             naviParticle.SetActive(isMove);
         }
     }
