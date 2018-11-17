@@ -5,6 +5,8 @@ using UnityEngine;
 [System.Serializable]
 public struct SpawnData
 {
+    public bool IsConfirmBeforeClear;
+
     public bool StartAwake;
     public ParticleSystem GenerateParticle;
 
@@ -37,6 +39,7 @@ public class Spawner : AbstractMapController
     bool IsLoop;
     float CoolTime;
     bool IsUnlimited;
+    bool IsConfirmBeforeClear;
 
     GameObject generateObject;
 
@@ -51,6 +54,7 @@ public class Spawner : AbstractMapController
     {
         if (UsingInspectorData == true)
         {
+            IsConfirmBeforeClear = generateData.IsConfirmBeforeClear;
             GenerateParticle = generateData.GenerateParticle;
             enemyType = generateData.enemyType;
             DelayTime = generateData.DelayTime;
@@ -62,7 +66,8 @@ public class Spawner : AbstractMapController
             IsLoop = generateData.IsLoop;
             CoolTime = generateData.CoolTime;
             IsUnlimited = generateData.IsUnlimited;
-            if (IsUnlimited == true)
+
+            if (IsLoop == true || IsConfirmBeforeClear == true)
             {
                 activeObjects = new List<GameObject>();
             }
@@ -74,29 +79,30 @@ public class Spawner : AbstractMapController
     }
 
 
-    public void Initialize(EnemyType enemyType, float DelayTime, int MaxCount)
+    public void Initialize(bool IsConfirmBeforeClear, EnemyType enemyType, float DelayTime, int MaxCount)
     {
         GenerateParticle = GetComponentInChildren<ParticleSystem>();
         IsOver = false;
         IsSpread = false;
         IsLoop = false;
+        this.IsConfirmBeforeClear = IsConfirmBeforeClear;
         this.enemyType = enemyType;
         this.DelayTime = DelayTime;
         this.MaxCount = MaxCount;
     }
-    public void Initialize(EnemyType enemyType, float DelayTime, int MaxCount, float SpreadRange)
+    public void Initialize(bool IsConfirmBeforeClear, EnemyType enemyType, float DelayTime, int MaxCount, float SpreadRange)
     {
-        Initialize(enemyType, DelayTime, MaxCount);
+        Initialize(IsConfirmBeforeClear, enemyType, DelayTime, MaxCount);
         IsSpread = true;
         this.SpreadRange = SpreadRange;
     }
-    public void Initialize(EnemyType enemyType, float DelayTime, int MaxCount, float SpreadRange, float CoolTime, bool IsUnlimited)
+    public void Initialize(bool IsConfirmBeforeClear, EnemyType enemyType, float DelayTime, int MaxCount, float SpreadRange, float CoolTime, bool IsUnlimited)
     {
-        Initialize(enemyType, DelayTime, MaxCount, SpreadRange);
+        Initialize(IsConfirmBeforeClear, enemyType, DelayTime, MaxCount, SpreadRange);
         IsLoop = true;
         this.CoolTime = CoolTime;
         this.IsUnlimited = IsUnlimited;
-        if (IsUnlimited == true)
+        if (IsUnlimited == false)
         {
             activeObjects = new List<GameObject>();
         }
@@ -144,7 +150,7 @@ public class Spawner : AbstractMapController
             yield return new WaitForSeconds(1f);
             generateObject.SetActive(true);
 
-            if (IsLoop == true && IsUnlimited == false)
+            if (IsLoop == true && IsUnlimited == false || IsConfirmBeforeClear == true)
             {
                 activeObjects.Add(generateObject);
                 AliveCount++;
@@ -166,18 +172,27 @@ public class Spawner : AbstractMapController
             yield return new WaitForSeconds(CoolTime);
             StartGenerating();
         }
+        else if (IsConfirmBeforeClear == true)
+        {
+            StartCoroutine(CheckAliveObject(activeObjects));
+            while (AliveCount > 0)
+            {
+                yield return new WaitForSeconds(DelayTime);
+            }
+            IsOver = true;
+            SendReport();
+        }
         else
         {
             IsOver = true;
             SendReport();
         }
-            
         yield return null;
     }
 
     IEnumerator CheckAliveObject(List<GameObject> aliveObjects)
     {
-        Debug.Log("CheckAliveEnemy");
+        //int count = aliveObjects.Count;
         while (aliveObjects != null)
         {
             for (int i = 0; i < aliveObjects.Count; i++)
@@ -211,7 +226,6 @@ public class Spawner : AbstractMapController
 
     protected override void SendReport()
     {
-        Debug.Log(this + "에서 SendReport");
         base.SendReport();
     }
 
