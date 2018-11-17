@@ -192,7 +192,6 @@ public class Spawner : AbstractMapController
 
     IEnumerator CheckAliveObject(List<GameObject> aliveObjects)
     {
-        //int count = aliveObjects.Count;
         while (aliveObjects != null)
         {
             for (int i = 0; i < aliveObjects.Count; i++)

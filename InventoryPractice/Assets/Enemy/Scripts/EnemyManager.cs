@@ -104,8 +104,4 @@ public class EnemyManager : MonoBehaviour {
         enemyGenerator.StoppingGenerating();
         enemyPool.ClearPool();
     }
-
-
-    
-
 }
