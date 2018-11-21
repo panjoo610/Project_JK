@@ -114,7 +114,6 @@ public class StageManager : MonoBehaviour
         else
         {
             SceneNoticeText.text = " Stage - " + CurrentStage.ToString();
-            EnemyManager.instance.GenerateEnemy(CurrentStage);
 
             LoadScene(StageName.Stage + CurrentStage.ToString());
             StartCoroutine(ShowGameStartText(2.0f));
@@ -124,6 +123,8 @@ public class StageManager : MonoBehaviour
 
             PlayerManager.instance.cameraContorller.ActingCombat();
             PlayerManager.instance.ResetPlayerPosition();
+
+            EnemyManager.instance.GenerateEnemy(CurrentStage);
         }
     }
 

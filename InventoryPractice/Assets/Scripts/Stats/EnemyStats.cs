@@ -24,7 +24,7 @@ public class EnemyStats : CharacterStats {
         PlayerManager.instance.playerController.RemoveFocus();
         enemy.enabled = false;
         //add ragdooll effect death animation
-
+        EnemyManager.instance.ChangeEnemyleftCount(-1);
         Invoke("PushToPool", 1.3f);       
     }
 

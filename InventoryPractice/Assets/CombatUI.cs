@@ -15,7 +15,7 @@ public class CombatUI : MonoBehaviour {
 
     private void Start()
     {
-        currntCount.text = "남은 제거 대상 : " + EnemyManager.instance.GenerateDatas[EnemyManager.instance.currentStage].currentCount.ToString();
+        currntCount.text = "남은 제거 대상 : " + EnemyManager.instance.EnemyCountInStage.ToString();
         EnemyManager.instance.OnChangeCountCallBack += UpdateEnemyCountUI;
     }
 
@@ -32,7 +32,7 @@ public class CombatUI : MonoBehaviour {
     }
     public void UpdateEnemyCountUI()
     {
-        currntCount.text = "남은 제거 대상 : " + EnemyManager.instance.GenerateDatas[EnemyManager.instance.currentStage].currentCount.ToString();
+        currntCount.text = "남은 제거 대상 : " + EnemyManager.instance.EnemyCountInStage.ToString();
     }
 
 }

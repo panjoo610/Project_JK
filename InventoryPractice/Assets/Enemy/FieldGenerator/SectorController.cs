@@ -37,7 +37,7 @@ public class SectorController : AbstractMapController
 
     void OpenTheWay()
     {
-        WallObject.SetActive(false);
+        WallObject.SetActive(!WallObject.activeSelf);
     }
 
 

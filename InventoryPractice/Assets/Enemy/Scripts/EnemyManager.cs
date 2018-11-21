@@ -8,20 +8,23 @@ public class EnemyManager : MonoBehaviour {
 
     public List<EnemyGenerateData> GenerateDatas;
     public EnemyPool enemyPool;
-    public EnemyGenerator enemyGenerator;
+    //public EnemyGenerator enemyGenerator;
 
     public float CoolTime;
     public int GenerateCount;
     public int WaveCount;
+    public int SectorCount;
     public bool IsBossStage;
     //public MeshRenderer meshRenderer;
 
     GameObject EnemyPoolObj;
-    GameObject EnemyGeneratorObj;
+    //GameObject EnemyGeneratorObj;
 
     public ParticleSystem GenerateParticle;
     public GameObject enemyPrefab;
     public GameObject bossPrefab;
+
+    public int EnemyCountInStage;
 
     public bool IsWorking;
 
@@ -33,11 +36,11 @@ public class EnemyManager : MonoBehaviour {
     {
         instance = this;
         EnemyPoolObj = new GameObject();
-        EnemyGeneratorObj = new GameObject();
+        ///EnemyGeneratorObj = new GameObject();
         EnemyPoolObj.transform.parent = gameObject.transform;
         EnemyPoolObj.name = "EnemyPoolObj";
-        EnemyGeneratorObj.transform.parent = gameObject.transform;
-        EnemyGeneratorObj.name = "EnemyGeneratorObj";
+        //EnemyGeneratorObj.transform.parent = gameObject.transform;
+        //EnemyGeneratorObj.name = "EnemyGeneratorObj";
 
         StageManager.instance.OnGameClearCallBack += Initialize;
 
@@ -50,9 +53,9 @@ public class EnemyManager : MonoBehaviour {
     // Use this for initialization
     void Start () {
         EnemyPoolObj.AddComponent<EnemyPool>();
-        EnemyGeneratorObj.AddComponent<EnemyGenerator>();
+        //EnemyGeneratorObj.AddComponent<EnemyGenerator>();
         enemyPool = EnemyPoolObj.GetComponent<EnemyPool>();
-        enemyGenerator = EnemyGeneratorObj.GetComponent<EnemyGenerator>();
+        //enemyGenerator = EnemyGeneratorObj.GetComponent<EnemyGenerator>();
         
     }
     public void GenerateEnemy(int currentStage)
@@ -62,31 +65,34 @@ public class EnemyManager : MonoBehaviour {
         
         IsWorking = true;
         GenerateCount = GenerateDatas[this.currentStage].EnemyCount;
+        //GenerateCount = EnemyCountInStage;
         WaveCount = GenerateDatas[this.currentStage].WaveCount;
         IsBossStage = GenerateDatas[this.currentStage].IsBossStage;
         if (IsBossStage == false)
         {
             enemyPool.Initialize(GenerateCount, WaveCount, enemyPrefab);
-            enemyGenerator.Initialize(GenerateCount, WaveCount, GenerateDatas[this.currentStage].GeneratePosition);
+            //enemyGenerator.Initialize(GenerateCount, WaveCount, GenerateDatas[this.currentStage].GeneratePosition);
         }
         else
         {
             enemyPool.Initialize(GenerateCount, WaveCount, enemyPrefab, bossPrefab);
-            enemyGenerator.Initialize(GenerateCount, WaveCount, GenerateDatas[this.currentStage].GeneratePosition, true);
+            //enemyGenerator.Initialize(GenerateCount, WaveCount, GenerateDatas[this.currentStage].GeneratePosition, true);
         }
-        ChangeEnemyleftCount(0);
+        //ChangeEnemyleftCount(0);
     }
     public void ChangeEnemyleftCount(int count)
     {
-        GenerateDatas[currentStage].currentCount -= count;
+        //GenerateDatas[currentStage].currentCount -= count;
+        EnemyCountInStage = EnemyCountInStage +(count);
         if (OnChangeCountCallBack != null)
             OnChangeCountCallBack.Invoke();
-
     }
 
     public void Initialize()
     {
         IsWorking = false;
+        EnemyCountInStage = 0;
+        SectorCount = 0;
     }
 
     public void ClearStage()
@@ -101,7 +107,7 @@ public class EnemyManager : MonoBehaviour {
         GenerateDatas[currentStage].Initialize();
         IsWorking = false;
         Debug.Log("강제종료");
-        enemyGenerator.StoppingGenerating();
+        //enemyGenerator.StoppingGenerating();
         enemyPool.ClearPool();
     }
 }

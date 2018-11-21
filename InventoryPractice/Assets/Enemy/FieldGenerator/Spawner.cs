@@ -75,6 +75,7 @@ public class Spawner : AbstractMapController
             {
                 StartGenerating();
             }
+            EnemyManager.instance.ChangeEnemyleftCount(MaxCount);
         }
     }
 
@@ -89,6 +90,7 @@ public class Spawner : AbstractMapController
         this.enemyType = enemyType;
         this.DelayTime = DelayTime;
         this.MaxCount = MaxCount;
+        EnemyManager.instance.ChangeEnemyleftCount(MaxCount);
     }
     public void Initialize(bool IsConfirmBeforeClear, EnemyType enemyType, float DelayTime, int MaxCount, float SpreadRange)
     {
@@ -109,7 +111,7 @@ public class Spawner : AbstractMapController
     }
 
     public void StartGenerating()
-    {
+    {        
         generateEnumerator = Generate();
         co = StartCoroutine(generateEnumerator);
         //StartCoroutine(generateEnumerator);
@@ -199,7 +201,6 @@ public class Spawner : AbstractMapController
                 if (aliveObjects[i].activeSelf == false)
                 {
                     AliveCount--;
-                    //EnemyManager.instance.ChangeEnemyleftCount(1);
                     aliveObjects.Remove(aliveObjects[i].gameObject);
                     yield return new WaitForSeconds(0.3f);
                 }
