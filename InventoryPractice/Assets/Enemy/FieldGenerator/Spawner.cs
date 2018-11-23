@@ -52,6 +52,8 @@ public class Spawner : AbstractMapController
 
     protected override void Start()
     {
+        generateEnumerator = Generate();
+        EnemyManager.instance.OnStageExitEvent += StoppingGenerating;
         if (UsingInspectorData == true)
         {
             IsConfirmBeforeClear = generateData.IsConfirmBeforeClear;
@@ -77,6 +79,7 @@ public class Spawner : AbstractMapController
             }
             EnemyManager.instance.ChangeEnemyleftCount(MaxCount);
         }
+
     }
 
 
@@ -111,16 +114,12 @@ public class Spawner : AbstractMapController
     }
 
     public void StartGenerating()
-    {        
-        generateEnumerator = Generate();
+    {
         co = StartCoroutine(generateEnumerator);
-        //StartCoroutine(generateEnumerator);
     }
     public void StopGenerating()
     {
         StopCoroutine(co);
-        //StopCoroutine(generateEnumerator);
-        //generateEnumerator = Generate();
         IsOver = true;
     }
 
@@ -232,5 +231,18 @@ public class Spawner : AbstractMapController
     protected override void TakeReport()
     {
         return;
+    }
+
+
+    public void StoppingGenerating()
+    {
+        StopGenerating();
+        for (int i = 0; i < activeObjects.Count; i++)
+        {
+            activeObjects[i].SetActive(false);
+            EnemyManager.instance.enemyPool.Push(activeObjects[i]);
+        }
+        EnemyManager.instance.OnStageExitEvent -= StoppingGenerating;
+        
     }
 }

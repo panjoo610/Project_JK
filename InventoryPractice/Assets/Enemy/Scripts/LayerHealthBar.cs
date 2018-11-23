@@ -121,7 +121,7 @@ public class LayerHealthBar : MonoBehaviour {
                 //Debug.Log("OverDamage" + OverDamage);
                 ActiveBar.HealthPoint = 0;
                 ActiveBar.FrontSlider.fillAmount = 0;
-                StartCoroutine(HealthSliderChange(0, ActiveBar, true, OverDamage,Speed*3,true));
+                StartCoroutine(HealthSliderChange(0, ActiveBar, true, OverDamage,Speed*4,true));
                 SwichingActiveBar(ActiveBar);
                 nowHealth += OverDamage;
             } 
@@ -130,11 +130,11 @@ public class LayerHealthBar : MonoBehaviour {
 
     IEnumerator HealthSliderChange(float healthPercent, HealthBar healthBar ,bool DamageIsOver, float OverDamage, float Speed, bool quick)
     {
-        float margin = 0.005f;
+        float margin = 0.05f;
         IsChangeing = true;
         if (quick)
         {
-            margin = 0.05f;
+            margin = 0.1f;
         }
         while (healthBar.BackSlider.fillAmount >= healthPercent)
         {
