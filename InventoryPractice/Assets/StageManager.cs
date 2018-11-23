@@ -54,6 +54,7 @@ public class StageManager : MonoBehaviour
     // Use this for initialization
 
     AdsHelper adsHelper;
+    bool iSsBackKeyPressed = false;
 
     void Start() //초기화 함수 Initialization
     {
@@ -77,8 +78,31 @@ public class StageManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             ClearStage();
+            return;
         }
+
+        //if (iSsBackKeyPressed == true)
+        //{
+        //    if (Input.GetKeyDown(KeyCode.Escape))
+        //    {
+        //        Application.Quit();
+        //    }
+        //}
+        //if (Input.GetKeyDown(KeyCode.Escape))
+        //{
+        //    //종료 안내 출력
+        //    Debug.Log("종료버튼 클릭");
+        //    iSsBackKeyPressed = true;
+        //    StartCoroutine(QuitingTimer());
+        //}
     }
+
+    //IEnumerator QuitingTimer()
+    //{
+    //    yield return new WaitForSeconds(3);
+    //    iSsBackKeyPressed = false;
+    //    //종료 안내 출력 종료
+    //}
 
     public void FirstLobby()
     {
