@@ -9,7 +9,7 @@ using UnityEngine.SceneManagement;
 public class UIController : MonoBehaviour {
 
     public Button StatusBtn, InvenBtn, EquipBtn, combatStartButton, LobbyButton, GameStartButton, StopButton;
-    public GameObject InformationPanel, CombatPanel, HidePanel, NoticePanel, GameTitle;
+    public GameObject InformationPanel, CombatPanel, HidePanel, NoticePanel, GameTitle, ExitPanel;
     public InventoyUI inventoyUI;
     public EquipmetInventoryUI equipmetInventoryUI;
     public StatusUI statusUI;
@@ -30,6 +30,7 @@ public class UIController : MonoBehaviour {
         StageManager.instance.OnGameClearCallBack += ShowLobbyBtn;
         StageManager.instance.OnMoveLobbySceneCallBack += MoveLobbyWhenGameOver;
         StageManager.instance.OnGameOverCallBack += ShowHidePaenl;
+        StageManager.instance.OnClickAndroidBackButtonEvent += OnExitPanel;
 
         inventoyUI = GetComponent<InventoyUI>();
         equipmetInventoryUI = GetComponent<EquipmetInventoryUI>();
@@ -183,5 +184,14 @@ public class UIController : MonoBehaviour {
     public void OnEquip()
     {
         equipmetInventoryUI.OnOff();
+    }
+
+    public void OnExitPanel()
+    {
+        ExitPanel.SetActive(!ExitPanel.activeSelf);
+    }
+    public void OnExitGame()
+    {
+        Application.Quit();
     }
 }
