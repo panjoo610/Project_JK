@@ -1,8 +1,10 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.Advertisements;
 
-public class AdsHelper : MonoBehaviour
-{
+public class AdsHelper : MonoBehaviour {
+
     private const string android_game_id = "2911577";
     private const string ios_game_id = "2911578";
 
