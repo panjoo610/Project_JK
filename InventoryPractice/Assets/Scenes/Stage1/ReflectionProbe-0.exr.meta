@@ -1,6 +1,10 @@
 fileFormatVersion: 2
 guid: 938a6d9ae0e91f646bcea89685540b19
+<<<<<<< HEAD
 timeCreated: 1543281223
+=======
+timeCreated: 1542340831
+>>>>>>> parent of c4ff8d8... 라이트맵 다 구움
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:

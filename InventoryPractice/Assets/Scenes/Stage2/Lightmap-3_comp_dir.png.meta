@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: 26b9ff1b739b15848b576ed6bc9f5802
+=======
+guid: 9b3c99d2b7beee348aa3ba0ae9e8cf95
+>>>>>>> parent of c4ff8d8... 라이트맵 다 구움
 timeCreated: 1542271317
 licenseType: Free
 TextureImporter:

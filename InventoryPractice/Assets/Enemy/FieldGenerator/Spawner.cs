@@ -119,11 +119,8 @@ public class Spawner : AbstractMapController
     }
     public void StopGenerating()
     {
-        if (co != null)
-        {
-            StopCoroutine(co);
-            IsOver = true; 
-        }
+        StopCoroutine(co);
+        IsOver = true;
     }
 
     public bool CheckSelf()
@@ -239,14 +236,11 @@ public class Spawner : AbstractMapController
 
     public void StoppingGenerating()
     {
-        if (co != null)
+        StopGenerating();
+        for (int i = 0; i < activeObjects.Count; i++)
         {
-            StopGenerating();
-            for (int i = 0; i < activeObjects.Count; i++)
-            {
-                activeObjects[i].SetActive(false);
-                EnemyManager.instance.enemyPool.Push(activeObjects[i]);
-            } 
+            activeObjects[i].SetActive(false);
+            EnemyManager.instance.enemyPool.Push(activeObjects[i]);
         }
         EnemyManager.instance.OnStageExitEvent -= StoppingGenerating;
         
