@@ -50,6 +50,9 @@ public class EnemyManager : MonoBehaviour {
     public delegate void OnChangeCount();
     public OnChangeCount OnChangeCountCallBack;
 
+    public delegate void OnStageExit();
+    public OnStageExit OnStageExitEvent;
+
     // Use this for initialization
     void Start () {
         EnemyPoolObj.AddComponent<EnemyPool>();
@@ -104,10 +107,15 @@ public class EnemyManager : MonoBehaviour {
 
     public void StageExit()
     {
+        if (OnStageExitEvent !=null)
+        {
+            OnStageExitEvent.Invoke();
+        }
         GenerateDatas[currentStage].Initialize();
         IsWorking = false;
         Debug.Log("강제종료");
         //enemyGenerator.StoppingGenerating();
         enemyPool.ClearPool();
+
     }
 }

@@ -41,6 +41,9 @@ public class StageManager : MonoBehaviour
     public delegate void OnMoveLobbyScene();
     public OnMoveLobbyScene OnMoveLobbySceneCallBack;
 
+    public delegate void OnClickAndroidBackButton();
+    public OnClickAndroidBackButton OnClickAndroidBackButtonEvent;
+
     public string nextScene;
 
     const int LimitStageCount = 5;
@@ -58,6 +61,7 @@ public class StageManager : MonoBehaviour
 
     void Start() //초기화 함수 Initialization
     {
+        Screen.sleepTimeout = SleepTimeout.NeverSleep;
         adsHelper = GetComponent<AdsHelper>();
         NoticeText.gameObject.SetActive(false);
         SceneNoticeText.text = GetCurrentSceneName();
@@ -72,15 +76,20 @@ public class StageManager : MonoBehaviour
             CurrentStage = saveInventory.CurrentStage;
         }
     }
-
-    private void Update()
+    private void LateUpdate()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
             ClearStage();
             return;
         }
-
+        if (Application.platform == RuntimePlatform.Android)
+        {
+            if (Input.GetKey(KeyCode.Escape))
+            {
+                OnClickAndroidBackButtonEvent.Invoke();
+            }
+        }
         //if (iSsBackKeyPressed == true)
         //{
         //    if (Input.GetKeyDown(KeyCode.Escape))
