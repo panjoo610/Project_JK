@@ -13,7 +13,7 @@ public class StageManager : MonoBehaviour
 
     private void Awake()
     {
-        if(instance != null)
+        if (instance != null)
         {
             Destroy(this.gameObject);
             return;
@@ -116,7 +116,7 @@ public class StageManager : MonoBehaviour
     public void FirstLobby()
     {
         LoadScene(StageName.Lobby.ToString());
-        
+
         PlayerManager.instance.ResetPlayerPosition();
     }
 
@@ -135,7 +135,7 @@ public class StageManager : MonoBehaviour
 
     public void ChangeCombatStage()
     {
-        if(CurrentStage >= LimitStageCount)
+        if (CurrentStage >= LimitStageCount)
         {
 #if UNITY_ANDROID
             Handheld.Vibrate();
@@ -192,10 +192,10 @@ public class StageManager : MonoBehaviour
         CurrentStage += 1;
 
         //게임을 완전히 클리어했다면 걸린 시간과 비교해서 골드를 줄 것과 획득 결과창만들 것
-        
+
 
         saveInventory.CurrentStage = CurrentStage;
-        saveInventory.SaveItemListByJson();   
+        saveInventory.SaveItemListByJson();
     }
     IEnumerator NotifyGameClear(float time)
     {
@@ -218,7 +218,7 @@ public class StageManager : MonoBehaviour
         Invoke("GameOverNotice", 3f);
     }
     public void GameOverNotice()
-    {      
+    {
         if (OnMoveLobbySceneCallBack != null)
             OnMoveLobbySceneCallBack.Invoke();
     }
@@ -272,7 +272,7 @@ public class StageManager : MonoBehaviour
                 {
                     timer = 0f;
                 }
-            }            
+            }
         }
         loadingPanel.SetActive(!loadingPanel.activeSelf);
         progressBar.fillAmount = 0;
@@ -280,4 +280,4 @@ public class StageManager : MonoBehaviour
         PlayerManager.instance.RestPosition();
     }
 }
-public enum StageName { Lobby, InGame, Stage}
+public enum StageName { Lobby, InGame, Stage }

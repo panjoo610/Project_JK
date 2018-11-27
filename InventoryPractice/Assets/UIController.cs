@@ -6,7 +6,8 @@ using UnityEngine.SceneManagement;
 
 
 
-public class UIController : MonoBehaviour {
+public class UIController : MonoBehaviour
+{
 
     public Button StatusBtn, InvenBtn, EquipBtn, combatStartButton, LobbyButton, GameStartButton, StopButton;
     public GameObject InformationPanel, CombatPanel, HidePanel, NoticePanel, GameTitle, ExitPanel;
@@ -25,7 +26,7 @@ public class UIController : MonoBehaviour {
     }
 
     // Use this for initialization
-    void Start ()
+    void Start()
     {
         StageManager.instance.OnGameClearCallBack += ShowLobbyBtn;
         StageManager.instance.OnMoveLobbySceneCallBack += MoveLobbyWhenGameOver;
@@ -51,9 +52,9 @@ public class UIController : MonoBehaviour {
         OnEquip();
     }
 
-	public void OnChangeCombatScene()
+    public void OnChangeCombatScene()
     {
-        if(StageManager.instance.CurrentStage >= 5)
+        if (StageManager.instance.CurrentStage >= 5)
         {
             StageManager.instance.ChangeCombatStage();
             return;
@@ -70,7 +71,7 @@ public class UIController : MonoBehaviour {
     }
 
     public void ChangeCombatOrLobbyUI()
-    {      
+    {
         StopButton.interactable = true;
         StatusBtn.gameObject.SetActive(!StatusBtn.gameObject.activeSelf);
         StopButton.gameObject.SetActive(!StopButton.gameObject.activeSelf);
@@ -81,9 +82,9 @@ public class UIController : MonoBehaviour {
         combatStartButton.gameObject.SetActive(!combatStartButton.gameObject.activeSelf);
 
         InformationPanel.SetActive(!InformationPanel.activeSelf);
-        
+
         CombatPanel.SetActive(!CombatPanel.activeSelf);
-        
+
         combatUI.ChangeGunImage();
 
         StartCoroutine(ShowHidePanelCoroutine(3.0f));
@@ -115,9 +116,9 @@ public class UIController : MonoBehaviour {
         NoticePanel.SetActive(false);
         HidePanel.SetActive(false);
         ChangeCombatOrLobbyUI();
-        
+
         PlayerManager.instance.ShowPlayerGold(-100);
-        
+
         StageManager.instance.MoveLobbyScene();
     }
 
@@ -125,7 +126,7 @@ public class UIController : MonoBehaviour {
     public void OnclickFirstStart()
     {
         GameStartButton.gameObject.SetActive(false);
-        StageManager.instance.FirstLobby();        
+        StageManager.instance.FirstLobby();
     }
 
     public void OnClickStopPanel()
@@ -158,7 +159,7 @@ public class UIController : MonoBehaviour {
 
         StageManager.instance.MoveLobbyScene();
 
-        LobbyButton.gameObject.SetActive(false);  
+        LobbyButton.gameObject.SetActive(false);
     }
 
     public void ShowLobbyBtn()
