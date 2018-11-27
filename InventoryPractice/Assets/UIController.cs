@@ -108,11 +108,15 @@ public class UIController : MonoBehaviour
     public void ShowHidePaenl()
     {
         EnemyManager.instance.StageExit();
+        NoticePanel.SetActive(false);
+        StopButton.interactable = false;
         HidePanel.SetActive(true);
     }
 
     public void MoveLobbyWhenGameOver()
     {
+        ExitPanel.SetActive(false);
+        StopButton.interactable = false;
         NoticePanel.SetActive(false);
         HidePanel.SetActive(false);
         ChangeCombatOrLobbyUI();
@@ -165,7 +169,7 @@ public class UIController : MonoBehaviour
     public void ShowLobbyBtn()
     {
         HidePanel.SetActive(true);
-
+        NoticePanel.SetActive(false);
         StopButton.interactable = false;
         LobbyButton.gameObject.SetActive(true);
 
