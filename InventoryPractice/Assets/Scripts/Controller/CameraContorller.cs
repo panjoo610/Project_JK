@@ -15,6 +15,7 @@ public class CameraContorller : MonoBehaviour
 
     [SerializeField]
     public float currentZoom = 10.0f;
+    float baseZoom;
     [SerializeField]
     private float currentYaw = 0f;
 
@@ -38,6 +39,7 @@ public class CameraContorller : MonoBehaviour
         target = PlayerManager.instance.Player.transform;
         shakeCameraEnumerator = Shake(.25f, .7f);
         HitImageColor = HitImage.color;
+        baseZoom = currentZoom;
     }
 
     private void LateUpdate()
@@ -71,6 +73,13 @@ public class CameraContorller : MonoBehaviour
     {
         offset = new Vector3(-0.48f, -0.28f, -0.58f); //로비씬
         currentZoom = 5f;
+    }
+
+
+    public void CameraZoomInOut(float ZoomValue)
+    {
+        float newZoomValue = baseZoom * (1+ ZoomValue);
+        currentZoom = newZoomValue;
     }
 
     IEnumerator DirectingCameraCoroutine(float x, float y, float z)
