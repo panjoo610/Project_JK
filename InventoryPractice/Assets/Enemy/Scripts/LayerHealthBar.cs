@@ -179,7 +179,7 @@ public class LayerHealthBar : MonoBehaviour {
         healthBar.BackSlider.fillAmount = 1f;
         healthBar.HealthPoint = healthValue;
 
-        if (colorIndex >=0)
+        if (colorIndex >0)
         {
             healthBar.FrontSlider.color = usingColors[colorIndex];
             Color backColoer = new Color(usingColors[colorIndex].r - 0.1f, usingColors[colorIndex].g - 0.1f, usingColors[colorIndex].b - 0.1f, usingColors[colorIndex].a);
